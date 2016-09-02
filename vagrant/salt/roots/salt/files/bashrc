@@ -1,0 +1,13 @@
+# alias ls to show more information
+alias ls='ls -al --color=auto'
+
+# activate virtual env
+. /home/vagrant/virtualenv/bin/activate
+
+# django configuration
+export DATABASE_URL="psql://vagrant:vagrant@127.0.0.1:5432/vagrant"
+export DEBUG=True
+export SECRET_KEY="fsdffuT*T*%B&*BT^R7rv4E%E^%R^"
+
+# cd to vagrant dir
+cd /vagrant
