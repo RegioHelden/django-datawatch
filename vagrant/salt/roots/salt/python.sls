@@ -1,23 +1,22 @@
-python3:
+python:
   pkg:
     - installed
     - names:
-      - python3-dev
-      - python3
+      - python-dev
+      - python
 
 python-pip:
   pkg:
     - installed
     - names:
       - python-pip
-      - python3-pip
     - require:
-      - pkg: python3
+      - pkg: python
 
 virtualenv:
   pip:
     - installed
-    - bin_env: '/usr/bin/pip3'
+    - bin_env: '/usr/bin/pip'
     - require:
       - pkg: python-pip
 

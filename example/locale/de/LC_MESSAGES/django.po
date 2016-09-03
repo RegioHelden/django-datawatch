@@ -1,0 +1,51 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-09-03 22:26+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Balance critical"
+msgstr "Kritischer Kontostand"
+
+msgid "Balance warning"
+msgstr "Niedriger Kontostand"
+
+msgid "User balance"
+msgstr "Benutzer-Kontostand"
+
+msgid ""
+"The balance of the user is critical. Their account was deactivated. Please "
+"contact them immediately."
+msgstr ""
+"Der Kontostand des Benutzers ist kritisch. Sein Zugang wurde gesperrt. Bitte "
+"kontaktiere den Benutzer so schnell wie möglich."
+
+msgid ""
+"The balance of the user is running low. Please contact them and ask them to "
+"add more money to their balance."
+msgstr ""
+"Der Kontostand des Benutzers ist sehr gering. Bitte kontaktiere ihn und "
+"bitte darum mehr Geld auf das Konto aufzubuchen."
+
+msgid "All good. Enough money on their balance."
+msgstr "Alles in Ordnung. Es ist genug Geld auf dem Konto des Benutzers."
+
+msgid "Status unknown."
+msgstr "Status unbekannt."
+
+msgid "Current balance is"
+msgstr "Der aktuelle Kontostand beträgt"

@@ -1,0 +1,20 @@
+{% extends "django_monitoring/detail.html" %}
+{% load i18n %}
+
+{% block django_monitoring_check %}
+    <p>
+        {% if result.status == result.STATUS.danger %}
+            {% trans "The balance of the user is critical. Their account was deactivated. Please contact them immediately." %}
+        {% elif result.status == result.STATUS.warning %}
+            {% trans "The balance of the user is running low. Please contact them and ask them to add more money to their balance." %}
+        {% elif result.status == result.STATUS.ok %}
+            {% trans "All good. Enough money on their balance." %}
+        {% else %}
+            {% trans "Status unknown." %}
+        {% endif %}
+    </p>
+
+    <p>
+        <strong>{% trans "Current balance is" %}: {{ result.get_payload.balance|floatformat:2 }}</strong>
+    </p>
+{% endblock %}

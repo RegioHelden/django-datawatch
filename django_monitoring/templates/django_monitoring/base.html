@@ -1,0 +1,60 @@
+{% load i18n %}
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>{% trans "django_monitoring" %}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                        aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{% url "django_monitoring_index" %}">Django Monitoring</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="{% url "django_monitoring_index" %}">Home</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+                <div id="messageframework" class="alert alert-block {% if 'debug' in message.tags or 'info' in message.tags %}alert-info{% elif 'success' in message.tags %}alert-success{% elif 'error' in message.tags %}alert-danger{% elif 'warning' in message.tags %}alert-warning{% endif %}">
+                    <strong>
+                        {% if 'debug' in message.tags %}
+                            {% trans 'DEBUG' %}
+                        {% elif 'info' in message.tags %}
+                            {% trans 'Info' %}
+                        {% elif 'success' in message.tags %}
+                            {% trans 'Success' %}
+                        {% elif 'error' in message.tags %}
+                            {% trans 'Error' %}
+                        {% else %}
+                            {% trans 'Warning' %}
+                        {% endif %}
+                    </strong>
+                    {% if 'safe' in message.tags %}
+                        {{ message|safe }}
+                    {% else %}
+                        {{ message }}
+                    {% endif %}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% block django_monitoring %}{% endblock %}
+    </div>
+</body>
+</html>

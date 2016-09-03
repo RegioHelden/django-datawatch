@@ -1,0 +1,98 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-09-03 22:26+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "All"
+msgstr "Alle"
+
+msgid "Failed"
+msgstr "Fehler"
+
+msgid "User"
+msgstr "Benutzer"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Days to acknowledge"
+msgstr "Ausblenden für Anzahl Tage"
+
+msgid "Unknown"
+msgstr "Unbekannt"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Warning"
+msgstr "Warnung"
+
+msgid "Critical"
+msgstr "Kritisch"
+
+msgid "Module slug"
+msgstr "Modul-Bezeichner"
+
+msgid "Identifier"
+msgstr "Identifizierer"
+
+msgid "Configuration"
+msgstr "Konfiguration"
+
+msgid "Payload description"
+msgstr "Beschreibung des Gegenstandes"
+
+msgid "Acknowledged by"
+msgstr "Ausgeblendet von"
+
+msgid "Acknowledged at"
+msgstr "Ausgeblendet am"
+
+msgid "Acknowledged until"
+msgstr "Ausgeblendet bis"
+
+msgid "Acknowledge reason"
+msgstr "Ausblendungsgrund"
+
+msgid "django_monitoring"
+msgstr "django_monitoring"
+
+msgid "Filter"
+msgstr "Filter"
+
+#, python-format
+msgid "Acknowledged until %(date)s"
+msgstr "Ausgeblendet bis %(date)s"
+
+msgid "Acknowledge"
+msgstr "Ausblenden"
+
+msgid "Change config"
+msgstr "Konfiguration ändern"
+
+msgid "Refresh"
+msgstr "Aktualisieren"
+
+msgid "Reason"
+msgstr "Grund"
+
+msgid "Cancel"
+msgstr "Abbrechen"
+
+msgid "Save"
+msgstr "Speichern"

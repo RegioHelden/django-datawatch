@@ -31,7 +31,9 @@ Vagrant.configure(2) do |config|
     salt.masterless = true
     salt.minion_config = "vagrant/salt/minion.conf"
     salt.run_highstate = true
-    salt.verbose = true
     salt.bootstrap_options = "-c /tmp/ -P"
+    salt.verbose = true
+    salt.colorize = true
+    salt.log_level = "info"
   end
 end

@@ -1,0 +1,44 @@
+[
+  {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$24000$K7FELS7xYuVP$I8/i4Ay0DBb6LKaXDnimyyorpbT6C0RtN5aBQxfmtuQ=",
+      "last_login": "2016-09-03T23:17:38Z",
+      "is_superuser": true,
+      "username": "example",
+      "first_name": "",
+      "last_name": "",
+      "email": "",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2016-09-03T13:14:46Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "example.wallet",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "balance": "1000.00"
+    }
+  },
+  {
+    "model": "example.wallet",
+    "pk": 2,
+    "fields": {
+      "user": 1,
+      "balance": "50.00"
+    }
+  },
+  {
+    "model": "example.wallet",
+    "pk": 3,
+    "fields": {
+      "user": 1,
+      "balance": "-100.00"
+    }
+  }
+]
