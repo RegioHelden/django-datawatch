@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 setup(
     name='django-datawatch',
     packages=find_packages(exclude=['example*']),
-    version='0.1.3',
+    version='0.1.4',
     description='Django Datawatch runs automated data checks in your Django installation',
     author='Jens Nistler <opensource@jensnistler.de>, Bogdan Radko',
     author_email='opensource@regiohelden.de',
@@ -16,6 +16,7 @@ setup(
         'django-extensions>=1.6.7',
         'django-model-utils>=2.5',
         'python-dateutil>=2.5.3',
+        'django-bootstrap3>=7.0.1',
     ],
     license='MIT',
     url='https://github.com/RegioHelden/django-datawatch',

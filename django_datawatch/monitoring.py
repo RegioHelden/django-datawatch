@@ -81,7 +81,7 @@ class Scheduler(object):
             # shall the check be run again?
             check_instance = check()
             if check_instance.slug in executions:
-                if now + check.run_every > executions[check_instance.slug]:
+                if now + check.run_every < executions[check_instance.slug]:
                     continue
 
             # enqueue the check and save execution state

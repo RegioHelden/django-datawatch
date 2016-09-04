@@ -12,7 +12,7 @@ from example import models
 
 
 class UserHasEnoughBalanceConfig(BaseCheckForm):
-    danger = forms.IntegerField(initial=0, label=_('Balance critical'))
+    critical = forms.IntegerField(initial=0, label=_('Balance critical'))
     warning = forms.IntegerField(initial=100, label=_('Balance warning'))
 
 
@@ -30,8 +30,8 @@ class UserHasEnoughBalance(BaseCheck):
 
     def check(self, payload):
         config = self.get_config(payload)
-        if payload.balance < config['danger']:
-            return Check.STATUS.danger
+        if payload.balance < config['critical']:
+            return Check.STATUS.critical
         if payload.balance < config['warning']:
             return Check.STATUS.warning
         return Check.STATUS.ok

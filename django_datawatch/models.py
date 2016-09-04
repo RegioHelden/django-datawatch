@@ -24,7 +24,7 @@ class Check(TimeStampedModel):
     STATUS = Choices((0, 'unknown', _('Unknown')),
                      (1, 'ok', _('OK')),
                      (2, 'warning', _('Warning')),
-                     (3, 'danger', _('Critical')))
+                     (3, 'critical', _('Critical')))
 
     slug = models.TextField(verbose_name=_('Module slug'))
     identifier = models.CharField(max_length=256, verbose_name=_('Identifier'))
@@ -52,7 +52,7 @@ class Check(TimeStampedModel):
         unique_together = ('slug', 'identifier')
 
     def acknowledge(self, user, days, reason=None, commit=True):
-        if self.status in (self.STATUS.warning, self.STATUS.danger) and self.is_acknowledged():
+        if self.status in (self.STATUS.warning, self.STATUS.critical) and self.is_acknowledged():
             raise AlreadyAcknowledged()
         self.acknowledged_at = timezone.now()
         self.acknowledged_by = user

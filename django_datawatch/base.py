@@ -45,7 +45,7 @@ class BaseCheck(object):
         except Check.DoesNotExist:
             old_status = None
         status = self.check(payload)
-        unacknowledge = old_status in [Check.STATUS.warning, Check.STATUS.danger] and status == Check.STATUS.ok
+        unacknowledge = old_status in [Check.STATUS.warning, Check.STATUS.critical] and status == Check.STATUS.ok
         self.save(payload, status, unacknowledge=unacknowledge)
 
     def get_config(self, payload):

@@ -3,7 +3,7 @@
 
 {% block django_datawatch_check %}
     <p>
-        {% if result.status == result.STATUS.danger %}
+        {% if result.status == result.STATUS.critical %}
             {% trans "The balance of the user is critical. Their account was deactivated. Please contact them immediately." %}
         {% elif result.status == result.STATUS.warning %}
             {% trans "The balance of the user is running low. Please contact them and ask them to add more money to their balance." %}

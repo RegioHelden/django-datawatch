@@ -4,7 +4,7 @@
 {% block django_datawatch %}
     <div class="row">
         <div class="col-md-12">
-            <div class="panel {% if result.status == result.STATUS.danger %}panel-danger{% elif result.status == result.STATUS.warning %}panel-warning{% elif result.status == result.STATUS.ok %}panel-success{% else %}panel-default{% endif %}">
+            <div class="panel {% if result.status == result.STATUS.critical %}panel-danger{% elif result.status == result.STATUS.warning %}panel-warning{% elif result.status == result.STATUS.ok %}panel-success{% else %}panel-default{% endif %}">
                 <div class="panel-heading">
                     <div class="panel-title">
                         <h3>{{ result.get_status_display }} - {{ result.get_check_instance.get_title }}</h3>
