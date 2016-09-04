@@ -11,7 +11,7 @@ from django.contrib import messages
 
 from django_datawatch import forms
 from django_datawatch.common.views import FilteredListView
-from django_datawatch.models import Check
+from django_datawatch.models import Result
 from django_datawatch.settings import ddw_settings
 from django_datawatch.tasks import django_datawatch_run
 
@@ -31,18 +31,18 @@ class DashboardView(LoginRequiredMixin, PermissionRequiredMixin, FilteredListVie
 
     def get_queryset(self):
         if self.queryset is None:
-            self.queryset = Check.objects.all().order_by('-status')
+            self.queryset = Result.objects.all().order_by('-status')
         return self.queryset
 
     def get_context_data(self, **kwargs):
         ctx = super(DashboardView, self).get_context_data(**kwargs)
-        ctx.update(dict(check=Check))
+        ctx.update(dict(check=Result))
         return ctx
 
 
 class ResultView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     permission_required = 'django_datawatch.view'
-    model = Check
+    model = Result
     template_name = 'django_datawatch/detail.html'
 
     def __init__(self, *args, **kwargs):
@@ -71,7 +71,7 @@ class ResultView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
 class ResultAcknowledgeView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     permission_required = 'django_datawatch.acknowledge'
     form_class = forms.AcknowledgeForm
-    model = Check
+    model = Result
     template_name = 'django_datawatch/form.html'
 
     def get_form_kwargs(self):
@@ -95,7 +95,7 @@ class ResultAcknowledgeView(LoginRequiredMixin, PermissionRequiredMixin, UpdateV
 
 class ResultConfigView(LoginRequiredMixin, PermissionRequiredMixin, SingleObjectMixin, FormView):
     permission_required = 'django_datawatch.config'
-    model = Check
+    model = Result
     template_name = 'django_datawatch/form.html'
 
     def __init__(self, **kwargs):
@@ -139,7 +139,7 @@ class ResultConfigView(LoginRequiredMixin, PermissionRequiredMixin, SingleObject
 class ResultRefreshView(LoginRequiredMixin, PermissionRequiredMixin, SingleObjectMixin, RedirectView):
     permission_required = 'django_datawatch.refresh'
     permanent = False
-    model = Check
+    model = Result
 
     def __init__(self, **kwargs):
         super(ResultRefreshView, self).__init__(**kwargs)

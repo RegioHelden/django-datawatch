@@ -3,7 +3,7 @@ from __future__ import unicode_literals, print_function
 
 from dateutil.relativedelta import relativedelta
 from django.utils.translation import ugettext as _
-from django_datawatch.models import Check
+from django_datawatch.models import Result
 from django_datawatch.monitoring import monitor
 from django_datawatch.base import BaseCheck, BaseCheckForm
 from django import forms
@@ -31,10 +31,10 @@ class UserHasEnoughBalance(BaseCheck):
     def check(self, payload):
         config = self.get_config(payload)
         if payload.balance < config['critical']:
-            return Check.STATUS.critical
+            return Result.STATUS.critical
         if payload.balance < config['warning']:
-            return Check.STATUS.warning
-        return Check.STATUS.ok
+            return Result.STATUS.warning
+        return Result.STATUS.ok
 
     def get_identifier(self, payload):
         return payload.pk

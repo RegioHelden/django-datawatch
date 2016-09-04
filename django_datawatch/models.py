@@ -20,7 +20,7 @@ class AlreadyAcknowledged(Exception):
 
 
 @python_2_unicode_compatible
-class Check(TimeStampedModel):
+class Result(TimeStampedModel):
     STATUS = Choices((0, 'unknown', _('Unknown')),
                      (1, 'ok', _('OK')),
                      (2, 'warning', _('Warning')),

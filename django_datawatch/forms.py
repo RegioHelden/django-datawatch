@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext_lazy as _
 from model_utils.choices import Choices
 
-from django_datawatch.models import Check
+from django_datawatch.models import Result
 
 
 class ResultFilterForm(forms.Form):
@@ -45,7 +45,7 @@ class AcknowledgeForm(forms.ModelForm):
     days = forms.IntegerField(label=_('Days to acknowledge'))
 
     class Meta:
-        model = Check
+        model = Result
         fields = ['days', 'acknowledged_reason']
 
     def __init__(self, user, **kwargs):

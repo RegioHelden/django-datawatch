@@ -6,7 +6,7 @@ from django import forms
 
 from django_datawatch.settings import ddw_settings
 from django_datawatch.tasks import django_datawatch_enqueue
-from django_datawatch.models import Check
+from django_datawatch.models import Result
 from django_datawatch.monitoring import monitor
 
 logger = logging.getLogger(__name__)
@@ -41,21 +41,21 @@ class BaseCheck(object):
     def handle(self, payload):
         # check result
         try:
-            old_status = Check.objects.get(slug=self.slug, identifier=self.get_identifier(payload)).status
-        except Check.DoesNotExist:
+            old_status = Result.objects.get(slug=self.slug, identifier=self.get_identifier(payload)).status
+        except Result.DoesNotExist:
             old_status = None
         status = self.check(payload)
-        unacknowledge = old_status in [Check.STATUS.warning, Check.STATUS.critical] and status == Check.STATUS.ok
+        unacknowledge = old_status in [Result.STATUS.warning, Result.STATUS.critical] and status == Result.STATUS.ok
         self.save(payload, status, unacknowledge=unacknowledge)
 
     def get_config(self, payload):
         try:
-            check_result = Check.objects.get(slug=self.slug, identifier=self.get_identifier(payload))
+            check_result = Result.objects.get(slug=self.slug, identifier=self.get_identifier(payload))
 
             # check has a configuration
             if check_result.config:
                 return check_result.config
-        except Check.DoesNotExist:
+        except Result.DoesNotExist:
             pass
 
         # get default config from form initial values
@@ -77,7 +77,7 @@ class BaseCheck(object):
         }
 
         # save the check
-        dataset, created = Check.objects.get_or_create(
+        dataset, created = Result.objects.get_or_create(
             slug=self.slug, identifier=self.get_identifier(payload),
             defaults=defaults)
 
