@@ -17,7 +17,7 @@ Then setup the example app environment:
 ./manage.py migrate
 ./manage.py loaddata example
 ```
-The installed superuser is "example" with password "monitoring".
+The installed superuser is "example" with password "datawatch".
 
 Run the development webserver:
 ```bash

@@ -3,8 +3,8 @@
     "model": "auth.user",
     "pk": 1,
     "fields": {
-      "password": "pbkdf2_sha256$24000$K7FELS7xYuVP$I8/i4Ay0DBb6LKaXDnimyyorpbT6C0RtN5aBQxfmtuQ=",
-      "last_login": "2016-09-03T23:17:38Z",
+      "password": "pbkdf2_sha256$24000$caX4sjkTTK4x$AOqzi0bYU1RW9CB7tCr989s+zNK7J7jGmqeao20w7nc=",
+      "last_login": "2016-09-04T00:11:41.345Z",
       "is_superuser": true,
       "username": "example",
       "first_name": "",
@@ -18,10 +18,64 @@
     }
   },
   {
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$24000$InIWtxOYw71m$z7IbMxyetvD140Ia1CZW4Erlqtn1kWgD1Qp0ahplz50=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "John",
+      "first_name": "",
+      "last_name": "",
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2016-09-04T08:36:43.701Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 3,
+    "fields": {
+      "password": "pbkdf2_sha256$24000$nzDSHw1CafKR$PTV1JGBJko7FsJ1xhg1niOoB7uq1ricElrzrGhk6JMY=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "Will",
+      "first_name": "",
+      "last_name": "",
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2016-09-04T08:37:06.926Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 4,
+    "fields": {
+      "password": "pbkdf2_sha256$24000$kvnC3qUJr8eV$6ZA3EVCSQzXnkusouGfNhVDI5OY9YBTCap0OgAOxqKY=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "Barbara",
+      "first_name": "",
+      "last_name": "",
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2016-09-04T08:37:22.272Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
     "model": "example.wallet",
     "pk": 1,
     "fields": {
-      "user": 1,
+      "user": 2,
       "balance": "1000.00"
     }
   },
@@ -29,7 +83,7 @@
     "model": "example.wallet",
     "pk": 2,
     "fields": {
-      "user": 1,
+      "user": 4,
       "balance": "50.00"
     }
   },
@@ -37,7 +91,7 @@
     "model": "example.wallet",
     "pk": 3,
     "fields": {
-      "user": 1,
+      "user": 3,
       "balance": "-100.00"
     }
   }
