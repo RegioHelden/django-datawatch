@@ -10,7 +10,7 @@ from django_datawatch.models import Result
 class ResultFilterForm(forms.Form):
     STATUS_CHOICES = Choices((0, 'all', _('All')), (1, 'failed', _('Failed')))
 
-    user = forms.ModelChoiceField(queryset=get_user_model().objects.all().order_by('last_name', 'first_name'),
+    user = forms.ModelChoiceField(queryset=get_user_model().objects.all().order_by('first_name', 'last_name'),
                                   label=_('User'), required=False)
     status = forms.TypedChoiceField(coerce=int, choices=STATUS_CHOICES, label=_('Status'),
                                     initial=STATUS_CHOICES.failed)

@@ -116,7 +116,7 @@ class BaseCheck(object):
     def get_assigned_group(self, payload, result):
         return None
 
-    def get_context_data(self, payload):
+    def get_context_data(self, result):
         return dict()
 
     def get_title(self):

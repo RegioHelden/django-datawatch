@@ -164,4 +164,6 @@ BROKER_URL = 'amqp://'
 # django-braces settings
 LOGIN_URL = '/admin/'
 
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
+
 BOOTSTRAP3 = {'horizontal_label_class': 'col-md-2', 'horizontal_field_class': 'col-md-10', 'success_css_class': ''}
