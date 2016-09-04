@@ -29,7 +29,7 @@ class CheckQuerySet(models.QuerySet):
         case = Case(output_field=models.CharField())
         for status_value in self.model.STATUS._db_values:
             case.cases.append(
-                When(status=status_value, then=Value(str(self.model.STATUS._display_map[status_value]))),
+                When(status=status_value, then=Value(str(self.model.STATUS[status_value]))),
             )
         return self.annotate(status_name=case)
 

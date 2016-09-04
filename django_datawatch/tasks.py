@@ -6,7 +6,7 @@ from celery.utils.log import get_task_logger
 from celery.schedules import crontab
 from celery.task.base import PeriodicTask
 
-
+from django_datawatch.settings import ddw_settings
 from django_datawatch.monitoring import monitor
 
 logger = get_task_logger(__name__)
@@ -20,7 +20,7 @@ def django_datawatch_enqueue(check_slug, *args, **kwargs):
     for payload in check.generate():
         identifier = check.get_identifier(payload)
         django_datawatch_run.apply_async(kwargs=dict(check_slug=check_slug, identifier=identifier),
-                                         queue='django_datawatch')
+                                         queue=ddw_settings.QUEUE_NAME)
 
 
 @shared_task
@@ -36,4 +36,4 @@ class DatawatchScheduler(PeriodicTask):
 
     def run(self, *args, **kwargs):
         for check_slug in monitor.checks:
-            django_datawatch_enqueue.apply_async(kwargs=dict(check_slug=check_slug), queue='django_datawatch')
+            django_datawatch_enqueue.apply_async(kwargs=dict(check_slug=check_slug), queue=ddw_settings.QUEUE_NAME)

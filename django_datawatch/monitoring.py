@@ -10,6 +10,8 @@ from django.utils import timezone
 from django.utils.module_loading import autodiscover_modules
 from django.db.models import signals
 
+from django_datawatch.settings import ddw_settings
+
 logger = logging.getLogger(__name__)
 
 
@@ -114,4 +116,4 @@ def run_checks(sender, instance, created, raw, using, **kwargs):
             continue
         django_datawatch_run().apply(
             kwargs=dict(check_slug=check.slug, identifier=check.get_identifier(payload)),
-            queue='django_datawatch')
+            queue=ddw_settings.QUEUE_NAME)

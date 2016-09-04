@@ -4,7 +4,7 @@ import logging
 
 from django import forms
 
-from django_datawatch import models
+from django_datawatch.settings import ddw_settings
 from django_datawatch.tasks import django_datawatch_enqueue
 from django_datawatch.models import Check
 from django_datawatch.monitoring import monitor
@@ -36,22 +36,17 @@ class BaseCheck(object):
         self.slug = monitor.get_slug(self.__module__, self.__class__.__name__)
 
     def run(self):
-        django_datawatch_enqueue.apply_async(kwargs=dict(check_slug=self.slug), queue='django_datawatch')
+        django_datawatch_enqueue.apply_async(kwargs=dict(check_slug=self.slug), queue=ddw_settings.QUEUE_NAME)
 
     def handle(self, payload):
         # check result
-        unacknowledge = False
         try:
-            check_result = Check.objects.get(
-                slug=self.slug, identifier=self.get_identifier(payload))
-            old_status = check_result.status
+            old_status = Check.objects.get(slug=self.slug, identifier=self.get_identifier(payload)).status
         except Check.DoesNotExist:
-            check_result = None
+            old_status = None
         status = self.check(payload)
-        if check_result and old_status > Check.STATUS.ok and status == Check.STATUS.ok:
-            unacknowledge = True
-        self.save(payload, status,
-                  unacknowledge=unacknowledge)
+        unacknowledge = old_status in [Check.STATUS.warning, Check.STATUS.danger] and status == Check.STATUS.ok
+        self.save(payload, status, unacknowledge=unacknowledge)
 
     def get_config(self, payload):
         try:
