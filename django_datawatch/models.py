@@ -72,3 +72,12 @@ class Check(TimeStampedModel):
 
     def get_payload(self):
         return self.get_check_instance().get_payload(self.identifier)
+
+
+@python_2_unicode_compatible
+class CheckExecution(models.Model):
+    slug = models.TextField(verbose_name=_('Check module slug'), unique=True)
+    last_run = models.DateTimeField(verbose_name=_('Last run'))
+
+    def __str__(self):
+        return '%s on %s' % (self.slug, self.last_run)

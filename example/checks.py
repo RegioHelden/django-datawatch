@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 from __future__ import unicode_literals, print_function
 
-
+from dateutil.relativedelta import relativedelta
 from django.utils.translation import ugettext as _
 from django_datawatch.models import Check
 from django_datawatch.monitoring import monitor
@@ -19,6 +19,7 @@ class UserHasEnoughBalanceConfig(BaseCheckForm):
 @monitor.register
 class UserHasEnoughBalance(BaseCheck):
     config_form = UserHasEnoughBalanceConfig
+    run_every = relativedelta(hours=2)
     title = _('User balance')
     template_name = 'example/checks/user_has_enough_balance.html'
     trigger_update = dict(wallet=models.Wallet)

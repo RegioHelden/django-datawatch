@@ -5,6 +5,8 @@ import logging
 
 from collections import defaultdict
 
+from dateutil.relativedelta import relativedelta
+from django.utils import timezone
 from django.utils.module_loading import autodiscover_modules
 from django.db.models import signals
 
@@ -58,8 +60,32 @@ class MonitoringHandler(object):
     def get_slug(self, module, class_name):
         return u'{}.{}'.format(module, class_name)
 
-
 monitor = MonitoringHandler()
+
+
+class Scheduler(object):
+    def run_checks(self):
+        from django_datawatch.models import CheckExecution
+
+        now = timezone.now()
+        checks = monitor.get_all_registered_checks()
+        executions = dict([(obj.slug, obj.last_run) for obj in CheckExecution.objects.all()])
+
+        for check in checks:
+            # check should not be run automatically
+            if not hasattr(check, 'run_every') or not isinstance(check.run_every, relativedelta):
+                continue
+
+            # shall the check be run again?
+            check_instance = check()
+            if check_instance.slug in executions:
+                if now + check.run_every > executions[check_instance.slug]:
+                    continue
+
+            # enqueue the check and save execution state
+            logger.info('check %s issued for refresh', check_instance.slug)
+            check_instance.run()
+            CheckExecution.objects.update_or_create(slug=check_instance.slug, defaults=dict(last_run=now))
 
 
 def make_model_uid(model):
