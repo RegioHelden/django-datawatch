@@ -1,3 +1,5 @@
+[![PyPI version](https://badge.fury.io/py/django_datawatch.svg)](https://badge.fury.io/py/django_datawatch)
+
 Django Datawatch
 ================
 Extensive documentation will be provided soon.
