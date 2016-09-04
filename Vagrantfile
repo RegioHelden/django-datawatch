@@ -12,15 +12,15 @@ Vagrant.configure(2) do |config|
     vb.cpus = 4
     vb.customize ['modifyvm', :id, '--memory', 2048]
     vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-    vb.customize ['modifyvm', :id, '--name', 'dm']
+    vb.customize ['modifyvm', :id, '--name', 'ddw']
     config.vbguest.auto_update = true
   end
-  config.vm.hostname = "dm"
+  config.vm.hostname = "ddw"
 
   # /etc/hosts entries
   config.hostmanager.enabled = true
   config.hostmanager.manage_host = true
-  config.hostmanager.aliases = %w(dm.dev)
+  config.hostmanager.aliases = %w(ddw.dev)
 
   # folder synchronisation
   config.vm.synced_folder ".", "/vagrant", type: "nfs"

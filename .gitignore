@@ -2,3 +2,5 @@
 .idea/
 .vagrant/
 .pycharm_helpers/
+dist/
+*.egg-info/

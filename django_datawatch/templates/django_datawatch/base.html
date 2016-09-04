@@ -4,7 +4,7 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>{% trans "django_monitoring" %}</title>
+    <title>Django Datawatch</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 </head>
 <body>
@@ -18,11 +18,11 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{% url "django_monitoring_index" %}">Django Monitoring</a>
+                <a class="navbar-brand" href="{% url "django_datawatch_index" %}">Django Datawatch</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="{% url "django_monitoring_index" %}">Home</a></li>
+                    <li class="active"><a href="{% url "django_datawatch_index" %}">Home</a></li>
                 </ul>
             </div>
         </div>
@@ -54,7 +54,7 @@
             {% endfor %}
         {% endif %}
 
-        {% block django_monitoring %}{% endblock %}
+        {% block django_datawatch %}{% endblock %}
     </div>
 </body>
 </html>

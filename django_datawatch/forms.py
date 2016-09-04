@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext_lazy as _
 from model_utils.choices import Choices
 
-from django_monitoring.models import Check
+from django_datawatch.models import Check
 
 
 class ResultFilterForm(forms.Form):

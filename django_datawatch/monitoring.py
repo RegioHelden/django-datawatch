@@ -79,13 +79,13 @@ def run_checks(sender, instance, created, raw, using, **kwargs):
     :param sender: model
     :param kwargs:
     """
-    from django_monitoring.tasks import django_monitoring_run
+    from django_datawatch.tasks import django_datawatch_run
     checks = monitor.get_checks_for_model(sender) or []
     for check_class in checks:
         check = check_class()
         payload = check.get_payload(instance)
         if not payload:
             continue
-        django_monitoring_run().apply(
+        django_datawatch_run().apply(
             kwargs=dict(check_slug=check.slug, identifier=check.get_identifier(payload)),
-            queue='django_monitoring')
+            queue='django_datawatch')

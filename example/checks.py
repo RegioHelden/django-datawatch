@@ -3,9 +3,9 @@ from __future__ import unicode_literals, print_function
 
 
 from django.utils.translation import ugettext as _
-from django_monitoring.models import Check
-from django_monitoring.monitoring import monitor
-from django_monitoring.base import BaseCheck, BaseCheckForm
+from django_datawatch.models import Check
+from django_datawatch.monitoring import monitor
+from django_datawatch.base import BaseCheck, BaseCheckForm
 from django import forms
 
 from example import models

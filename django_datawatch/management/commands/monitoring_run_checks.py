@@ -3,7 +3,7 @@ import logging
 
 from django.core.management.base import BaseCommand
 
-from django_monitoring.monitoring import monitor
+from django_datawatch.monitoring import monitor
 
 logger = logging.getLogger(__name__)
 

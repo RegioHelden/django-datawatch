@@ -1,7 +1,7 @@
-{% extends "django_monitoring/base.html" %}
+{% extends "django_datawatch/base.html" %}
 {% load i18n %}
 
-{% block django_monitoring %}
+{% block django_datawatch %}
     <div class="row">
         <div class="col-md-12">
             <div class="panel {% if result.status == result.STATUS.danger %}panel-danger{% elif result.status == result.STATUS.warning %}panel-warning{% elif result.status == result.STATUS.ok %}panel-success{% else %}panel-default{% endif %}">
@@ -16,9 +16,9 @@
                             <h3>{{ result.payload_description }}</h3>
                         </div>
                         <div class="col-md-4 text-right">
-                            <a href="{% url "django_monitoring_result_acknowledge" pk=result.pk %}">{% trans "Acknowledge" %}</a><br>
-                            <a href="{% url "django_monitoring_result_config" pk=result.pk %}">{% trans "Change config" %}</a><br>
-                            <a href="{% url "django_monitoring_result_refresh" pk=result.pk %}">{% trans "Refresh" %}</a>
+                            <a href="{% url "django_datawatch_result_acknowledge" pk=result.pk %}">{% trans "Acknowledge" %}</a><br>
+                            <a href="{% url "django_datawatch_result_config" pk=result.pk %}">{% trans "Change config" %}</a><br>
+                            <a href="{% url "django_datawatch_result_refresh" pk=result.pk %}">{% trans "Refresh" %}</a>
                         </div>
                     </div>
                     {% if result.is_acknowledged %}
@@ -34,28 +34,11 @@
                     <div class="row">
                         <div class="col-md-12">
                             <hr>
-                            {% block django_monitoring_check %}{% endblock %}
+                            {% block django_datawatch_check %}{% endblock %}
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <div class="panel">
-        <div class="panel-heading">
-            <h3>
-            <span class="label ">
-                {{ result.get_check_instance.get_title }}
-            </span>
-            </h3>
-            <h4>
-
-            </h4>
-
-        </div>
-        <div class="panel-body">
-            {% block check_content %}{% endblock %}
         </div>
     </div>
 {% endblock %}

@@ -3,12 +3,12 @@ from setuptools import setup
 
 
 setup(
-    name='django-monitoring',
-    packages=['django_monitoring'],
+    name='django-datawatch',
+    packages=['django_datawatch'],
     version='0.1.0',
-    description='Django monitoring runs automated data checks in your Django installation',
-    author='Jens Nistler',
-    author_email='opensource@jensnistler.de',
+    description='Django Datawatch runs automated data checks in your Django installation',
+    author='Jens Nistler <opensource@jensnistler.de>, Bogdan Radko',
+    author_email='opensource@regiohelden.de',
     install_requires=[
         'celery>=3.1.23',
         'Django>=1.9',
@@ -18,9 +18,9 @@ setup(
         'python-dateutil>=2.5.3',
     ],
     license='MIT',
-    url='https://github.com/RegioHelden/django-monitoring',
+    url='https://github.com/RegioHelden/django-datawatch',
     download_url='',
-    keywords=['django', 'monitoring', 'check', 'checks'],
+    keywords=['django', 'monitoring', 'datawatch', 'check', 'checks'],
     classifiers=[
         "Programming Language :: Python",
         "Programming Language :: Python :: 2",

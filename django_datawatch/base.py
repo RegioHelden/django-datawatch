@@ -4,10 +4,10 @@ import logging
 
 from django import forms
 
-from django_monitoring import models
-from django_monitoring.tasks import django_monitoring_enqueue
-from django_monitoring.models import Check
-from django_monitoring.monitoring import monitor
+from django_datawatch import models
+from django_datawatch.tasks import django_datawatch_enqueue
+from django_datawatch.models import Check
+from django_datawatch.monitoring import monitor
 
 logger = logging.getLogger(__name__)
 
@@ -36,7 +36,7 @@ class BaseCheck(object):
         self.slug = monitor.get_slug(self.__module__, self.__class__.__name__)
 
     def run(self):
-        django_monitoring_enqueue.apply_async(kwargs=dict(check_slug=self.slug), queue='django_monitoring')
+        django_datawatch_enqueue.apply_async(kwargs=dict(check_slug=self.slug), queue='django_datawatch')
 
     def handle(self, payload):
         # check result

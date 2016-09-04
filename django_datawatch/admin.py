@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django.contrib import admin
 
-from django_monitoring.models import Check
+from django_datawatch.models import Check
 
 
 @admin.register(Check)

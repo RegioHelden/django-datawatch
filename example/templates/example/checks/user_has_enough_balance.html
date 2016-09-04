@@ -1,7 +1,7 @@
-{% extends "django_monitoring/detail.html" %}
+{% extends "django_datawatch/detail.html" %}
 {% load i18n %}
 
-{% block django_monitoring_check %}
+{% block django_datawatch_check %}
     <p>
         {% if result.status == result.STATUS.danger %}
             {% trans "The balance of the user is critical. Their account was deactivated. Please contact them immediately." %}

@@ -9,18 +9,18 @@ from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import UpdateView, FormView
 from django.contrib import messages
 
-from django_monitoring import forms
-from django_monitoring.common.views import FilteredListView
-from django_monitoring.models import Check
-from django_monitoring.tasks import django_monitoring_run
+from django_datawatch import forms
+from django_datawatch.common.views import FilteredListView
+from django_datawatch.models import Check
+from django_datawatch.tasks import django_datawatch_run
 
 logger = logging.getLogger(__name__)
 
 
 class DashboardView(LoginRequiredMixin, PermissionRequiredMixin, FilteredListView):
     form_class = forms.ResultFilterForm
-    permission_required = 'django_monitoring.view'
-    template_name = 'django_monitoring/dashboard.html'
+    permission_required = 'django_datawatch.view'
+    template_name = 'django_datawatch/dashboard.html'
     context_object_name = 'results'
 
     def get_form_kwargs(self):
@@ -40,9 +40,9 @@ class DashboardView(LoginRequiredMixin, PermissionRequiredMixin, FilteredListVie
 
 
 class ResultView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
-    permission_required = 'django_monitoring.view'
+    permission_required = 'django_datawatch.view'
     model = Check
-    template_name = 'django_monitoring/detail.html'
+    template_name = 'django_datawatch/detail.html'
 
     def __init__(self, *args, **kwargs):
         super(ResultView, self).__init__(*args, **kwargs)
@@ -68,10 +68,10 @@ class ResultView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
 
 
 class ResultAcknowledgeView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
-    permission_required = 'django_monitoring.acknowledge'
+    permission_required = 'django_datawatch.acknowledge'
     form_class = forms.AcknowledgeForm
     model = Check
-    template_name = 'django_monitoring/form.html'
+    template_name = 'django_datawatch/form.html'
 
     def get_form_kwargs(self):
         kwargs = super(ResultAcknowledgeView, self).get_form_kwargs()
@@ -79,7 +79,7 @@ class ResultAcknowledgeView(LoginRequiredMixin, PermissionRequiredMixin, UpdateV
         return kwargs
 
     def get_success_url(self):
-        return reverse_lazy('django_monitoring_index')
+        return reverse_lazy('django_datawatch_index')
 
     def get_context_data(self, **kwargs):
         ctx = super(ResultAcknowledgeView, self).get_context_data(**kwargs)
@@ -93,9 +93,9 @@ class ResultAcknowledgeView(LoginRequiredMixin, PermissionRequiredMixin, UpdateV
 
 
 class ResultConfigView(LoginRequiredMixin, PermissionRequiredMixin, SingleObjectMixin, FormView):
-    permission_required = 'django_monitoring.config'
+    permission_required = 'django_datawatch.config'
     model = Check
-    template_name = 'django_monitoring/form.html'
+    template_name = 'django_datawatch/form.html'
 
     def __init__(self, **kwargs):
         self.object = None
@@ -119,7 +119,7 @@ class ResultConfigView(LoginRequiredMixin, PermissionRequiredMixin, SingleObject
         return kwargs
 
     def get_success_url(self):
-        return reverse_lazy('django_monitoring_result', kwargs=dict(pk=self.object.pk))
+        return reverse_lazy('django_datawatch_result', kwargs=dict(pk=self.object.pk))
 
     def get_context_data(self, **kwargs):
         ctx = super(ResultConfigView, self).get_context_data(**kwargs)
@@ -130,13 +130,13 @@ class ResultConfigView(LoginRequiredMixin, PermissionRequiredMixin, SingleObject
         form.save(instance=self.object)
         check = self.object.get_check_instance()
 
-        django_monitoring_run.apply(kwargs=dict(check_slug=check.slug, identifier=check.get_identifier(self.object)),
-                                    queue='django_monitoring')
+        django_datawatch_run.apply(kwargs=dict(check_slug=check.slug, identifier=check.get_identifier(self.object)),
+                                    queue='django_datawatch')
         return super(ResultConfigView, self).form_valid(form)
 
 
 class ResultRefreshView(LoginRequiredMixin, PermissionRequiredMixin, SingleObjectMixin, RedirectView):
-    permission_required = 'django_monitoring.refresh'
+    permission_required = 'django_datawatch.refresh'
     permanent = False
     model = Check
 
@@ -149,10 +149,10 @@ class ResultRefreshView(LoginRequiredMixin, PermissionRequiredMixin, SingleObjec
         self.object = self.get_object()
         response = super(ResultRefreshView, self).get(request, *args, **kwargs)
         check = self.object.get_check_instance()
-        django_monitoring_run.apply(kwargs=dict(check_slug=check.slug, identifier=check.get_identifier(self.object)),
-                                    queue='django_monitoring')
+        django_datawatch_run.apply(kwargs=dict(check_slug=check.slug, identifier=check.get_identifier(self.object)),
+                                    queue='django_datawatch')
         messages.add_message(request, messages.INFO, _('Result has been refreshed'))
         return response
 
     def get_redirect_url(self, *args, **kwargs):
-        return reverse_lazy('django_monitoring_result', kwargs=dict(pk=self.object.pk))
+        return reverse_lazy('django_datawatch_result', kwargs=dict(pk=self.object.pk))

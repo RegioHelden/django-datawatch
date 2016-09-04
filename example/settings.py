@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bootstrap3',
-    'django_monitoring.apps.DjangoMonitoringConfig',
+    'django_datawatch.apps.DjangoDatawatchConfig',
     'example.apps.ExampleConfig',
 ]
 

@@ -3,15 +3,15 @@ from __future__ import unicode_literals, print_function
 
 from django.apps import AppConfig
 from django.contrib import admin
-from django_monitoring.monitoring import monitor
+from django_datawatch.monitoring import monitor
 
 
-class DjangoMonitoringConfig(AppConfig):
-    name = 'django_monitoring'
-    verbose_name = "DjangoMonitoring"
+class DjangoDatawatchConfig(AppConfig):
+    name = 'django_datawatch'
+    verbose_name = "Django datawatch"
 
     def ready(self):
-        super(DjangoMonitoringConfig, self).ready()
+        super(DjangoDatawatchConfig, self).ready()
 
         monitor.autodiscover_checks()
         admin.autodiscover()
