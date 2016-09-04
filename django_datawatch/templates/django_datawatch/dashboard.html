@@ -26,27 +26,33 @@
 
     {% regroup results by get_status_display as status_list %}
     <div class="row">
-        <div class="col-md-12">
+        {% if not status_list %}
+            <div class="col-md-12">
+                <div class="alert alert-info text-center">
+                    <h3>{% trans "No alerts" %}</h3>
+                </div>
+            </div>
+        {% else %}
             {% widthratio 12 status_list|length 1 as size %}
             {% for status in status_list %}
                 {% for status_definition in view.queryset.get_stats %}
                     {% if status.grouper == status_definition.status_name %}
                         <div class="col-md-{{ size }}">
-                            <div class="alert {% if status_definition.status == check.STATUS.ok %}alert-success{% elif status_definition.status == check.STATUS.warning %}alert-warning{% elif status_definition.status == check.STATUS.danger %}alert-danger{% endif %} text-center">
+                            <a href="#status-{{ status_definition.status_name|slugify }}" class="btn col-md-12 {% if status_definition.status == check.STATUS.ok %}btn-success{% elif status_definition.status == check.STATUS.warning %}btn-warning{% elif status_definition.status == check.STATUS.danger %}btn-danger{% endif %}">
                                 {{ status_definition.status_name }}<br>
                                 <h3>{{ status_definition.amount }}</h3>
-                            </div>
+                            </a>
                         </div>
                     {% endif %}
                 {% endfor %}
             {% endfor %}
-        </div>
+        {% endif %}
     </div>
 
     <div class="row">
         <div class="col-md-12">
             {% for status in status_list %}
-                <h1>{{ status.grouper }}</h1>
+                <h1 id="status-{{ status.grouper|slugify }}">{{ status.grouper }}</h1>
 
                 <table class="table table-bordered">
                     {% for result in status.list %}
