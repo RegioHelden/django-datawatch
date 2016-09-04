@@ -2,7 +2,65 @@
 
 Django Datawatch
 ================
-Extensive documentation will be provided soon.
+With Django Datawatch you are able to implement arbitrary checks on data, review their status and even describe what to do to resolve them.
+
+Installation
+------------
+
+```shell
+$ pip install django-datawatch
+```
+
+Add `django_datawatch` to your `INSTALLED_APPS`
+
+Define a check:
+---------------
+Create `checks.py` inside your module.
+
+```python
+from django_datawatch.monitoring import monitor
+from django_datawatch.base import BaseCheck
+from django_datawatch.models import Check
+
+
+@monitor.register
+class CheckTime(BaseCheck):
+    run_every = relativedelta(minute=1)  # scheduler will execute this check every 1 minute
+
+    def generate(self):
+        yield datetime.datetime.now()
+
+    def check(self, payload):
+        if payload.hour <= 7:
+            return Check.STATUS.ok
+        elif payload.hour <= 12:
+            return Check.STATUS.warning
+        return Check.STATUS.critical
+
+    def get_identifier(self, payload):
+        # payload will be our datetime object that we are getting from generate method
+        return payload
+
+    def get_payload(self, identifier):
+        # as get_identifier returns the object we don't need to process it
+        # we can return identifier directly
+        return identifier
+```
+
+manage.py commands.
+---------------------
+Execute all checks
+```shell
+$ ./manage.py monitoring_run_checks
+```
+
+Settings
+--------
+```python
+DJANGO_DATAWATCH = {
+    'QUEUE_NAME': 'django_datawatch'
+}
+```
 
 Improve Django Datawatch
 -------------------------

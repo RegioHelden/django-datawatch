@@ -66,7 +66,11 @@ monitor = MonitoringHandler()
 
 
 class Scheduler(object):
-    def run_checks(self):
+    def run_checks(self, force=False):
+        """
+        :param force: <bool> If True then all registered checks will be executed
+        :return:
+        """
         from django_datawatch.models import CheckExecution
 
         now = timezone.now()
@@ -75,7 +79,7 @@ class Scheduler(object):
 
         for check in checks:
             # check should not be run automatically
-            if not hasattr(check, 'run_every') or not isinstance(check.run_every, relativedelta):
+            if not force and not (hasattr(check, 'run_every') and isinstance(check.run_every, relativedelta)):
                 continue
 
             # shall the check be run again?
