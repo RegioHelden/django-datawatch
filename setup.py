@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 setup(
     name='django-datawatch',
     packages=find_packages(exclude=['example*']),
-    version='0.1.2',
+    version='0.1.3',
     description='Django Datawatch runs automated data checks in your Django installation',
     author='Jens Nistler <opensource@jensnistler.de>, Bogdan Radko',
     author_email='opensource@regiohelden.de',
@@ -21,6 +21,7 @@ setup(
     url='https://github.com/RegioHelden/django-datawatch',
     download_url='',
     keywords=['django', 'monitoring', 'datawatch', 'check', 'checks'],
+    include_package_data=True,
     classifiers=[
         "Programming Language :: Python",
         "Programming Language :: Python :: 2",
