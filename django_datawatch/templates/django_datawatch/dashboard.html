@@ -35,7 +35,7 @@
         {% else %}
             {% widthratio 12 status_list|length 1 as size %}
             {% for status in status_list %}
-                {% for status_definition in view.queryset.get_stats %}
+                {% for status_definition in results.get_stats %}
                     {% if status.grouper == status_definition.status_name %}
                         <div class="col-md-{{ size }}">
                             <a href="#status-{{ status_definition.status_name|slugify }}" class="btn col-md-12 {% if status_definition.status == check.STATUS.ok %}btn-success{% elif status_definition.status == check.STATUS.warning %}btn-warning{% elif status_definition.status == check.STATUS.critical %}btn-danger{% endif %}">

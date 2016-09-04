@@ -35,16 +35,16 @@ class Result(TimeStampedModel):
 
     payload_description = models.TextField(verbose_name=_('Payload description'))
 
-    acknowledged_by = models.ForeignKey(to=settings.AUTH_USER_MODEL, null=True,
+    acknowledged_by = models.ForeignKey(to=settings.AUTH_USER_MODEL, null=True, blank=True,
                                         verbose_name=_('Acknowledged by'),
                                         related_name='acknowledged_by')
-    acknowledged_at = models.DateTimeField(null=True, verbose_name=_('Acknowledged at'))
-    acknowledged_until = models.DateTimeField(null=True, verbose_name=_('Acknowledged until'))
+    acknowledged_at = models.DateTimeField(null=True, blank=True, verbose_name=_('Acknowledged at'))
+    acknowledged_until = models.DateTimeField(null=True, blank=True, verbose_name=_('Acknowledged until'))
     acknowledged_reason = models.TextField(blank=True, verbose_name=_('Acknowledge reason'))
 
-    assigned_to_user = models.ForeignKey(to=settings.AUTH_USER_MODEL, null=True,
+    assigned_to_user = models.ForeignKey(to=settings.AUTH_USER_MODEL, null=True, blank=True,
                                          related_name='assigned_to_user')
-    assigned_to_group = models.ForeignKey(to='auth.Group', null=True)
+    assigned_to_group = models.ForeignKey(to='auth.Group', null=True, blank=True)
 
     objects = CheckQuerySet.as_manager()
 
