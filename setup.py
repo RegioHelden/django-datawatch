@@ -1,11 +1,11 @@
 # -*- coding: UTF-8 -*-
-from setuptools import setup
+from setuptools import setup, find_packages
 
 
 setup(
     name='django-datawatch',
-    packages=['django_datawatch'],
-    version='0.1.1',
+    packages=find_packages(exclude=['example*']),
+    version='0.1.2',
     description='Django Datawatch runs automated data checks in your Django installation',
     author='Jens Nistler <opensource@jensnistler.de>, Bogdan Radko',
     author_email='opensource@regiohelden.de',
