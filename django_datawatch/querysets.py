@@ -7,6 +7,8 @@ from django.db.models.expressions import Case, When, Value
 from django.db.models.query_utils import Q
 from django.utils import timezone
 
+from django_datawatch.monitoring import monitor
+
 
 class CheckQuerySet(models.QuerySet):
     def for_user(self, user):
@@ -35,3 +37,9 @@ class CheckQuerySet(models.QuerySet):
 
     def get_stats(self):
         return self.values('status').annotate(amount=Count('id')).with_status_name()
+
+    def ghost_results(self):
+        """
+        :return: results that do not have checks anymore (check has been deleted)
+        """
+        return self.exclude(slug__in=monitor.checks)
