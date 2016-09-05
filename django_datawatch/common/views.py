@@ -1,4 +1,5 @@
 # -*- coding: UTF-8 -*-
+from django.db.models.base import Model
 from django.views.generic.edit import FormMixin
 from django.views.generic.list import ListView
 
@@ -20,7 +21,12 @@ class FilteredListView(FormMixin, ListView):
         form = self.get_form(self.get_form_class())
         self.object_list = form.filter_queryset(request, self.object_list)
         if form.is_valid():
-            self.request.session[self.SESSION_KEY] = dict(form.data)
+            form_data = dict()
+            for k, v in form.cleaned_data.iteritems():
+                if isinstance(v, Model):
+                    v = v.pk
+                form_data[k] = v
+            self.request.session[self.SESSION_KEY] = dict(form_data)
 
         context = self.get_context_data(form=form, object_list=self.object_list)
         return self.render_to_response(context)
