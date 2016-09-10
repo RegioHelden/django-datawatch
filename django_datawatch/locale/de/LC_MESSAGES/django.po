@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-10 12:21+0000\n"
+"POT-Creation-Date: 2016-09-10 13:22+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,6 +29,9 @@ msgstr "Benutzer"
 
 msgid "Status"
 msgstr "Status"
+
+msgid "Check"
+msgstr "Prüfung"
 
 msgid "Days to acknowledge"
 msgstr "Ausblenden für Anzahl Tage"
@@ -74,6 +77,9 @@ msgstr "Modul-Bezeichner"
 
 msgid "Last run"
 msgstr "Letzte Ausführung"
+
+msgid "Home"
+msgstr "Start"
 
 msgid "DEBUG"
 msgstr "DEBUG"

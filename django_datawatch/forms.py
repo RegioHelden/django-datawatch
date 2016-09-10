@@ -5,15 +5,18 @@ from django.utils.translation import ugettext_lazy as _
 from model_utils.choices import Choices
 
 from django_datawatch.models import Result
+from django_datawatch.monitoring import monitor
 
 
 class ResultFilterForm(forms.Form):
     STATUS_CHOICES = Choices((0, 'all', _('All')), (1, 'failed', _('Failed')))
+    CHECK_CHOICES = [('', _('All'))] + [(obj().slug, obj().get_title()) for obj in monitor.get_all_registered_checks()]
 
     user = forms.ModelChoiceField(queryset=get_user_model().objects.all().order_by('first_name', 'last_name'),
                                   label=_('User'), required=False)
     status = forms.TypedChoiceField(coerce=int, choices=STATUS_CHOICES, label=_('Status'),
                                     initial=STATUS_CHOICES.failed)
+    check = forms.ChoiceField(choices=CHECK_CHOICES, label=_('Check'), required=False)
 
     def __init__(self, user, group_filter=None, **kwargs):
         super(ResultFilterForm, self).__init__(**kwargs)
@@ -37,6 +40,8 @@ class ResultFilterForm(forms.Form):
         if self.cleaned_data['status']:
             if self.cleaned_data['status'] == self.STATUS_CHOICES.failed:
                 queryset = queryset.failed().unacknowledged()
+        if self.cleaned_data['check']:
+            queryset = queryset.filter(slug=self.cleaned_data['check'])
 
         return queryset.distinct()
 
