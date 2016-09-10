@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 import logging
-
+import importlib
 from collections import defaultdict
 
 from dateutil.relativedelta import relativedelta
@@ -19,6 +19,7 @@ class MonitoringHandler(object):
     def __init__(self):
         self._registered_checks = {}
         self._related_models = defaultdict(list)
+        self._backend = None
 
     def autodiscover_checks(self, module_name='checks'):
         autodiscover_modules(module_name)
@@ -43,10 +44,8 @@ class MonitoringHandler(object):
     def get_all_registered_checks(self):
         return self._registered_checks.values()
 
-    @property
-    def checks(self):
-        for slug in self._registered_checks.keys():
-            yield slug
+    def get_all_registered_check_slugs(self):
+        return self._registered_checks.keys()
 
     def get_check_class(self, slug):
         if slug in self._registered_checks:
@@ -61,6 +60,12 @@ class MonitoringHandler(object):
 
     def get_slug(self, module, class_name):
         return u'{}.{}'.format(module, class_name)
+
+    def get_backend(self):
+        if self._backend is None:
+            backend_module = importlib.import_module(ddw_settings.BACKEND)
+            self._backend = backend_module.Backend()
+        return self._backend
 
 monitor = MonitoringHandler()
 
@@ -111,13 +116,11 @@ def run_checks(sender, instance, created, raw, using, **kwargs):
     :param sender: model
     :param kwargs:
     """
-    from django_datawatch.tasks import django_datawatch_run
+    backend = monitor.get_backend()
     checks = monitor.get_checks_for_model(sender) or []
     for check_class in checks:
         check = check_class()
         payload = check.get_payload(instance)
         if not payload:
             continue
-        django_datawatch_run().apply(
-            kwargs=dict(check_slug=check.slug, identifier=check.get_identifier(payload)),
-            queue=ddw_settings.QUEUE_NAME)
+        backend.run(slug=check.slug, identifier=check.get_identifier(payload))

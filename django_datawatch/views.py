@@ -12,8 +12,7 @@ from django.contrib import messages
 from django_datawatch import forms
 from django_datawatch.common.views import FilteredListView
 from django_datawatch.models import Result
-from django_datawatch.settings import ddw_settings
-from django_datawatch.tasks import django_datawatch_run
+from django_datawatch.monitoring import monitor
 
 logger = logging.getLogger(__name__)
 
@@ -131,8 +130,9 @@ class ResultConfigView(LoginRequiredMixin, PermissionRequiredMixin, SingleObject
         form.save(instance=self.object)
         check = self.object.get_check_instance()
 
-        django_datawatch_run.apply(kwargs=dict(check_slug=check.slug, identifier=check.get_identifier(self.object)),
-                                   queue=ddw_settings.QUEUE_NAME)
+        monitor.get_backend().run(slug=check.slug,
+                                  identifier=check.get_identifier(self.object),
+                                  async=False)
         return super(ResultConfigView, self).form_valid(form)
 
 
@@ -150,8 +150,9 @@ class ResultRefreshView(LoginRequiredMixin, PermissionRequiredMixin, SingleObjec
         self.object = self.get_object()
         response = super(ResultRefreshView, self).get(request, *args, **kwargs)
         check = self.object.get_check_instance()
-        django_datawatch_run.apply(kwargs=dict(check_slug=check.slug, identifier=check.get_identifier(self.object)),
-                                   queue=ddw_settings.QUEUE_NAME)
+        monitor.get_backend().run(slug=check.slug,
+                                  identifier=check.get_identifier(self.object),
+                                  async=False)
         messages.add_message(request, messages.INFO, _('Result has been refreshed'))
         return response
 

@@ -4,8 +4,6 @@ import logging
 
 from django import forms
 
-from django_datawatch.settings import ddw_settings
-from django_datawatch.tasks import django_datawatch_enqueue
 from django_datawatch.models import Result
 from django_datawatch.monitoring import monitor
 
@@ -59,7 +57,7 @@ class BaseCheck(object):
         self.slug = monitor.get_slug(self.__module__, self.__class__.__name__)
 
     def run(self):
-        django_datawatch_enqueue.apply_async(kwargs=dict(check_slug=self.slug), queue=ddw_settings.QUEUE_NAME)
+        monitor.get_backend().enqueue(slug=self.slug)
 
     def handle(self, payload):
         # check result

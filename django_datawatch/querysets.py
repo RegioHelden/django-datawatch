@@ -42,4 +42,4 @@ class CheckQuerySet(models.QuerySet):
         """
         :return: results that do not have checks anymore (check has been deleted)
         """
-        return self.exclude(slug__in=monitor.checks)
+        return self.exclude(slug__in=monitor.get_all_registered_check_slugs())
