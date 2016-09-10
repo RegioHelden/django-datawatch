@@ -22,6 +22,7 @@ class UserHasEnoughBalance(BaseCheck):
     run_every = relativedelta(hours=2)
     title = _('User balance')
     template_name = 'example/checks/user_has_enough_balance.html'
+    max_acknowledge = 7
     trigger_update = dict(wallet=models.Wallet)
 
     def generate(self):

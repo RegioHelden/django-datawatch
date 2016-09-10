@@ -54,6 +54,7 @@ class BaseCheck(object):
 
     config_form = None
     title = ''
+    max_acknowledge = None
 
     def __init__(self):
         self.slug = monitor.get_slug(self.__module__, self.__class__.__name__)
@@ -144,3 +145,6 @@ class BaseCheck(object):
         if hasattr(self, 'template_name'):
             return self.template_name
         return None
+
+    def get_max_acknowledge(self):
+        return self.max_acknowledge

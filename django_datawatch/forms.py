@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
 from django import forms
 from django.contrib.auth import get_user_model
+from django.core.validators import MaxValueValidator
 from django.utils.translation import ugettext_lazy as _
 from model_utils.choices import Choices
 
@@ -47,7 +48,7 @@ class ResultFilterForm(forms.Form):
 
 
 class AcknowledgeForm(forms.ModelForm):
-    days = forms.IntegerField(label=_('Days to acknowledge'))
+    days = forms.IntegerField(min_value=1, label=_('Days to acknowledge'))
 
     class Meta:
         model = Result
@@ -56,6 +57,9 @@ class AcknowledgeForm(forms.ModelForm):
     def __init__(self, user, **kwargs):
         self.user = user
         super(AcknowledgeForm, self).__init__(**kwargs)
+        max_acknowledge = self.instance.get_check_instance().get_max_acknowledge()
+        if max_acknowledge:
+            self.fields['days'].validators.append(MaxValueValidator(max_acknowledge))
 
     def save(self, commit=True):
         self.instance.acknowledge(user=self.user, days=self.cleaned_data.get('days'),
