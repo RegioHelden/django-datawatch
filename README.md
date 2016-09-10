@@ -1,5 +1,5 @@
 [![PyPI version](https://badge.fury.io/py/django_datawatch.svg)](https://badge.fury.io/py/django_datawatch)
-![Travis CI build status](https://travis-ci.org/lociii/billomat.svg)
+![Travis CI build status](https://travis-ci.org/RegioHelden/django-datawatch.svg)
 
 Django Datawatch
 ================
