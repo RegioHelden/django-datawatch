@@ -43,7 +43,6 @@ class CheckResponse(object):
 
 
 class BaseCheck(object):
-
     """
     Any check should inherits from `BaseCheck` and should implements `.generate(self)`
     and `.check(self, payload)` methods.
