@@ -20,18 +20,17 @@ def test_generator(check_instance):
             check_instance, BaseCheck,
             '{slug} is not derived from BaseCheck'.format(
                 slug=check_instance.slug))
-        self.assertNotEqual(check_instance.generate.__func__,
-                            BaseCheck.generate.__func__,
-                            '{slug} must implement the generate method'.format(
-                                slug=check_instance.slug))
-        self.assertNotEqual(check_instance.check.__func__,
-                            BaseCheck.check.__func__,
-                            '{slug} must implement the check method'.format(
-                                slug=check_instance.slug))
-        self.assertNotEqual(check_instance.get_identifier.__func__,
-                            BaseCheck.get_identifier.__func__,
-                            '{slug} must implement the get_identifier method'
-                            .format(slug=check_instance.slug))
+
+        check_instance_dict = check_instance.__class__.__dict__
+        if 'generate' not in check_instance_dict:
+            self.fail('{slug} must implement the generate method'.format(
+                slug=check_instance.slug))
+        if 'check' not in check_instance_dict:
+            self.fail('{slug} must implement the check method'.format(
+                slug=check_instance.slug))
+        if 'get_identifier' not in check_instance_dict:
+            self.fail('{slug} must implement the get_identifier method'.format(
+                slug=check_instance.slug))
     return test
 
 
