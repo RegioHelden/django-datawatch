@@ -5,7 +5,7 @@ from dateutil.relativedelta import relativedelta
 from django.utils.translation import ugettext as _
 from django_datawatch.models import Result
 from django_datawatch.monitoring import monitor
-from django_datawatch.base import BaseCheck, BaseCheckForm
+from django_datawatch.base import BaseCheck, BaseCheckForm, CheckResponse
 from django import forms
 
 from example import models
@@ -30,11 +30,17 @@ class UserHasEnoughBalance(BaseCheck):
 
     def check(self, payload):
         config = self.get_config(payload)
+        result = CheckResponse()
+        result.balance = payload.balance
+
+        # check balance for thresholds
         if payload.balance < config['critical']:
-            return Result.STATUS.critical
-        if payload.balance < config['warning']:
-            return Result.STATUS.warning
-        return Result.STATUS.ok
+            result.set_status(Result.STATUS.critical)
+        elif payload.balance < config['warning']:
+            result.set_status(Result.STATUS.warning)
+        else:
+            result.set_status(Result.STATUS.ok)
+        return result
 
     def get_identifier(self, payload):
         return payload.pk
@@ -44,6 +50,11 @@ class UserHasEnoughBalance(BaseCheck):
 
     def get_payload_description(self, payload):
         return payload.user.username
+
+    def format_result_data(self, result):
+        if 'balance' in result.data:
+            return ' ({balance:.2f})'.format(balance=float(result.data['balance']))
+        return super(UserHasEnoughBalance, self).format_result_data(result)
 
     def get_wallet_payload(self, instance):
         return instance

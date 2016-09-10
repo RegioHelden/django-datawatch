@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-03 22:26+0000\n"
+"POT-Creation-Date: 2016-09-10 12:21+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -69,8 +69,29 @@ msgstr "Ausgeblendet bis"
 msgid "Acknowledge reason"
 msgstr "Ausblendungsgrund"
 
+msgid "Check module slug"
+msgstr "Modul-Bezeichner"
+
+msgid "Last run"
+msgstr "Letzte Ausführung"
+
+msgid "DEBUG"
+msgstr "DEBUG"
+
+msgid "Info"
+msgstr "Info"
+
+msgid "Success"
+msgstr "Erfolg"
+
+msgid "Error"
+msgstr "Fehler"
+
 msgid "Filter"
 msgstr "Filter"
+
+msgid "There is nothing to see here. Everything is fine!"
+msgstr "Hier gibt es nichts zu sehen. Alles ist gut!"
 
 #, python-format
 msgid "Acknowledged until %(date)s"
@@ -91,5 +112,11 @@ msgstr "Grund"
 msgid "Cancel"
 msgstr "Abbrechen"
 
+msgid "Successfully acknowledged"
+msgstr "Erfolgreich bestätigt"
+
 msgid "Save"
 msgstr "Speichern"
+
+msgid "Result has been refreshed"
+msgstr "Ergebnis wurde aktualisiert"

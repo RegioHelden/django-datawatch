@@ -89,7 +89,7 @@ class ResultAcknowledgeView(LoginRequiredMixin, PermissionRequiredMixin, UpdateV
 
     def form_valid(self, form):
         response = super(ResultAcknowledgeView, self).form_valid(form)
-        messages.add_message(self.request, messages.INFO, _('Check has been successfully acknowledged'))
+        messages.add_message(self.request, messages.INFO, _('Successfully acknowledged'))
         return response
 
 

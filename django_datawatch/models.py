@@ -31,6 +31,7 @@ class Result(TimeStampedModel):
 
     status = models.IntegerField(choices=STATUS,
                                  default=STATUS.unknown, verbose_name=_('Status'))
+    data = JSONField(blank=True, verbose_name=('Data'))
     config = JSONField(blank=True, verbose_name=_('Configuration'))
 
     payload_description = models.TextField(verbose_name=_('Payload description'))
@@ -72,6 +73,9 @@ class Result(TimeStampedModel):
 
     def get_payload(self):
         return self.get_check_instance().get_payload(self.identifier)
+
+    def get_formatted_data(self):
+        return monitor.get_check_class(self.slug)().format_result_data(self)
 
 
 @python_2_unicode_compatible

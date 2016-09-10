@@ -19,6 +19,29 @@ class BaseCheckForm(forms.Form):
         return instance
 
 
+class CheckResponse(object):
+    def __init__(self):
+        super(CheckResponse, self).__setattr__('_datastore', {})
+        super(CheckResponse, self).__setattr__('_status', Result.STATUS.unknown)
+
+    def __setattr__(self, name, value):
+        self._datastore[name] = value
+
+    def __getattr__(self, name):
+        if name not in self._datastore:
+            return None
+        return self._datastore[name]
+
+    def get_data(self):
+        return self._datastore
+
+    def set_status(self, status):
+        super(CheckResponse, self).__setattr__('_status', status)
+
+    def get_status(self):
+        return self._status
+
+
 class BaseCheck(object):
 
     """
@@ -44,9 +67,10 @@ class BaseCheck(object):
             old_status = Result.objects.get(slug=self.slug, identifier=self.get_identifier(payload)).status
         except Result.DoesNotExist:
             old_status = None
-        status = self.check(payload)
+        response = self.check(payload)
+        status = response.get_status()
         unacknowledge = old_status in [Result.STATUS.warning, Result.STATUS.critical] and status == Result.STATUS.ok
-        self.save(payload, status, unacknowledge=unacknowledge)
+        self.save(payload=payload, status=status, data=response.get_data(), unacknowledge=unacknowledge)
 
     def get_config(self, payload):
         try:
@@ -68,28 +92,19 @@ class BaseCheck(object):
     def get_form_class(self):
         return self.config_form
 
-    def save(self, payload, result, unacknowledge=False):
-        defaults = {
-            'status': result,
-            'assigned_to_user': self.get_assigned_user(payload, result),
-            'assigned_to_group': self.get_assigned_group(payload, result),
-            'payload_description': self.get_payload_description(payload)
-        }
+    def save(self, payload, status, data=None, unacknowledge=False):
+        # build default data
+        defaults = dict(status=status, data=data, assigned_to_user=self.get_assigned_user(payload, status),
+                        assigned_to_group=self.get_assigned_group(payload, status),
+                        payload_description=self.get_payload_description(payload))
+        if unacknowledge:
+            defaults.update(dict(acknowledge_by=None, acknowledge_at=None, acknowledge_until=None))
 
         # save the check
-        dataset, created = Result.objects.get_or_create(
+        dataset, created = Result.objects.update_or_create(
             slug=self.slug, identifier=self.get_identifier(payload),
             defaults=defaults)
-
-        # update existing dataset
-        if not created:
-            for (key, value) in defaults.items():
-                setattr(dataset, key, value)
-            if unacknowledge:
-                dataset.acknowledge_by = None
-                dataset.acknowledge_at = None
-                dataset.acknowledge_until = None
-            dataset.save()
+        return dataset
 
     def generate(self):
         """
@@ -109,6 +124,9 @@ class BaseCheck(object):
 
     def get_payload_description(self, payload):
         return str(payload)
+
+    def format_result_data(self, result):
+        return ''
 
     def get_assigned_user(self, payload, result):
         return None
