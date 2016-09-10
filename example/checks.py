@@ -30,17 +30,17 @@ class UserHasEnoughBalance(BaseCheck):
 
     def check(self, payload):
         config = self.get_config(payload)
-        result = CheckResponse()
-        result.balance = payload.balance
+        response = CheckResponse()
+        response.balance = payload.balance
 
         # check balance for thresholds
         if payload.balance < config['critical']:
-            result.set_status(Result.STATUS.critical)
+            response.set_status(Result.STATUS.critical)
         elif payload.balance < config['warning']:
-            result.set_status(Result.STATUS.warning)
+            response.set_status(Result.STATUS.warning)
         else:
-            result.set_status(Result.STATUS.ok)
-        return result
+            response.set_status(Result.STATUS.ok)
+        return response
 
     def get_identifier(self, payload):
         return payload.pk

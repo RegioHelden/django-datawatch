@@ -19,7 +19,7 @@ Create `checks.py` inside your module.
 
 ```python
 from django_datawatch.monitoring import monitor
-from django_datawatch.base import BaseCheck
+from django_datawatch.base import BaseCheck, CheckResponse
 from django_datawatch.models import Result
 
 
@@ -31,11 +31,14 @@ class CheckTime(BaseCheck):
         yield datetime.datetime.now()
 
     def check(self, payload):
+        response = CheckResponse()
         if payload.hour <= 7:
-            return Result.STATUS.ok
+            response.set_status(Result.STATUS.ok)
         elif payload.hour <= 12:
-            return Result.STATUS.warning
-        return Result.STATUS.critical
+            response.set_status(Result.STATUS.warning)
+        else:
+            response.set_status(Result.STATUS.critical)
+        return response
 
     def get_identifier(self, payload):
         # payload will be our datetime object that we are getting from generate method
