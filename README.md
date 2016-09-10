@@ -5,17 +5,20 @@ Django Datawatch
 ================
 With Django Datawatch you are able to implement arbitrary checks on data, review their status and even describe what to do to resolve them.
 
-Installation
+Requirements
 ------------
+Currently celery is required to run the checks. We'll be supporting different backends in the future.
 
+Install
+-------
 ```shell
 $ pip install django-datawatch
 ```
 
 Add `django_datawatch` to your `INSTALLED_APPS`
 
-Define a check:
----------------
+Write a custom check
+--------------------
 Create `checks.py` inside your module.
 
 ```python
@@ -26,7 +29,7 @@ from django_datawatch.models import Result
 
 @monitor.register
 class CheckTime(BaseCheck):
-    run_every = relativedelta(minute=1)  # scheduler will execute this check every 1 minute
+    run_every = relativedelta(minute=5)  # scheduler will execute this check every 5 minutes
 
     def generate(self):
         yield datetime.datetime.now()
@@ -51,51 +54,67 @@ class CheckTime(BaseCheck):
         return identifier
 ```
 
-manage.py commands.
----------------------
-Execute all checks
+generate
+~~~~~~~~
+Must yield payloads to be checked. The check method will then be called for every payload.
+
+check
+~~~~~
+Must return an instance of CheckResponse.
+
+get_identifier
+~~~~~~~~~~~~~~
+Must return a unique identifier for the payload. 
+
+Run your checks
+---------------
+A management command is provided to queue the execution of all checks based on their schedule.
+Add a crontab to run this command every minute and it will check if there's something to do.
+
 ```shell
 $ ./manage.py monitoring_run_checks
 ```
 
 Settings
 --------
+You can customize the celery queue name for async tasks.
+
 ```python
 DJANGO_DATAWATCH = {
     'QUEUE_NAME': 'django_datawatch'
 }
 ```
 
-Improve Django Datawatch
--------------------------
+CONTRIBUTE
+----------
 
-We've included an example app to show how django_datawatch works and to make it easy to improve it.
-Start by launching the included vagrant machine:
+We've included an example app to show how django_datawatch works.
+Start by launching the included vagrant machine.
 ```bash
 vagrant up
 vagrant ssh
 ```
 
-Then setup the example app environment:
+Then setup the example app environment.
 ```bash
 ./manage.py migrate
 ./manage.py loaddata example
 ```
 The installed superuser is "example" with password "datawatch".
 
-Run the development webserver:
+Run the development webserver.
 ```bash
 ./manage.py runserver 0.0.0.0:8000
 ```
 
 Login on the admin interface and open http://ddw.dev:8000/ afterwards.
 You'll be prompted with an empty dashboard. That's because we didn't run any checks yet.
-Let's enqueue an update:
+Let's enqueue an update.
 ```bash
 ./manage.py monitoring_run_checks
 ```
 
-Now we need to start a celery worker to handle the updates:
+Now we need to start a celery worker to handle the updates.
 ```bash
 celery worker -A example -l DEBUG -Q django_datawatch
 ```
