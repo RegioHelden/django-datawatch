@@ -51,6 +51,8 @@ class Result(TimeStampedModel):
 
     class Meta:
         unique_together = ('slug', 'identifier')
+        permissions = (('view', 'Can view results dashboard and details'), ('acknowledge', 'Can acknowledge results'),
+                       ('config', 'Can change the configuration for results'), ('refresh', 'Can refresh results'))
 
     def acknowledge(self, user, days, reason=None, commit=True):
         if self.status in (self.STATUS.warning, self.STATUS.critical) and self.is_acknowledged():
