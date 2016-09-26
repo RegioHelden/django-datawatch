@@ -26,7 +26,7 @@ def django_datawatch_run(slug, identifier, *args, **kwargs):
 
 
 class DatawatchScheduler(PeriodicTask):
-    run_every = crontab(minute=0, hour=0)
+    run_every = crontab(minute='*/1')
     queue = ddw_settings.QUEUE_NAME
 
     def run(self, *args, **kwargs):
