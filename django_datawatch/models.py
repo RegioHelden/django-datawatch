@@ -31,8 +31,8 @@ class Result(TimeStampedModel):
 
     status = models.IntegerField(choices=STATUS,
                                  default=STATUS.unknown, verbose_name=_('Status'))
-    data = JSONField(blank=True, verbose_name=('Data'))
-    config = JSONField(blank=True, verbose_name=_('Configuration'))
+    data = JSONField(blank=True, default=dict, verbose_name=('Data'))
+    config = JSONField(blank=True, default=dict, verbose_name=_('Configuration'))
 
     payload_description = models.TextField(verbose_name=_('Payload description'))
 
