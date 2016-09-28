@@ -31,4 +31,4 @@ class DatawatchScheduler(PeriodicTask):
 
     def run(self, *args, **kwargs):
         for check in monitor.get_all_registered_checks():
-            check.run()
+            check().run()
