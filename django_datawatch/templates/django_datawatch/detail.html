@@ -16,7 +16,7 @@
                             <h3>{{ result.payload_description }}</h3>
                         </div>
                         <div class="col-md-4 text-right">
-                            {% if perms.django_datawatch.acknowldge %}
+                            {% if perms.django_datawatch.acknowledge %}
                                 <a href="{% url "django_datawatch_result_acknowledge" pk=result.pk %}">{% trans "Acknowledge" %}</a><br>
                             {% endif %}
                             {% if perms.django_datawatch.config %}
