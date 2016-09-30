@@ -4,3 +4,4 @@
 .pycharm_helpers/
 dist/
 *.egg-info/
+build/
