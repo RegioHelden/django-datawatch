@@ -19,7 +19,7 @@
                             {% if perms.django_datawatch.acknowledge %}
                                 <a href="{% url "django_datawatch_result_acknowledge" pk=result.pk %}">{% trans "Acknowledge" %}</a><br>
                             {% endif %}
-                            {% if perms.django_datawatch.config %}
+                            {% if perms.django_datawatch.config and result.get_check_instance.get_form_class %}
                                 <a href="{% url "django_datawatch_result_config" pk=result.pk %}">{% trans "Change config" %}</a><br>
                             {% endif %}
                             {% if perms.django_datawatch.refresh %}
