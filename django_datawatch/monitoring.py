@@ -28,16 +28,16 @@ class MonitoringHandler(object):
         slug = self.get_slug(check_class.__module__, check_class.__name__)
         self._registered_checks[slug] = check_class
         check = check_class()
-        if hasattr(check, 'trigger_update'):
-            for method_name, model in check.trigger_update.items():
-                if not hasattr(check, 'get_%s_payload' % method_name):
-                    logger.warning('Update trigger defined without implementing .get_*_payload()')
-                    continue
+        for method_name, model in check.trigger_update.items():
+            if not hasattr(check, 'get_%s_payload' % method_name):
+                logger.warning('Update trigger defined without implementing .get_*_payload()')
+                continue
 
-                model_uid = make_model_uid(model)
-                if model_uid in self._related_models:
-                    signals.post_save.connect(run_checks, sender=model)
-                self._related_models[model_uid].append(check_class)
+            model_uid = make_model_uid(model)
+            self._related_models.setdefault(model_uid, list())
+            if check_class not in self._related_models[model_uid]:
+                signals.post_save.connect(run_checks, sender=model)
+            self._related_models[model_uid].append(check_class)
 
         return check_class
 
@@ -120,7 +120,18 @@ def run_checks(sender, instance, created, raw, using, **kwargs):
     checks = monitor.get_checks_for_model(sender) or []
     for check_class in checks:
         check = check_class()
-        payload = check.get_payload(instance)
+        model_uid = make_model_uid(instance.__class__)
+        mapping = check.get_trigger_update_uid_map()
+
+        if model_uid not in mapping:
+            continue
+
+        if not hasattr(check, mapping[model_uid]):
+            continue
+
+        payload = getattr(check, mapping[model_uid])(instance)
         if not payload:
             continue
-        backend.run(slug=check.slug, identifier=check.get_identifier(payload))
+
+        backend.run(slug=check.slug, identifier=check.get_identifier(payload),
+                    async=True)

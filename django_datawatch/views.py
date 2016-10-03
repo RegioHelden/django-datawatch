@@ -151,7 +151,7 @@ class ResultRefreshView(LoginRequiredMixin, PermissionRequiredMixin, SingleObjec
         response = super(ResultRefreshView, self).get(request, *args, **kwargs)
         check = self.object.get_check_instance()
         monitor.get_backend().run(slug=check.slug,
-                                  identifier=check.get_identifier(self.object),
+                                  identifier=self.object.identifier,
                                   async=False)
         messages.add_message(request, messages.INFO, _('Result has been refreshed'))
         return response

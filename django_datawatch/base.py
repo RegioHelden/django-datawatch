@@ -5,7 +5,7 @@ import logging
 from django import forms
 
 from django_datawatch.models import Result
-from django_datawatch.monitoring import monitor
+from django_datawatch.monitoring import monitor, make_model_uid
 
 logger = logging.getLogger(__name__)
 
@@ -52,6 +52,7 @@ class BaseCheck(object):
     config_form = None
     title = ''
     max_acknowledge = None
+    trigger_update = dict()
 
     def __init__(self):
         self.slug = monitor.get_slug(self.__module__, self.__class__.__name__)
@@ -145,3 +146,9 @@ class BaseCheck(object):
 
     def get_max_acknowledge(self):
         return self.max_acknowledge
+
+    def get_trigger_update_uid_map(self):
+        mapping = {}
+        for method_name, model in self.trigger_update.items():
+            mapping[make_model_uid(model)] = 'get_%s_payload' % method_name
+        return mapping

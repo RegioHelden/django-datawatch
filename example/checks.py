@@ -2,6 +2,7 @@
 from __future__ import unicode_literals, print_function
 
 from dateutil.relativedelta import relativedelta
+from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext as _
 from django_datawatch.models import Result
 from django_datawatch.monitoring import monitor
@@ -23,7 +24,7 @@ class UserHasEnoughBalance(BaseCheck):
     title = _('User balance')
     template_name = 'example/checks/user_has_enough_balance.html'
     max_acknowledge = 7
-    trigger_update = dict(wallet=models.Wallet)
+    trigger_update = dict(wallet=models.Wallet, user=get_user_model())
 
     def generate(self):
         for payload in models.Wallet.objects.all():
@@ -59,3 +60,6 @@ class UserHasEnoughBalance(BaseCheck):
 
     def get_wallet_payload(self, instance):
         return instance
+
+    def get_user_payload(self, instance):
+        return instance.wallet_set.first()
