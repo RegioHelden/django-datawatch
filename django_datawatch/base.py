@@ -52,6 +52,7 @@ class BaseCheck(object):
     config_form = None
     title = ''
     max_acknowledge = None
+    run_every = None
     trigger_update = dict()
 
     def __init__(self):

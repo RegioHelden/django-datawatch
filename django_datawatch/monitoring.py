@@ -28,9 +28,10 @@ class MonitoringHandler(object):
         slug = self.get_slug(check_class.__module__, check_class.__name__)
         self._registered_checks[slug] = check_class
         check = check_class()
-        for method_name, model in check.trigger_update.items():
-            if not hasattr(check, 'get_%s_payload' % method_name):
-                logger.warning('Update trigger defined without implementing .get_*_payload()')
+        for keyword, model in check.trigger_update.items():
+            method_name = 'get_%s_payload' % keyword
+            if not hasattr(check, method_name):
+                logger.warning('Update trigger "%s" defined without implementing .%s()', keyword, method_name)
                 continue
 
             model_uid = make_model_uid(model)
@@ -84,7 +85,7 @@ class Scheduler(object):
 
         for check in checks:
             # check should not be run automatically
-            if not force and not (hasattr(check, 'run_every') and isinstance(check.run_every, relativedelta)):
+            if not force and isinstance(check.run_every, relativedelta):
                 continue
 
             # shall the check be run again?
