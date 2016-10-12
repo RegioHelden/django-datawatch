@@ -10,6 +10,10 @@ from django_datawatch.monitoring import monitor, make_model_uid
 logger = logging.getLogger(__name__)
 
 
+class DatawatchCheckSkipException(Exception):
+    pass
+
+
 class BaseCheckForm(forms.Form):
     def save(self, instance):
         instance.config = self.cleaned_data
@@ -62,12 +66,21 @@ class BaseCheck(object):
         monitor.get_backend().enqueue(slug=self.slug)
 
     def handle(self, payload):
-        # check result
+        # get old result
+        old_status = None
+        result = Result.objects.filter(slug=self.slug, identifier=self.get_identifier(payload)).first()
+        if result:
+            old_status = result.status
+
+        # run check
         try:
-            old_status = Result.objects.get(slug=self.slug, identifier=self.get_identifier(payload)).status
-        except Result.DoesNotExist:
-            old_status = None
-        response = self.check(payload)
+            response = self.check(payload)
+        except DatawatchCheckSkipException:
+            if result:
+                result.delete()
+            return
+
+        # save check result
         status = response.get_status()
         unacknowledge = old_status in [Result.STATUS.warning, Result.STATUS.critical] and status == Result.STATUS.ok
         self.save(payload=payload, status=status, data=response.get_data(), unacknowledge=unacknowledge)
