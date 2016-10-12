@@ -4,6 +4,7 @@
 Django Datawatch
 ================
 With Django Datawatch you are able to implement arbitrary checks on data, review their status and even describe what to do to resolve them.
+Think of [nagios](https://www.nagios.org/)/[icinga](https://www.icinga.org/) for data.
 
 Requirements
 ------------
