@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
 from __future__ import unicode_literals
 
+import sys
 import logging
 import importlib
 from collections import defaultdict
@@ -37,7 +38,8 @@ class MonitoringHandler(object):
             model_uid = make_model_uid(model)
             self._related_models.setdefault(model_uid, list())
             if check_class not in self._related_models[model_uid]:
-                signals.post_save.connect(run_checks, sender=model)
+                if 'test' not in sys.argv or ddw_settings.CONNECT_POST_SAVE_SIGNAL_DURING_TEST:
+                    signals.post_save.connect(run_checks, sender=model, dispatch_uid='django_datawatch')
             self._related_models[model_uid].append(check_class)
 
         return check_class
