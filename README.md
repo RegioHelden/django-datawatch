@@ -78,16 +78,33 @@ $ ./manage.py monitoring_run_checks
 
 Settings
 --------
-You can customize the celery queue name for async tasks.
 
 ```python
 DJANGO_DATAWATCH = {
+    'BACKEND': 'django_datawatch.backends.synchronous',
     'QUEUE_NAME': 'django_datawatch'
+    'CONNECT_POST_SAVE_SIGNAL_DURING_TEST': False)
 }
 ```
 
+BACKEND
+~~~~~~~
+
+You can chose the backend to run the tasks.
+Default is to execute them synchronously. Supported are synchronous and celery.
+
+QUEUE_NAME
+~~~~~~~~~~
+
+You can customize the celery queue name for async tasks (only applies if celery backend chosen).
+
+CONNECT_POST_SAVE_SIGNAL_DURING_TEST
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Per default the post save signal to connect trigger_update refreshes is disabled during tests. You can force connecting the signal by setting this config to True.
+
 CONTRIBUTE
-----------
+==========
 
 We've included an example app to show how django_datawatch works.
 Start by launching the included vagrant machine.
