@@ -85,21 +85,21 @@ class Scheduler(object):
         checks = monitor.get_all_registered_checks()
         executions = dict([(obj.slug, obj.last_run) for obj in CheckExecution.objects.all()])
 
-        for check in checks:
+        for check_class in checks:
             # check should not be run automatically
-            if not force and isinstance(check.run_every, relativedelta):
+            if not force and isinstance(check_class.run_every, relativedelta):
                 continue
 
             # shall the check be run again?
-            check_instance = check()
-            if check_instance.slug in executions:
-                if now + check.run_every < executions[check_instance.slug]:
+            check = check_class()
+            if check.slug in executions:
+                if now + check.run_every < executions[check.slug]:
                     continue
 
             # enqueue the check and save execution state
-            logger.info('check %s issued for refresh', check_instance.slug)
-            check_instance.run()
-            CheckExecution.objects.update_or_create(slug=check_instance.slug, defaults=dict(last_run=now))
+            logger.info('check %s issued for refresh', check.slug)
+            check.run()
+            CheckExecution.objects.update_or_create(slug=check.slug, defaults=dict(last_run=now))
 
 
 def make_model_uid(model):

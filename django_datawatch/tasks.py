@@ -7,7 +7,7 @@ from celery.schedules import crontab
 from celery.task.base import PeriodicTask
 
 from django_datawatch.backends import synchronous
-from django_datawatch.monitoring import monitor
+from django_datawatch.monitoring import Scheduler
 from django_datawatch.settings import ddw_settings
 
 logger = get_task_logger(__name__)
@@ -30,5 +30,4 @@ class DatawatchScheduler(PeriodicTask):
     queue = ddw_settings.QUEUE_NAME
 
     def run(self, *args, **kwargs):
-        for check in monitor.get_all_registered_checks():
-            check().run()
+        Scheduler().run_checks(force=False)
