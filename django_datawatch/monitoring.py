@@ -1,17 +1,17 @@
 # -*- coding: UTF-8 -*-
 from __future__ import unicode_literals
 
-import sys
 import logging
 import importlib
 from collections import defaultdict
 
 from dateutil.relativedelta import relativedelta
+from django.conf import settings
 from django.utils import timezone
 from django.utils.module_loading import autodiscover_modules
 from django.db.models import signals
 
-from django_datawatch.settings import ddw_settings
+from django_datawatch.defaults import defaults
 
 logger = logging.getLogger(__name__)
 
@@ -40,10 +40,8 @@ class MonitoringHandler(object):
             model_uid = make_model_uid(model)
             self._related_models.setdefault(model_uid, list())
             if check_class not in self._related_models[model_uid]:
-                if 'test' not in sys.argv or \
-                        ddw_settings.CONNECT_POST_SAVE_SIGNAL_DURING_TEST:
-                    signals.post_save.connect(run_checks, sender=model,
-                                              dispatch_uid='django_datawatch')
+                signals.post_save.connect(run_checks, sender=model,
+                                          dispatch_uid='django_datawatch')
             self._related_models[model_uid].append(check_class)
 
         return check_class
@@ -70,7 +68,9 @@ class MonitoringHandler(object):
 
     def get_backend(self):
         if self._backend is None:
-            backend_module = importlib.import_module(ddw_settings.BACKEND)
+            backend_module = importlib.import_module(
+                getattr(settings, 'DJANGO_DATAWATCH_ASYNC_BACKEND',
+                        defaults['ASYNC_BACKEND']))
             self._backend = backend_module.Backend()
         return self._backend
 
@@ -106,6 +106,28 @@ class Scheduler(object):
         return dict([(obj.slug, obj.last_run)
                      for obj in CheckExecution.objects.all()])
 
+    def update_related(self, sender, instance):
+        backend = monitor.get_backend()
+        checks = monitor.get_checks_for_model(sender) or []
+        for check_class in checks:
+            check = check_class()
+            model_uid = make_model_uid(instance.__class__)
+            mapping = check.get_trigger_update_uid_map()
+
+            if model_uid not in mapping:
+                continue
+
+            if not hasattr(check, mapping[model_uid]):
+                continue
+
+            payload = getattr(check, mapping[model_uid])(instance)
+            if not payload:
+                continue
+
+            backend.run(slug=check.slug,
+                        identifier=check.get_identifier(payload),
+                        async=True)
+
 
 def make_model_uid(model):
     """
@@ -125,22 +147,7 @@ def run_checks(sender, instance, created, raw, using, **kwargs):
     :param sender: model
     :param kwargs:
     """
-    backend = monitor.get_backend()
-    checks = monitor.get_checks_for_model(sender) or []
-    for check_class in checks:
-        check = check_class()
-        model_uid = make_model_uid(instance.__class__)
-        mapping = check.get_trigger_update_uid_map()
-
-        if model_uid not in mapping:
-            continue
-
-        if not hasattr(check, mapping[model_uid]):
-            continue
-
-        payload = getattr(check, mapping[model_uid])(instance)
-        if not payload:
-            continue
-
-        backend.run(slug=check.slug, identifier=check.get_identifier(payload),
-                    async=True)
+    if not getattr(settings, 'DJANGO_DATAWATCH_RUN_POST_SAVE_SIGNALS',
+                   defaults['RUN_POST_SAVE_SIGNALS']):
+        return
+    Scheduler().update_related(sender, instance)

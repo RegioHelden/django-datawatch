@@ -2,11 +2,11 @@
 from __future__ import unicode_literals, print_function
 
 import datetime
+import pytz
 try:
     from unittest import mock
 except ImportError:
     import mock
-import pytz
 
 from dateutil import relativedelta
 from freezegun import freeze_time
@@ -20,19 +20,9 @@ from django_datawatch.monitoring import monitor, Scheduler
 class CheckRunEvery(BaseCheck):
     run_every = relativedelta.relativedelta(days=1)
 
-    def generate(self):
-        pass
-
-    def check(self, payload):
-        pass
-
 
 class CheckNoRunEvery(BaseCheck):
-    def generate(self):
-        pass
-
-    def check(self, payload):
-        pass
+    run_every = None
 
 
 class SchedulerTestCase(TestCase):

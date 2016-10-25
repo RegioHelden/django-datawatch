@@ -1,25 +1,25 @@
 [![PyPI version](https://badge.fury.io/py/django_datawatch.svg)](https://pypi.python.org/pypi/django-datawatch)
 [![Travis CI build status](https://travis-ci.org/RegioHelden/django-datawatch.svg)](https://travis-ci.org/RegioHelden/django-datawatch)
 
-Django Datawatch
-================
+# Django Datawatch
+
 With Django Datawatch you are able to implement arbitrary checks on data, review their status and even describe what to do to resolve them.
 Think of [nagios](https://www.nagios.org/)/[icinga](https://www.icinga.org/) for data.
 
-Requirements
-------------
+## Requirements
+
 Currently celery is required to run the checks. We'll be supporting different backends in the future.
 
-Install
--------
+## Install
+
 ```shell
 $ pip install django-datawatch
 ```
 
 Add `django_datawatch` to your `INSTALLED_APPS`
 
-Write a custom check
---------------------
+## Write a custom check
+
 Create `checks.py` inside your module.
 
 ```python
@@ -55,20 +55,22 @@ class CheckTime(BaseCheck):
         return identifier
 ```
 
-generate
-~~~~~~~~
+
+
+### generate
+
 Must yield payloads to be checked. The check method will then be called for every payload.
 
-check
-~~~~~
+### check
+
 Must return an instance of CheckResponse.
 
-get_identifier
-~~~~~~~~~~~~~~
+### get_identifier
+
 Must return a unique identifier for the payload. 
 
-Run your checks
----------------
+## Run your checks
+
 A management command is provided to queue the execution of all checks based on their schedule.
 Add a crontab to run this command every minute and it will check if there's something to do.
 
@@ -76,35 +78,33 @@ Add a crontab to run this command every minute and it will check if there's some
 $ ./manage.py monitoring_run_checks
 ```
 
-Settings
---------
+## Settings
 
 ```python
-DJANGO_DATAWATCH = {
-    'BACKEND': 'django_datawatch.backends.synchronous',
-    'QUEUE_NAME': 'django_datawatch'
-    'CONNECT_POST_SAVE_SIGNAL_DURING_TEST': False)
-}
+DJANGO_DATAWATCH_ASYNC_BACKEND = 'django_datawatch.backends.synchronous'
+DJANGO_DATAWATCH_CELERY_QUEUE_NAME = 'django_datawatch'
+DJANGO_DATAWATCH_RUN_POST_SAVE_SIGNALS = True
 ```
 
-BACKEND
-~~~~~~~
+### DJANGO_DATAWATCH_ASYNC_BACKEND
 
-You can chose the backend to run the tasks.
-Default is to execute them synchronously. Supported are synchronous and celery.
+You can chose the backend to run the tasks. Supported are 'django_datawatch.backends.synchronous' and 'django_datawatch.backends.celery'.
 
-QUEUE_NAME
-~~~~~~~~~~
+Default: 'django_datawatch.backends.synchronous'
 
-You can customize the celery queue name for async tasks (only applies if celery backend chosen).
+### DJANGO_DATAWATCH_CELERY_QUEUE_NAME
 
-CONNECT_POST_SAVE_SIGNAL_DURING_TEST
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+You can customize the celery queue name for async tasks (applies only if celery backend chosen).
 
-Per default the post save signal to connect trigger_update refreshes is disabled during tests. You can force connecting the signal by setting this config to True.
+Default: 'django_datawatch'
 
-CONTRIBUTE
-==========
+### DJANGO_DATAWATCH_RUN_POST_SAVE_SIGNALS
+
+Use this setting to disable running post_save updates during unittests if required.
+
+Default: True
+
+# CONTRIBUTE
 
 We've included an example app to show how django_datawatch works.
 Start by launching the included vagrant machine.

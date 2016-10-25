@@ -5,10 +5,11 @@ from celery import shared_task
 from celery.utils.log import get_task_logger
 from celery.schedules import crontab
 from celery.task.base import PeriodicTask
+from django.conf import settings
 
 from django_datawatch.backends import synchronous
+from django_datawatch.defaults import defaults
 from django_datawatch.monitoring import Scheduler
-from django_datawatch.settings import ddw_settings
 
 logger = get_task_logger(__name__)
 
@@ -27,7 +28,8 @@ def django_datawatch_run(slug, identifier, *args, **kwargs):
 
 class DatawatchScheduler(PeriodicTask):
     run_every = crontab(minute='*/1')
-    queue = ddw_settings.QUEUE_NAME
+    queue = getattr(settings, 'DJANGO_DATAWATCH_CELERY_QUEUE_NAME',
+                    defaults['CELERY_QUEUE_NAME'])
 
     def run(self, *args, **kwargs):
         Scheduler().run_checks(force=False)
