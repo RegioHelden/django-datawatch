@@ -3,8 +3,9 @@ from __future__ import unicode_literals
 import logging
 
 from django import forms
+from django.utils import timezone
 
-from django_datawatch.models import Result
+from django_datawatch.models import Result, CheckExecution
 from django_datawatch.monitoring import monitor, make_model_uid
 
 logger = logging.getLogger(__name__)
@@ -64,6 +65,8 @@ class BaseCheck(object):
 
     def run(self):
         monitor.get_backend().enqueue(slug=self.slug)
+        CheckExecution.objects.update_or_create(slug=self.slug, defaults=dict(
+            last_run=timezone.now()))
 
     def handle(self, payload):
         # get old result

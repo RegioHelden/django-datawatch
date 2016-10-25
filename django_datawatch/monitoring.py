@@ -32,14 +32,18 @@ class MonitoringHandler(object):
         for keyword, model in check.trigger_update.items():
             method_name = 'get_%s_payload' % keyword
             if not hasattr(check, method_name):
-                logger.warning('Update trigger "%s" defined without implementing .%s()', keyword, method_name)
+                logger.warning(
+                    'Update trigger "%s" defined without implementing .%s()',
+                    keyword, method_name)
                 continue
 
             model_uid = make_model_uid(model)
             self._related_models.setdefault(model_uid, list())
             if check_class not in self._related_models[model_uid]:
-                if 'test' not in sys.argv or ddw_settings.CONNECT_POST_SAVE_SIGNAL_DURING_TEST:
-                    signals.post_save.connect(run_checks, sender=model, dispatch_uid='django_datawatch')
+                if 'test' not in sys.argv or \
+                        ddw_settings.CONNECT_POST_SAVE_SIGNAL_DURING_TEST:
+                    signals.post_save.connect(run_checks, sender=model,
+                                              dispatch_uid='django_datawatch')
             self._related_models[model_uid].append(check_class)
 
         return check_class
@@ -76,30 +80,31 @@ monitor = MonitoringHandler()
 class Scheduler(object):
     def run_checks(self, force=False):
         """
-        :param force: <bool> If True then all registered checks will be executed
+        :param force: <bool> force all registered checks to be executed
         :return:
         """
-        from django_datawatch.models import CheckExecution
-
         now = timezone.now()
         checks = monitor.get_all_registered_checks()
-        executions = dict([(obj.slug, obj.last_run) for obj in CheckExecution.objects.all()])
+        last_executions = self.get_last_executions()
 
         for check_class in checks:
-            # check should not be run automatically
-            if not force and isinstance(check_class.run_every, relativedelta):
+            check = check_class()
+            # check is not meant to be run periodically
+            if not isinstance(check_class.run_every, relativedelta):
                 continue
 
             # shall the check be run again?
-            check = check_class()
-            if check.slug in executions:
-                if now + check.run_every < executions[check.slug]:
+            if not force and check.slug in last_executions:
+                if now < last_executions[check.slug] + check.run_every:
                     continue
 
             # enqueue the check and save execution state
-            logger.info('check %s issued for refresh', check.slug)
             check.run()
-            CheckExecution.objects.update_or_create(slug=check.slug, defaults=dict(last_run=now))
+
+    def get_last_executions(self):
+        from django_datawatch.models import CheckExecution
+        return dict([(obj.slug, obj.last_run)
+                     for obj in CheckExecution.objects.all()])
 
 
 def make_model_uid(model):
@@ -114,7 +119,8 @@ def make_model_uid(model):
 
 def run_checks(sender, instance, created, raw, using, **kwargs):
     """
-    Re-execute checks related to the given sender model, only for the updated instance.
+    Re-execute checks related to the given sender model, only for the
+    updated instance.
 
     :param sender: model
     :param kwargs:

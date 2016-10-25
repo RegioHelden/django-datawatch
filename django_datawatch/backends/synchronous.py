@@ -6,9 +6,12 @@ from django_datawatch.monitoring import monitor
 class Backend(BaseBackend):
     def enqueue(self, slug, async=True):
         check = monitor.get_check_class(slug)()
-        for payload in check.generate():
-            monitor.get_backend().run(
-                check.slug, check.get_identifier(payload))
+        try:
+            for payload in check.generate():
+                monitor.get_backend().run(
+                    check.slug, check.get_identifier(payload))
+        except NotImplementedError:
+            pass
 
     def run(self, slug, identifier, async=True):
         check = monitor.get_check_class(slug)()
