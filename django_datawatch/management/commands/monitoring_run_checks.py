@@ -13,6 +13,12 @@ class Command(BaseCommand):
             default=False,
             help='Execute all checks.',
         )
+        parser.add_argument(
+            '--slug',
+            dest='slug',
+            default=None,
+            help='Slug of check to refresh, all checks will be refreshed if slug is not provided',
+        )
 
-    def handle(self, force, *args, **options):
-        Scheduler().run_checks(force=force)
+    def handle(self, force, slug, *args, **options):
+        Scheduler().run_checks(force=force, slug=slug)

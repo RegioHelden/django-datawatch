@@ -78,7 +78,7 @@ monitor = MonitoringHandler()
 
 
 class Scheduler(object):
-    def run_checks(self, force=False):
+    def run_checks(self, force=False, slug=None):
         """
         :param force: <bool> force all registered checks to be executed
         :return:
@@ -89,6 +89,11 @@ class Scheduler(object):
 
         for check_class in checks:
             check = check_class()
+
+            # only update a single slug if requested
+            if slug and check.slug != slug:
+                continue
+
             # check is not meant to be run periodically
             if not isinstance(check_class.run_every, relativedelta):
                 continue
