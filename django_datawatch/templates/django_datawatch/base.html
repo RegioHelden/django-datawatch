@@ -45,11 +45,13 @@
                             {% trans 'Warning' %}
                         {% endif %}
                     </strong>
-                    {% if 'safe' in message.tags %}
-                        {{ message|safe }}
-                    {% else %}
-                        {{ message }}
-                    {% endif %}
+                    <p>
+                        {% if 'safe' in message.tags %}
+                            {{ message|safe }}
+                        {% else %}
+                            {{ message }}
+                        {% endif %}
+                    </p>
                 </div>
             {% endfor %}
         {% endif %}

@@ -3,6 +3,7 @@ import logging
 
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
 from django.core.urlresolvers import reverse_lazy
+from django.http.response import Http404, HttpResponseRedirect
 from django.utils.translation import gettext_lazy as _
 from django.views.generic.base import RedirectView
 from django.views.generic.detail import DetailView, SingleObjectMixin
@@ -65,6 +66,15 @@ class ResultView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
         if check_template:
             return [check_template] + template_names
         return template_names
+
+    def get(self, request, *args, **kwargs):
+        try:
+            return super(ResultView, self).get(request, *args, **kwargs)
+        except Http404:
+            messages.add_message(self.request, messages.WARNING,
+                                 _('Check result does not exist (anymore)'))
+            return HttpResponseRedirect(redirect_to=reverse_lazy(
+                'django_datawatch_index'))
 
 
 class ResultAcknowledgeView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
