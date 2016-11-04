@@ -81,12 +81,12 @@ $ ./manage.py monitoring_run_checks
 ## Settings
 
 ```python
-DJANGO_DATAWATCH_ASYNC_BACKEND = 'django_datawatch.backends.synchronous'
+DJANGO_DATAWATCH_BACKEND = 'django_datawatch.backends.synchronous'
 DJANGO_DATAWATCH_CELERY_QUEUE_NAME = 'django_datawatch'
 DJANGO_DATAWATCH_RUN_POST_SAVE_SIGNALS = True
 ```
 
-### DJANGO_DATAWATCH_ASYNC_BACKEND
+### DJANGO_DATAWATCH_BACKEND
 
 You can chose the backend to run the tasks. Supported are 'django_datawatch.backends.synchronous' and 'django_datawatch.backends.celery'.
 
@@ -129,10 +129,11 @@ Login on the admin interface and open http://ddw.dev:8000/ afterwards.
 You'll be prompted with an empty dashboard. That's because we didn't run any checks yet.
 Let's enqueue an update.
 ```bash
-./manage.py monitoring_run_checks
+./manage.py monitoring_run_checks --force
 ```
 
-Now we need to start a celery worker to handle the updates.
+The checks for the example app are run synchronously and should be updated immediately.
+If you decide to switch to the celery backend, you should now start a celery worker to process the checks.
 ```bash
 celery worker -A example -l DEBUG -Q django_datawatch
 ```

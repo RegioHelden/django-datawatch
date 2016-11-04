@@ -178,4 +178,4 @@ SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
 BOOTSTRAP3 = {'horizontal_label_class': 'col-md-2', 'horizontal_field_class': 'col-md-10', 'success_css_class': ''}
 
-DJANGO_DATAWATCH_ASYNC_BACKEND = 'django_datawatch.backends.celery'
+DJANGO_DATAWATCH_BACKEND = 'django_datawatch.backends.synchronous'

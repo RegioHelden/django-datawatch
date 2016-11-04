@@ -69,8 +69,8 @@ class MonitoringHandler(object):
     def get_backend(self):
         if self._backend is None:
             backend_module = importlib.import_module(
-                getattr(settings, 'DJANGO_DATAWATCH_ASYNC_BACKEND',
-                        defaults['ASYNC_BACKEND']))
+                getattr(settings, 'DJANGO_DATAWATCH_BACKEND',
+                        defaults['BACKEND']))
             self._backend = backend_module.Backend()
         return self._backend
 
