@@ -68,6 +68,9 @@ class BaseCheck(object):
         CheckExecution.objects.update_or_create(slug=self.slug, defaults=dict(
             last_run=timezone.now()))
 
+    def refresh(self):
+        monitor.get_backend().refresh(slug=self.slug)
+
     def handle(self, payload):
         # get old result
         old_status = None

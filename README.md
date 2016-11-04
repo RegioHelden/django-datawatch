@@ -76,6 +76,17 @@ Add a crontab to run this command every minute and it will check if there's some
 
 ```shell
 $ ./manage.py monitoring_run_checks
+$ ./manage.py monitoring_run_checks --slug=example.checks.UserHasEnoughBalance
+```
+
+## Refresh your check results
+
+A management command is provided to forcefully refresh all existing results for a check.
+This comes in handy if you changes the logic of your check and don't want to wait until the periodic execution or an update trigger.
+
+```shell
+$ ./manage.py monitoring_refresh_results
+$ ./manage.py monitoring_refresh_results --slug=example.checks.UserHasEnoughBalance
 ```
 
 ## Settings
