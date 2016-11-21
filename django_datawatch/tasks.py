@@ -23,7 +23,7 @@ def django_datawatch_enqueue(slug, *args, **kwargs):
 @shared_task
 def django_datawatch_refresh(slug, *args, **kwargs):
     logger.debug('refreshing check results for %s', slug)
-    synchronous.Backend().enqueue(slug)
+    synchronous.Backend().refresh(slug)
 
 
 @shared_task
