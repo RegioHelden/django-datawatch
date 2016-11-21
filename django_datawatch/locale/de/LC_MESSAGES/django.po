@@ -118,11 +118,11 @@ msgstr "Grund"
 msgid "Cancel"
 msgstr "Abbrechen"
 
-msgid "Successfully acknowledged"
-msgstr "Erfolgreich bestätigt"
-
 msgid "Check result does not exist (anymore)"
 msgstr "Prüfungsergebnis existiert nicht (mehr)"
+
+msgid "Successfully acknowledged"
+msgstr "Erfolgreich bestätigt"
 
 msgid "Save"
 msgstr "Speichern"
