@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 from django.core.management.base import BaseCommand
 
-from django_datawatch.monitoring import Scheduler
+from django_datawatch.datawatch import Scheduler
 
 
 class Command(BaseCommand):

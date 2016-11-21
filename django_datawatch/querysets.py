@@ -7,7 +7,7 @@ from django.db.models.expressions import Case, When, Value
 from django.db.models.query_utils import Q
 from django.utils import timezone
 
-from django_datawatch.monitoring import monitor
+from django_datawatch.datawatch import datawatch
 
 
 class ResultQuerySet(models.QuerySet):
@@ -42,4 +42,4 @@ class ResultQuerySet(models.QuerySet):
         """
         :return: results that do not have checks anymore (check has been deleted)
         """
-        return self.exclude(slug__in=monitor.get_all_registered_check_slugs())
+        return self.exclude(slug__in=datawatch.get_all_registered_check_slugs())

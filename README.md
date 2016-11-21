@@ -23,12 +23,16 @@ Add `django_datawatch` to your `INSTALLED_APPS`
 Create `checks.py` inside your module.
 
 ```python
-from django_datawatch.monitoring import monitor
+from datetime import datetime
+
+from dateutil.relativedelta import relativedelta
+
+from django_datawatch.datawatch import datawatch
 from django_datawatch.base import BaseCheck, CheckResponse
 from django_datawatch.models import Result
 
 
-@monitor.register
+@datawatch.register
 class CheckTime(BaseCheck):
     run_every = relativedelta(minute=5)  # scheduler will execute this check every 5 minutes
 
@@ -75,8 +79,8 @@ A management command is provided to queue the execution of all checks based on t
 Add a crontab to run this command every minute and it will check if there's something to do.
 
 ```shell
-$ ./manage.py monitoring_run_checks
-$ ./manage.py monitoring_run_checks --slug=example.checks.UserHasEnoughBalance
+$ ./manage.py datawatch_run_checks
+$ ./manage.py datawatch_run_checks --slug=example.checks.UserHasEnoughBalance
 ```
 
 ## Refresh your check results
@@ -85,8 +89,22 @@ A management command is provided to forcefully refresh all existing results for 
 This comes in handy if you changes the logic of your check and don't want to wait until the periodic execution or an update trigger.
 
 ```shell
-$ ./manage.py monitoring_refresh_results
-$ ./manage.py monitoring_refresh_results --slug=example.checks.UserHasEnoughBalance
+$ ./manage.py datawatch_refresh_results
+$ ./manage.py datawatch_refresh_results --slug=example.checks.UserHasEnoughBalance
+```
+
+## Get a list of registered checks
+
+```shell
+$ ./manage.py datawatch_list_checks
+```
+
+## Clean up your database
+
+Remove the unnecessary check results if you've removed the code for a check.
+
+```shell
+$ ./manage.py datawatch_delete_ghost_results
 ```
 
 ## Settings
@@ -140,7 +158,7 @@ Login on the admin interface and open http://ddw.dev:8000/ afterwards.
 You'll be prompted with an empty dashboard. That's because we didn't run any checks yet.
 Let's enqueue an update.
 ```bash
-./manage.py monitoring_run_checks --force
+./manage.py datawatch_run_checks --force
 ```
 
 The checks for the example app are run synchronously and should be updated immediately.

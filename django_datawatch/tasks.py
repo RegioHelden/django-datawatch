@@ -9,7 +9,7 @@ from django.conf import settings
 
 from django_datawatch.backends import synchronous
 from django_datawatch.defaults import defaults
-from django_datawatch.monitoring import Scheduler
+from django_datawatch.datawatch import Scheduler
 
 logger = get_task_logger(__name__)
 

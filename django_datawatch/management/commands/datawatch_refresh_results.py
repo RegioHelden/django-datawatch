@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 from django.core.management.base import BaseCommand
 
-from django_datawatch.monitoring import Scheduler, monitor
+from django_datawatch.datawatch import Scheduler, datawatch
 
 
 class Command(BaseCommand):
@@ -20,11 +20,11 @@ class Command(BaseCommand):
             return
 
         # refresh all
-        checks = monitor.get_all_registered_checks()
+        checks = datawatch.get_all_registered_checks()
         for check_class in checks:
             check = check_class()
             self.refresh(check.slug)
 
     def refresh(self, slug):
-        backend = monitor.get_backend()
+        backend = datawatch.get_backend()
         backend.refresh(slug=slug, async=True)

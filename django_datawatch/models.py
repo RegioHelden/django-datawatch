@@ -11,7 +11,7 @@ from django_extensions.db.fields.json import JSONField
 from model_utils.choices import Choices
 from model_utils.models import TimeStampedModel
 
-from .monitoring import monitor
+from .datawatch import datawatch
 from .querysets import ResultQuerySet
 
 
@@ -71,13 +71,13 @@ class Result(TimeStampedModel):
         return self.slug
 
     def get_check_instance(self):
-        return monitor.get_check_class(self.slug)()
+        return datawatch.get_check_class(self.slug)()
 
     def get_payload(self):
         return self.get_check_instance().get_payload(self.identifier)
 
     def get_formatted_data(self):
-        return monitor.get_check_class(self.slug)().format_result_data(self)
+        return datawatch.get_check_class(self.slug)().format_result_data(self)
 
 
 @python_2_unicode_compatible

@@ -14,7 +14,7 @@ from django.test.testcases import TestCase
 from django.conf import settings
 
 from django_datawatch.base import BaseCheck
-from django_datawatch.monitoring import monitor, Scheduler
+from django_datawatch.datawatch import datawatch, Scheduler
 
 
 class CheckRunEvery(BaseCheck):
@@ -28,7 +28,7 @@ class CheckNoRunEvery(BaseCheck):
 class SchedulerTestCase(TestCase):
     @mock.patch('django_datawatch.tests.test_scheduler.CheckNoRunEvery.run')
     def test_skip_no_run_every(self, mock_run):
-        monitor.get_all_registered_checks = mock.MagicMock(return_value=[
+        datawatch.get_all_registered_checks = mock.MagicMock(return_value=[
             CheckNoRunEvery])
         scheduler = Scheduler()
         scheduler.get_last_executions = mock.MagicMock(return_value={})
@@ -37,7 +37,7 @@ class SchedulerTestCase(TestCase):
 
     @mock.patch('django_datawatch.tests.test_scheduler.CheckRunEvery.run')
     def test_no_previous_execution(self, mock_run):
-        monitor.get_all_registered_checks = mock.MagicMock(return_value=[
+        datawatch.get_all_registered_checks = mock.MagicMock(return_value=[
             CheckRunEvery])
         scheduler = Scheduler()
         scheduler.get_last_executions = mock.MagicMock(return_value={})
@@ -47,7 +47,7 @@ class SchedulerTestCase(TestCase):
     @freeze_time('2016-12-01 00:00:00')
     @mock.patch('django_datawatch.tests.test_scheduler.CheckRunEvery.run')
     def test_execution_in_past(self, mock_run):
-        monitor.get_all_registered_checks = mock.MagicMock(return_value=[
+        datawatch.get_all_registered_checks = mock.MagicMock(return_value=[
             CheckRunEvery])
         scheduler = Scheduler()
 
@@ -62,7 +62,7 @@ class SchedulerTestCase(TestCase):
     @freeze_time('2016-01-01 00:00:00')
     @mock.patch('django_datawatch.tests.test_scheduler.CheckRunEvery.run')
     def test_execution_in_future(self, mock_run):
-        monitor.get_all_registered_checks = mock.MagicMock(return_value=[
+        datawatch.get_all_registered_checks = mock.MagicMock(return_value=[
             CheckRunEvery])
         scheduler = Scheduler()
 
@@ -77,7 +77,7 @@ class SchedulerTestCase(TestCase):
     @freeze_time('2016-12-01 00:00:00')
     @mock.patch('django_datawatch.tests.test_scheduler.CheckRunEvery.run')
     def test_execution_in_future_and_force(self, mock_run):
-        monitor.get_all_registered_checks = mock.MagicMock(return_value=[
+        datawatch.get_all_registered_checks = mock.MagicMock(return_value=[
             CheckRunEvery])
         scheduler = Scheduler()
 

@@ -3,7 +3,7 @@ from __future__ import unicode_literals, print_function
 
 from django.apps import AppConfig
 from django.contrib import admin
-from django_datawatch.monitoring import monitor
+from django_datawatch.datawatch import datawatch
 
 
 class DjangoDatawatchConfig(AppConfig):
@@ -13,5 +13,5 @@ class DjangoDatawatchConfig(AppConfig):
     def ready(self):
         super(DjangoDatawatchConfig, self).ready()
 
-        monitor.autodiscover_checks()
+        datawatch.autodiscover_checks()
         admin.autodiscover()

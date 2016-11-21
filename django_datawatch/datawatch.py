@@ -15,7 +15,7 @@ from django_datawatch.defaults import defaults
 logger = logging.getLogger(__name__)
 
 
-class MonitoringHandler(object):
+class DatawatchHandler(object):
     def __init__(self):
         self._registered_checks = {}
         self._related_models = dict()
@@ -46,11 +46,11 @@ class MonitoringHandler(object):
                     continue
 
                 model_uid = make_model_uid(model)
-                monitor._related_models.setdefault(model_uid, list())
-                if check_class not in monitor._related_models[model_uid]:
+                datawatch._related_models.setdefault(model_uid, list())
+                if check_class not in datawatch._related_models[model_uid]:
                     signals.post_save.connect(run_checks, sender=model,
                                               dispatch_uid='django_datawatch')
-                    monitor._related_models[model_uid].append(check_class)
+                    datawatch._related_models[model_uid].append(check_class)
 
         return check_class
 
@@ -73,7 +73,7 @@ class MonitoringHandler(object):
 
     def get_checks_for_model(self, model):
         check_classes = list()
-        for check_class in monitor.get_all_registered_checks():
+        for check_class in datawatch.get_all_registered_checks():
             if check_class.model_class == model:
                 check_classes.append(check_class)
         return check_classes
@@ -91,16 +91,16 @@ class MonitoringHandler(object):
 
     def delete_results(self, sender, instance):
         from django_datawatch.models import Result
-        for check_class in monitor.get_checks_for_model(model=sender):
+        for check_class in datawatch.get_checks_for_model(model=sender):
             check = check_class()
             identifier = check.get_identifier(instance)
             Result.objects.filter(slug=check.slug, identifier=identifier).delete()
 
     def update_related(self, sender, instance):
-        checks = monitor.get_checks_for_related_model(sender) or []
+        checks = datawatch.get_checks_for_related_model(sender) or []
         for check_class in checks:
             check = check_class()
-            backend = monitor.get_backend()
+            backend = datawatch.get_backend()
             model_uid = make_model_uid(instance.__class__)
             mapping = check.get_trigger_update_uid_map()
 
@@ -117,7 +117,7 @@ class MonitoringHandler(object):
             backend.run(slug=check.slug, identifier=check.get_identifier(payload),
                         async=True)
 
-monitor = MonitoringHandler()
+datawatch = DatawatchHandler()
 
 
 class Scheduler(object):
@@ -127,7 +127,7 @@ class Scheduler(object):
         :return:
         """
         now = timezone.now()
-        checks = monitor.get_all_registered_checks()
+        checks = datawatch.get_all_registered_checks()
         last_executions = self.get_last_executions()
 
         for check_class in checks:
@@ -169,7 +169,7 @@ def delete_results(sender, instance, using, **kwargs):
     if not getattr(settings, 'DJANGO_DATAWATCH_RUN_SIGNALS',
                    defaults['RUN_SIGNALS']):
         return
-    monitor.delete_results(sender, instance)
+    datawatch.delete_results(sender, instance)
 
 
 def run_checks(sender, instance, created, raw, using, **kwargs):
@@ -183,4 +183,4 @@ def run_checks(sender, instance, created, raw, using, **kwargs):
     if not getattr(settings, 'DJANGO_DATAWATCH_RUN_SIGNALS',
                    defaults['RUN_SIGNALS']):
         return
-    monitor.update_related(sender, instance)
+    datawatch.update_related(sender, instance)

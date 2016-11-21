@@ -6,7 +6,7 @@ from django import forms
 from django.utils import timezone
 
 from django_datawatch.models import Result, CheckExecution
-from django_datawatch.monitoring import monitor, make_model_uid
+from django_datawatch.datawatch import datawatch, make_model_uid
 
 logger = logging.getLogger(__name__)
 
@@ -62,15 +62,15 @@ class BaseCheck(object):
     model_class = None
 
     def __init__(self):
-        self.slug = monitor.get_slug(self.__module__, self.__class__.__name__)
+        self.slug = datawatch.get_slug(self.__module__, self.__class__.__name__)
 
     def run(self):
-        monitor.get_backend().enqueue(slug=self.slug)
+        datawatch.get_backend().enqueue(slug=self.slug)
         CheckExecution.objects.update_or_create(slug=self.slug, defaults=dict(
             last_run=timezone.now()))
 
     def refresh(self):
-        monitor.get_backend().refresh(slug=self.slug)
+        datawatch.get_backend().refresh(slug=self.slug)
 
     def handle(self, payload):
         # get old result

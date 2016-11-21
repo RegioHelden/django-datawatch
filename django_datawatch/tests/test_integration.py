@@ -4,7 +4,7 @@ from __future__ import unicode_literals, print_function
 from django.test.testcases import TestCase
 
 from django_datawatch.base import BaseCheck
-from django_datawatch.monitoring import monitor
+from django_datawatch.datawatch import datawatch
 
 
 class CheckImplementationTestCase(TestCase):
@@ -49,8 +49,8 @@ def test_generator(check_instance):
     return test
 
 
-monitor.autodiscover_checks()
-for check in monitor.get_all_registered_checks():
+datawatch.autodiscover_checks()
+for check in datawatch.get_all_registered_checks():
     check_instance = check()
     test_name = 'test_{module}_{check}'.format(
         module=check_instance.__module__,

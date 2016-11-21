@@ -5,7 +5,7 @@ from dateutil.relativedelta import relativedelta
 from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext as _
 from django_datawatch.models import Result
-from django_datawatch.monitoring import monitor
+from django_datawatch.datawatch import datawatch
 from django_datawatch.base import BaseCheck, BaseCheckForm, CheckResponse
 from django import forms
 
@@ -17,7 +17,7 @@ class UserHasEnoughBalanceConfig(BaseCheckForm):
     warning = forms.IntegerField(initial=100, label=_('Balance warning'))
 
 
-@monitor.register
+@datawatch.register
 class UserHasEnoughBalance(BaseCheck):
     config_form = UserHasEnoughBalanceConfig
     run_every = relativedelta(hours=2)
