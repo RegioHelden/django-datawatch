@@ -34,11 +34,14 @@ class Backend(BaseBackend):
 
         try:
             payload = check.get_payload(identifier)
-            check.handle(payload)
         except NotImplementedError as e:
             logger.error(e)
+            return
         except ObjectDoesNotExist:
             Result.objects.filter(slug=slug, identifier=identifier).delete()
+            return
+
+        check.handle(payload)
 
     def _get_check_instance(self, slug):
         check_class = monitor.get_check_class(slug)

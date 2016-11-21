@@ -10,13 +10,13 @@ except ImportError:
 
 from django.test.testcases import TestCase, override_settings
 
-from django_datawatch.monitoring import monitor
-from django_datawatch.base import BaseCheck, CheckModelMixin, run_checks
+from django_datawatch.monitoring import monitor, run_checks
+from django_datawatch.base import BaseCheck
 from django_datawatch.models import Result
 
 
 @monitor.register
-class CheckTriggerUpdate(CheckModelMixin, BaseCheck):
+class CheckTriggerUpdate(BaseCheck):
     model_class = Result
     trigger_update = dict(foobar=Result)
 

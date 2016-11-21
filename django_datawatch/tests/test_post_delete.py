@@ -10,8 +10,8 @@ except ImportError:
 
 from django.test.testcases import TestCase, override_settings
 
-from django_datawatch.monitoring import monitor
-from django_datawatch.base import BaseCheck, delete_results
+from django_datawatch.monitoring import monitor, delete_results
+from django_datawatch.base import BaseCheck
 from django_datawatch.models import Result
 
 

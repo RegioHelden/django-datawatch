@@ -3,7 +3,7 @@ from __future__ import unicode_literals, print_function
 
 from django.test.testcases import TestCase
 
-from django_datawatch.base import BaseCheck, CheckModelMixin
+from django_datawatch.base import BaseCheck
 from django_datawatch.monitoring import monitor
 
 
@@ -37,15 +37,14 @@ def test_generator(check_instance):
                     slug=check_instance.slug))
 
         # a resolver method must be implemented for every update trigger
-        if isinstance(check_instance, CheckModelMixin):
-            if check_dict['trigger_update'] is not None:
-                for key, value in check_dict['trigger_update'].items():
-                    method_name = 'get_%s_payload' % key
-                    if method_name not in check_dict:
-                        self.fail(
-                            '{slug} must implement a resolver method for every'
-                            ' trigger_update, {method} is missing'.format(
-                                slug=check_instance.slug, method=method_name))
+        if check_dict['trigger_update'] is not None:
+            for key, value in check_dict['trigger_update'].items():
+                method_name = 'get_%s_payload' % key
+                if method_name not in check_dict:
+                    self.fail(
+                        '{slug} must implement a resolver method for every'
+                        ' trigger_update, {method} is missing'.format(
+                            slug=check_instance.slug, method=method_name))
 
     return test
 

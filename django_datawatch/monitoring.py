@@ -7,6 +7,7 @@ import importlib
 from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from django.utils import timezone
+from django.db.models import signals
 from django.utils.module_loading import autodiscover_modules
 
 from django_datawatch.defaults import defaults
@@ -27,7 +28,29 @@ class MonitoringHandler(object):
         slug = self.get_slug(check_class.__module__, check_class.__name__)
         self._registered_checks[slug] = check_class
         check = check_class()
-        check.register(check_class)
+
+        # register delete
+        if check.model_class is not None:
+            signals.post_delete.connect(delete_results,
+                                        sender=check.model_class,
+                                        dispatch_uid='django_datawatch')
+
+        # register update
+        if check.trigger_update is not None:
+            for keyword, model in check.trigger_update.items():
+                method_name = 'get_%s_payload' % keyword
+                if not hasattr(check, method_name):
+                    logger.warning(
+                        'Update trigger "%s" defined without .%s()',
+                        keyword, method_name)
+                    continue
+
+                model_uid = make_model_uid(model)
+                monitor._related_models.setdefault(model_uid, list())
+                if check_class not in monitor._related_models[model_uid]:
+                    signals.post_save.connect(run_checks, sender=model,
+                                              dispatch_uid='django_datawatch')
+                    monitor._related_models[model_uid].append(check_class)
 
         return check_class
 
@@ -41,19 +64,6 @@ class MonitoringHandler(object):
         if slug in self._registered_checks:
             return self._registered_checks[slug]
         return None
-
-    def related_model_exists(self, check_class, model_uid):
-        monitor._related_models.setdefault(model_uid, list())
-        return check_class not in monitor._related_models[model_uid]
-
-    def related_model_add(self, check_class, model_uid):
-        monitor._related_models[model_uid].append(check_class)
-
-    def update_related(self, sender, instance):
-        checks = monitor.get_checks_for_related_model(sender) or []
-        for check_class in checks:
-            check = check_class()
-            check.update_related(instance)
 
     def get_checks_for_related_model(self, model):
         model_uid = make_model_uid(model)
@@ -85,6 +95,27 @@ class MonitoringHandler(object):
             check = check_class()
             identifier = check.get_identifier(instance)
             Result.objects.filter(slug=check.slug, identifier=identifier).delete()
+
+    def update_related(self, sender, instance):
+        checks = monitor.get_checks_for_related_model(sender) or []
+        for check_class in checks:
+            check = check_class()
+            backend = monitor.get_backend()
+            model_uid = make_model_uid(instance.__class__)
+            mapping = check.get_trigger_update_uid_map()
+
+            if model_uid not in mapping:
+                return
+
+            if not hasattr(check, mapping[model_uid]):
+                return
+
+            payload = getattr(check, mapping[model_uid])(instance)
+            if not payload:
+                return
+
+            backend.run(slug=check.slug, identifier=check.get_identifier(payload),
+                        async=True)
 
 monitor = MonitoringHandler()
 
@@ -132,3 +163,24 @@ def make_model_uid(model):
     :return: uid (string)
     """
     return "%s.%s" % (model._meta.app_label, model.__name__)
+
+
+def delete_results(sender, instance, using, **kwargs):
+    if not getattr(settings, 'DJANGO_DATAWATCH_RUN_SIGNALS',
+                   defaults['RUN_SIGNALS']):
+        return
+    monitor.delete_results(sender, instance)
+
+
+def run_checks(sender, instance, created, raw, using, **kwargs):
+    """
+    Re-execute checks related to the given sender model, only for the
+    updated instance.
+
+    :param sender: model
+    :param kwargs:
+    """
+    if not getattr(settings, 'DJANGO_DATAWATCH_RUN_SIGNALS',
+                   defaults['RUN_SIGNALS']):
+        return
+    monitor.update_related(sender, instance)

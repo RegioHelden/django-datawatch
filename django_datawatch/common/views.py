@@ -5,7 +5,7 @@ from django.views.generic.list import ListView
 
 
 class FilteredListView(FormMixin, ListView):
-    SESSION_KEY = 'herocentral_customer_search_term'
+    SESSION_KEY = 'datawatch_search_term'
 
     def get_form_kwargs(self):
         form_data = self.request.session.get(self.SESSION_KEY, None)

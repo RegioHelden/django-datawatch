@@ -6,7 +6,7 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext as _
 from django_datawatch.models import Result
 from django_datawatch.monitoring import monitor
-from django_datawatch.base import BaseCheck, BaseCheckForm, CheckResponse, CheckModelMixin
+from django_datawatch.base import BaseCheck, BaseCheckForm, CheckResponse
 from django import forms
 
 from example import models
@@ -18,7 +18,7 @@ class UserHasEnoughBalanceConfig(BaseCheckForm):
 
 
 @monitor.register
-class UserHasEnoughBalance(CheckModelMixin, BaseCheck):
+class UserHasEnoughBalance(BaseCheck):
     config_form = UserHasEnoughBalanceConfig
     run_every = relativedelta(hours=2)
     title = _('User balance')
