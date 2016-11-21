@@ -3,10 +3,13 @@ from __future__ import unicode_literals
 import logging
 
 from django import forms
+from django.db.models import signals
+from django.conf import settings
 from django.utils import timezone
 
 from django_datawatch.models import Result, CheckExecution
-from django_datawatch.monitoring import monitor, make_model_uid
+from django_datawatch.monitoring import monitor, make_model_uid, Scheduler
+from django_datawatch.defaults import defaults
 
 logger = logging.getLogger(__name__)
 
@@ -58,7 +61,6 @@ class BaseCheck(object):
     title = ''
     max_acknowledge = None
     run_every = None
-    trigger_update = dict()
 
     def __init__(self):
         self.slug = monitor.get_slug(self.__module__, self.__class__.__name__)
@@ -141,6 +143,9 @@ class BaseCheck(object):
     def get_identifier(self, payload):
         raise NotImplementedError(".get_identifier() should be overridden")
 
+    def register(self, check_class):
+        pass
+
     def get_payload_description(self, payload):
         return str(payload)
 
@@ -167,8 +172,80 @@ class BaseCheck(object):
     def get_max_acknowledge(self):
         return self.max_acknowledge
 
+
+class CheckModelMixin(object):
+    trigger_update = dict()
+    model_class = None
+
+    def get_identifier(self, payload):
+        return payload.pk
+
+    def get_payload(self, identifier):
+        return self.model_class.objects.get(pk=identifier)
+
     def get_trigger_update_uid_map(self):
         mapping = {}
         for method_name, model in self.trigger_update.items():
             mapping[make_model_uid(model)] = 'get_%s_payload' % method_name
         return mapping
+
+    def update_related(self, instance):
+        backend = monitor.get_backend()
+        model_uid = make_model_uid(instance.__class__)
+        mapping = self.get_trigger_update_uid_map()
+
+        if model_uid not in mapping:
+            return
+
+        if not hasattr(self, mapping[model_uid]):
+            return
+
+        payload = getattr(self, mapping[model_uid])(instance)
+        if not payload:
+            return
+
+        backend.run(slug=self.slug, identifier=self.get_identifier(payload),
+                    async=True)
+
+    def register(self, check_class):
+        # register delete signal
+        if self.model_class:
+            signals.post_delete.connect(delete_results,
+                                        sender=self.model_class,
+                                        dispatch_uid='django_datawatch')
+
+        # register update
+        for keyword, model in self.trigger_update.items():
+            method_name = 'get_%s_payload' % keyword
+            if not hasattr(self, method_name):
+                logger.warning(
+                    'Update trigger "%s" defined without implementing .%s()',
+                    keyword, method_name)
+                continue
+
+            model_uid = make_model_uid(model)
+            if not monitor.related_model_exists(check_class, model_uid):
+                signals.post_save.connect(run_checks, sender=model,
+                                          dispatch_uid='django_datawatch')
+            monitor.related_model_add(check_class, model_uid)
+
+
+def delete_results(sender, instance, using, **kwargs):
+    if not getattr(settings, 'DJANGO_DATAWATCH_RUN_SIGNALS',
+                   defaults['RUN_SIGNALS']):
+        return
+    monitor.delete_results(sender, instance)
+
+
+def run_checks(sender, instance, created, raw, using, **kwargs):
+    """
+    Re-execute checks related to the given sender model, only for the
+    updated instance.
+
+    :param sender: model
+    :param kwargs:
+    """
+    if not getattr(settings, 'DJANGO_DATAWATCH_RUN_SIGNALS',
+                   defaults['RUN_SIGNALS']):
+        return
+    monitor.update_related(sender, instance)

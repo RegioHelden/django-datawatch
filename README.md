@@ -94,7 +94,7 @@ $ ./manage.py monitoring_refresh_results --slug=example.checks.UserHasEnoughBala
 ```python
 DJANGO_DATAWATCH_BACKEND = 'django_datawatch.backends.synchronous'
 DJANGO_DATAWATCH_CELERY_QUEUE_NAME = 'django_datawatch'
-DJANGO_DATAWATCH_RUN_POST_SAVE_SIGNALS = True
+DJANGO_DATAWATCH_RUN_SIGNALS = True
 ```
 
 ### DJANGO_DATAWATCH_BACKEND
@@ -109,7 +109,7 @@ You can customize the celery queue name for async tasks (applies only if celery 
 
 Default: 'django_datawatch'
 
-### DJANGO_DATAWATCH_RUN_POST_SAVE_SIGNALS
+### DJANGO_DATAWATCH_RUN_SIGNALS
 
 Use this setting to disable running post_save updates during unittests if required.
 

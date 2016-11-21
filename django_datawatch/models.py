@@ -12,7 +12,7 @@ from model_utils.choices import Choices
 from model_utils.models import TimeStampedModel
 
 from .monitoring import monitor
-from .querysets import CheckQuerySet
+from .querysets import ResultQuerySet
 
 
 class AlreadyAcknowledged(Exception):
@@ -47,7 +47,7 @@ class Result(TimeStampedModel):
                                          related_name='assigned_to_user')
     assigned_to_group = models.ForeignKey(to='auth.Group', null=True, blank=True)
 
-    objects = CheckQuerySet.as_manager()
+    objects = ResultQuerySet.as_manager()
 
     class Meta:
         unique_together = ('slug', 'identifier')

@@ -10,7 +10,7 @@ from django.utils import timezone
 from django_datawatch.monitoring import monitor
 
 
-class CheckQuerySet(models.QuerySet):
+class ResultQuerySet(models.QuerySet):
     def for_user(self, user):
         return self.filter(Q(assigned_to_group__isnull=True) | Q(assigned_to_group__in=user.groups.all()),
                            Q(assigned_to_user__isnull=True) | Q(assigned_to_user=user))

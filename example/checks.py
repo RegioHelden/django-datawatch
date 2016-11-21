@@ -6,7 +6,7 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext as _
 from django_datawatch.models import Result
 from django_datawatch.monitoring import monitor
-from django_datawatch.base import BaseCheck, BaseCheckForm, CheckResponse
+from django_datawatch.base import BaseCheck, BaseCheckForm, CheckResponse, CheckModelMixin
 from django import forms
 
 from example import models
@@ -18,13 +18,14 @@ class UserHasEnoughBalanceConfig(BaseCheckForm):
 
 
 @monitor.register
-class UserHasEnoughBalance(BaseCheck):
+class UserHasEnoughBalance(CheckModelMixin, BaseCheck):
     config_form = UserHasEnoughBalanceConfig
     run_every = relativedelta(hours=2)
     title = _('User balance')
     template_name = 'example/checks/user_has_enough_balance.html'
     max_acknowledge = 7
     trigger_update = dict(wallet=models.Wallet, user=get_user_model())
+    model_class = models.Wallet
 
     def generate(self):
         for payload in models.Wallet.objects.all():
