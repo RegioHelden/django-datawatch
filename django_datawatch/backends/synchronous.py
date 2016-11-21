@@ -1,7 +1,13 @@
 # -*- coding: UTF-8 -*-
+import logging
+
+from django.core.exceptions import ObjectDoesNotExist
+
 from django_datawatch.backends.base import BaseBackend
 from django_datawatch.models import Result
 from django_datawatch.monitoring import monitor
+
+logger = logging.getLogger(__name__)
 
 
 class Backend(BaseBackend):
@@ -14,8 +20,8 @@ class Backend(BaseBackend):
             for payload in check.generate():
                 monitor.get_backend().run(
                     check.slug, check.get_identifier(payload))
-        except NotImplementedError:
-            pass
+        except NotImplementedError as e:
+            logger.error(e)
 
     def refresh(self, slug, async=True):
         for result in Result.objects.filter(slug=slug):
@@ -26,8 +32,13 @@ class Backend(BaseBackend):
         if not check:
             return
 
-        payload = check.get_payload(identifier)
-        check.handle(payload)
+        try:
+            payload = check.get_payload(identifier)
+            check.handle(payload)
+        except NotImplementedError as e:
+            logger.error(e)
+        except ObjectDoesNotExist:
+            Result.objects.filter(slug=slug, identifier=identifier).delete()
 
     def _get_check_instance(self, slug):
         check_class = monitor.get_check_class(slug)

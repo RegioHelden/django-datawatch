@@ -131,17 +131,20 @@ class BaseCheck(object):
         """
         yield items to run check for
         """
-        raise NotImplementedError(".generate() should be overridden")
+        raise NotImplementedError(".generate() must be overridden")
 
     def check(self, payload):
         """
         :param payload: the payload to run the check for
         :return:
         """
-        raise NotImplementedError(".check() should be overridden")
+        raise NotImplementedError(".check() must be overridden")
 
     def get_identifier(self, payload):
-        raise NotImplementedError(".get_identifier() should be overridden")
+        raise NotImplementedError(".get_identifier() must be overridden")
+
+    def get_payload(self, identifier):
+        raise NotImplementedError(".get_payload() must be overridden")
 
     def register(self, check_class):
         pass
