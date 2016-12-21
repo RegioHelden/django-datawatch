@@ -37,7 +37,7 @@ class CheckTime(BaseCheck):
     run_every = relativedelta(minute=5)  # scheduler will execute this check every 5 minutes
 
     def generate(self):
-        yield datetime.datetime.now()
+        yield datetime.now()
 
     def check(self, payload):
         response = CheckResponse()
