@@ -138,6 +138,8 @@ Default: True
 We've included an example app to show how django_datawatch works.
 Start by launching the included vagrant machine.
 ```bash
+vagrant plugin install vagrant-hostmanager
+vagrant plugin install vagrant-vbguest
 vagrant up
 vagrant ssh
 ```
