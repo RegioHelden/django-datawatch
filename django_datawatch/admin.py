@@ -10,7 +10,7 @@ from django_datawatch.models import Result, CheckExecution
 class CheckAdmin(admin.ModelAdmin):
     list_display = ('slug', 'identifier', 'status')
     search_fields = ('slug', 'identifier', 'payload_description')
-    list_filter = ('status', )
+    list_filter = ('status', 'slug', 'assigned_to_group')
 
 
 @admin.register(CheckExecution)
