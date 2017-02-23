@@ -1,7 +1,6 @@
 celery==3.1.23
 Django==1.10.2
 django-bootstrap3==7.1.0
-django-braces==1.9.0
 django-extensions==1.7.4
 django-model-utils==2.6
 freezegun==0.3.7

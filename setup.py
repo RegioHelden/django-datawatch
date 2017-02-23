@@ -13,7 +13,6 @@ setup(
         'celery>=3.1.23',
         'Django>=1.9',
         'django-bootstrap3>=7.0.1',
-        'django-braces>=1.9.0',
         'django-extensions>=1.6.7',
         'django-model-utils>=2.5',
         'freezegun>=0.3.7',
