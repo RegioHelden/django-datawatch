@@ -51,5 +51,5 @@ class PostDeleteTestCase(TestCase):
         # test if delete has been called
         datawatch.delete_results(sender=Result, instance=Result(pk=1))
         manager.filter.assert_called_with(slug=CheckPostDelete().slug, identifier=1)
-        manager_filtered.delete.assert_called()
+        manager_filtered.delete.assert_called_with()
 
