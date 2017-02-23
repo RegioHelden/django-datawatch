@@ -2,6 +2,20 @@ Changelog
 =========
 
 
+0.2.1 (2017-02-23)
+------------------
+- Adding new release. [Mounir Messelmeni]
+- Adding slug and group filtering for results. [Mounir Messelmeni]
+- Removing django-braces dependency and use builtin Django mixins.
+  [Mounir Messelmeni]
+- Updating changelog. [Mounir]
+- Adding changelog. [Mounir]
+- Adding missing vagrant plugins. [Mounir]
+- Fix broken example for datetime. [Mounir]
+- Test on python 3.4 as used in the vm. [Jens Nistler]
+- Update translations, refs #27. [Jens Nistler]
+
+
 0.2.0 (2016-11-21)
 ------------------
 - Remove all wordings of monitoring and replace by datawatch, fixes #27.
@@ -131,4 +145,6 @@ Changelog
 - Update setup.cfg. [Jens Nistler]
 - Add monitoring and example app. [Jens Nistler]
 - Preparing for PyPI. Vagrant setup for development. [Bogdan Radko]
+
+
 
