@@ -1,14 +1,25 @@
 # -*- coding: UTF-8 -*-
+from os.path import join, dirname
 from setuptools import setup, find_packages
+
+
+def long_description():
+    """Return long description from README.rst if it's present
+    because it doesn't get installed."""
+    try:
+        return open(join(dirname(__file__), 'README.md')).read()
+    except IOError:
+        return ''
 
 
 setup(
     name='django-datawatch',
     packages=find_packages(exclude=['example*']),
-    version='0.2.0',
+    version='0.2.1',
     description='Django Datawatch runs automated data checks in your Django installation',
     author='Jens Nistler <opensource@jensnistler.de>, Bogdan Radko',
     author_email='opensource@regiohelden.de',
+    long_description=long_description(),
     install_requires=[
         'celery>=3.1.23',
         'Django>=1.9',
