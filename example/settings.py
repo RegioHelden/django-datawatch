@@ -171,7 +171,6 @@ STATIC_URL = '/static/'
 
 BROKER_URL = 'amqp://'
 
-# django-braces settings
 LOGIN_URL = '/admin/'
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'

@@ -1,19 +1,19 @@
 # -*- coding: UTF-8 -*-
 import logging
 
-from braces.views import PermissionRequiredMixin, LoginRequiredMixin
+from django.contrib import messages
+from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.core.urlresolvers import reverse_lazy
 from django.http.response import Http404, HttpResponseRedirect
 from django.utils.translation import gettext_lazy as _
 from django.views.generic.base import RedirectView
 from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import UpdateView, FormView
-from django.contrib import messages
 
 from django_datawatch import forms
 from django_datawatch.common.views import FilteredListView
-from django_datawatch.models import Result
 from django_datawatch.datawatch import datawatch
+from django_datawatch.models import Result
 
 logger = logging.getLogger(__name__)
 
