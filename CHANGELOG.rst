@@ -2,6 +2,26 @@ Changelog
 =========
 
 
+0.2.0 (2016-11-21)
+------------------
+- Remove all wordings of monitoring and replace by datawatch, fixes #27.
+  [Jens Nistler]
+- Make all checks model based, refs #26. [Jens Nistler]
+- Catch does not exist for deleted models, refs #26. [Jens Nistler]
+- Delete results of deleted model instances, closes #26. [Jens Nistler]
+- Fix celery refresh task, fixes #25. [Jens Nistler]
+- Support batch refreshing check results, release 0.1.21, fixes #25.
+  [Jens Nistler]
+- Release 0.1.20. [Jens Nistler]
+- Redirect to index instead of 404 if check result does not exist
+  (anymore), fixes #24. [Jens Nistler]
+- Use synchronous backend in example app, fixes #23. [Jens Nistler]
+- Extend run command to support running a single check, release 0.1.19,
+  fixes #22. [Jens Nistler]
+- Add command to list all registered checks, refs #22. [Jens Nistler]
+- Format description and result data, closes #21. [Jens Nistler]
+
+
 0.1.18 (2016-10-25)
 -------------------
 - Change config, add tests for trigger_update deactivation, refs #8.
@@ -111,3 +131,4 @@ Changelog
 - Update setup.cfg. [Jens Nistler]
 - Add monitoring and example app. [Jens Nistler]
 - Preparing for PyPI. Vagrant setup for development. [Bogdan Radko]
+
