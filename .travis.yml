@@ -23,7 +23,7 @@ before_script:
   - psql -c "CREATE DATABASE travisdb;" -U postgres
 
 # run tests
-script: coverage run --source=django-datawatch manage.py test
+script: coverage run --source=django_datawatch manage.py test
 
 # Report to coveralls
 after_success:
