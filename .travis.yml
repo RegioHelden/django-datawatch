@@ -8,6 +8,7 @@ python:
 env:
     - DJANGO="Django==1.9.12"
     - DJANGO="Django==1.10.5"
+    - DJANGO="Django==1.11.9"
 
 # install dependencies
 install:

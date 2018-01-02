@@ -118,7 +118,7 @@ class BaseCheck(object):
                         assigned_to_group=self.get_assigned_group(payload, status),
                         payload_description=self.get_payload_description(payload))
         if unacknowledge:
-            defaults.update(dict(acknowledge_by=None, acknowledge_at=None, acknowledge_until=None))
+            defaults.update(dict(acknowledged_by=None, acknowledged_at=None, acknowledged_until=None))
 
         # save the check
         dataset, created = Result.objects.update_or_create(
