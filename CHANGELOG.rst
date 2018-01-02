@@ -2,6 +2,26 @@ Changelog
 =========
 
 
+0.2.3 (2018-01-02)
+------------------
+- Add new release. [Mounir Messelmeni]
+- Fix wrong fields names. [Mounir Messelmeni]
+- Adding coverage badge. [Mounir]
+- Adding support for coveralls integration with travisci (#35) [Mounir]
+
+  Adding support for coveralls integration with travisci
+- Merge pull request #34 from
+  RegioHelden/test_against_different_django_versions. [Mounir]
+
+  Test against different django versions
+- Fix error with python 3.5 in testing. [Mounir Messelmeni]
+- Make travis test against different django version and newer python
+  version. [Mounir Messelmeni]
+- Add more badges. [Mounir]
+- Fixing pypi badge. [Mounir]
+- Updating changelog. [Mounir Messelmeni]
+
+
 0.2.1 (2017-02-23)
 ------------------
 - Adding new release. [Mounir Messelmeni]
