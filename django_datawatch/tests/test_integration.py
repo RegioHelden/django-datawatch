@@ -31,7 +31,7 @@ def test_generator(check_instance):
                 slug=check_instance.slug))
 
         # generate must be implemented if task should be running periodically
-        if check_dict['run_every'] is not None:
+        if check_dict.get('run_every', None) is not None:
             if 'generate' not in check_dict:
                 self.fail('{slug} must implement the generate method'.format(
                     slug=check_instance.slug))

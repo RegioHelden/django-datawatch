@@ -22,6 +22,9 @@ class CheckPostDelete(BaseCheck):
     def get_identifier(self, payload):
         return payload.pk
 
+    def check(self, payload):
+        return payload
+
 
 class PostDeleteTestCase(TestCase):
     @override_settings(DJANGO_DATAWATCH_RUN_SIGNALS=True)
