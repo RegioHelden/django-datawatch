@@ -26,6 +26,9 @@ class CheckTriggerUpdate(BaseCheck):
     def get_identifier(self, payload):
         return payload.pk
 
+    def check(self, payload):
+        return payload
+
 
 class TriggerUpdateTestCase(TestCase):
     @override_settings(DJANGO_DATAWATCH_RUN_SIGNALS=True)
