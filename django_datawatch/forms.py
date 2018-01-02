@@ -11,7 +11,8 @@ from django_datawatch.datawatch import datawatch
 
 class ResultFilterForm(forms.Form):
     STATUS_CHOICES = Choices((0, 'all', _('All')), (1, 'failed', _('Failed')))
-    CHECK_CHOICES = [('', _('All'))] + [(obj().slug, obj().get_title()) for obj in datawatch.get_all_registered_checks()]
+    CHECK_CHOICES = [('', _('All'))] + [(obj().slug, obj().get_title())
+                                        for obj in datawatch.get_all_registered_checks()]
 
     user = forms.ModelChoiceField(queryset=get_user_model().objects.all().order_by('first_name', 'last_name'),
                                   label=_('User'), required=False)

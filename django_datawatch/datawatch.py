@@ -1,13 +1,13 @@
 # -*- coding: UTF-8 -*-
 from __future__ import unicode_literals
 
-import logging
 import importlib
+import logging
 
 from dateutil.relativedelta import relativedelta
 from django.conf import settings
-from django.utils import timezone
 from django.db.models import signals
+from django.utils import timezone
 from django.utils.module_loading import autodiscover_modules
 
 from django_datawatch.defaults import defaults
@@ -116,6 +116,7 @@ class DatawatchHandler(object):
 
             backend.run(slug=check.slug, identifier=check.get_identifier(payload),
                         async=True)
+
 
 datawatch = DatawatchHandler()
 

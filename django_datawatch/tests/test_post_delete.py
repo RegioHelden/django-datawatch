@@ -1,18 +1,13 @@
 # -*- coding: UTF-8 -*-
 from __future__ import unicode_literals, print_function
 
-from django_datawatch.querysets import ResultQuerySet
-
-try:
-    from unittest import mock
-except ImportError:
-    import mock
-
+import mock
 from django.test.testcases import TestCase, override_settings
 
-from django_datawatch.datawatch import datawatch, delete_results
 from django_datawatch.base import BaseCheck
+from django_datawatch.datawatch import datawatch, delete_results
 from django_datawatch.models import Result
+from django_datawatch.querysets import ResultQuerySet
 
 
 @datawatch.register
@@ -55,4 +50,3 @@ class PostDeleteTestCase(TestCase):
         datawatch.delete_results(sender=Result, instance=Result(pk=1))
         manager.filter.assert_called_with(slug=CheckPostDelete().slug, identifier=1)
         manager_filtered.delete.assert_called_with()
-

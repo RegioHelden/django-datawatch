@@ -1,4 +1,6 @@
 # -*- coding: UTF-8 -*-
+from six import iteritems
+
 from django.db.models.base import Model
 from django.views.generic.edit import FormMixin
 from django.views.generic.list import ListView
@@ -22,7 +24,7 @@ class FilteredListView(FormMixin, ListView):
         self.object_list = form.filter_queryset(request, self.object_list)
         if form.is_valid():
             form_data = dict()
-            for k, v in form.cleaned_data.iteritems():
+            for k, v in iteritems(form.cleaned_data):
                 if isinstance(v, Model):
                     v = v.pk
                 form_data[k] = v
