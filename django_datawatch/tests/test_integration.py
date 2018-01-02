@@ -37,7 +37,7 @@ def test_generator(check_instance):
                     slug=check_instance.slug))
 
         # a resolver method must be implemented for every update trigger
-        if check_dict['trigger_update'] is not None:
+        if check_dict.get('trigger_update', None) is not None:
             for key, value in check_dict['trigger_update'].items():
                 method_name = 'get_%s_payload' % key
                 if method_name not in check_dict:
