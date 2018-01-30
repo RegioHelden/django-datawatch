@@ -2,6 +2,12 @@ Changelog
 =========
 
 
+0.2.4 (2018-01-30)
+------------------
+- Add new release. [Vladimir Potter]
+- Set max value to 365 for `days` field in AcknowledgeForm. [Vladimir Potter]
+
+
 0.2.3 (2018-01-02)
 ------------------
 - Add new release. [Mounir Messelmeni]

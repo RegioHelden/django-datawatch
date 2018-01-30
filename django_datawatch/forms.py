@@ -49,7 +49,7 @@ class ResultFilterForm(forms.Form):
 
 
 class AcknowledgeForm(forms.ModelForm):
-    days = forms.IntegerField(min_value=1, label=_('Days to acknowledge'))
+    days = forms.IntegerField(min_value=1, max_value=365, label=_('Days to acknowledge'))
 
     class Meta:
         model = Result
