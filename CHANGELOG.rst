@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.2.5 (2018-02-16)
+------------------
+- Handle and log exceptions during post_save of datawatch to not break the
+business logic of the main application using datawatch #37 [Jens Nistler]
+
 
 0.2.4 (2018-01-30)
 ------------------

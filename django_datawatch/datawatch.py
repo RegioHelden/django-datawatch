@@ -184,4 +184,7 @@ def run_checks(sender, instance, created, raw, using, **kwargs):
     if not getattr(settings, 'DJANGO_DATAWATCH_RUN_SIGNALS',
                    defaults['RUN_SIGNALS']):
         return
-    datawatch.update_related(sender, instance)
+    try:
+        datawatch.update_related(sender, instance)
+    except Exception as e:
+        logger.exception(e)
