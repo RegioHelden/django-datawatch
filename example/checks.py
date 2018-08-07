@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 from __future__ import unicode_literals, print_function
 
-from dateutil.relativedelta import relativedelta
+from celery.schedules import crontab
 from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext as _
 from django_datawatch.models import Result
@@ -20,7 +20,7 @@ class UserHasEnoughBalanceConfig(BaseCheckForm):
 @datawatch.register
 class UserHasEnoughBalance(BaseCheck):
     config_form = UserHasEnoughBalanceConfig
-    run_every = relativedelta(hours=2)
+    run_every = crontab(hour='*/2')
     title = _('User balance')
     template_name = 'example/checks/user_has_enough_balance.html'
     max_acknowledge = 7

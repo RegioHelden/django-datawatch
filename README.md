@@ -28,7 +28,7 @@ Create `checks.py` inside your module.
 ```python
 from datetime import datetime
 
-from dateutil.relativedelta import relativedelta
+from celery.schedules import crontab
 
 from django_datawatch.datawatch import datawatch
 from django_datawatch.base import BaseCheck, CheckResponse
@@ -37,7 +37,7 @@ from django_datawatch.models import Result
 
 @datawatch.register
 class CheckTime(BaseCheck):
-    run_every = relativedelta(minute=5)  # scheduler will execute this check every 5 minutes
+    run_every = crontab(minute='*/5')  # scheduler will execute this check every 5 minutes
 
     def generate(self):
         yield datetime.now()

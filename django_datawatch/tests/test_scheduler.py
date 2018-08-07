@@ -8,7 +8,7 @@ try:
 except ImportError:
     import mock
 
-from dateutil import relativedelta
+from celery.schedules import crontab
 from freezegun import freeze_time
 from django.test.testcases import TestCase
 from django.conf import settings
@@ -18,7 +18,7 @@ from django_datawatch.datawatch import datawatch, Scheduler
 
 
 class CheckRunEvery(BaseCheck):
-    run_every = relativedelta.relativedelta(days=1)
+    run_every = crontab(hour=0, minute=0)
 
 
 class CheckNoRunEvery(BaseCheck):

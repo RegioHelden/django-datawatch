@@ -4,10 +4,9 @@ from __future__ import unicode_literals
 import importlib
 import logging
 
-from dateutil.relativedelta import relativedelta
+from celery.schedules import crontab
 from django.conf import settings
 from django.db.models import signals
-from django.utils import timezone
 from django.utils.module_loading import autodiscover_modules
 
 from django_datawatch.defaults import defaults
@@ -127,7 +126,6 @@ class Scheduler(object):
         :param force: <bool> force all registered checks to be executed
         :return:
         """
-        now = timezone.now()
         checks = datawatch.get_all_registered_checks()
         last_executions = self.get_last_executions()
 
@@ -139,12 +137,17 @@ class Scheduler(object):
                 continue
 
             # check is not meant to be run periodically
-            if not isinstance(check_class.run_every, relativedelta):
+            if check_class.run_every is None:
+                continue
+
+            # schedule defined in an invalid format
+            if not isinstance(check_class.run_every, crontab):
+                logger.warning('run_every must be an instance of crontab')
                 continue
 
             # shall the check be run again?
             if not force and check.slug in last_executions:
-                if now + check.run_every < last_executions[check.slug]:
+                if not check_class.run_every.is_due(last_run_at=last_executions[check.slug]).is_due:
                     continue
 
             # enqueue the check and save execution state
