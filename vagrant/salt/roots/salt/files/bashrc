@@ -1,8 +1,0 @@
-# alias ls to show more information
-alias ls='ls -al --color=auto'
-
-# activate virtual env
-. /home/vagrant/virtualenv/bin/activate
-
-# cd to vagrant dir
-cd /vagrant

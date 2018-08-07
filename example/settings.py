@@ -91,10 +91,10 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'vagrant',
-            'USER': 'vagrant',
-            'PASSWORD': 'vagrant',
-            'HOST': '127.0.0.1',
+            'NAME': 'app',
+            'USER': 'app',
+            'PASSWORD': 'app',
+            'HOST': 'db',
             'PORT': '5432',
         },
     }
@@ -169,7 +169,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-BROKER_URL = 'amqp://'
+BROKER_URL = 'amqp://rabbitmq'
 
 LOGIN_URL = '/admin/'
 

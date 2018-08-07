@@ -139,37 +139,29 @@ Default: True
 # CONTRIBUTE
 
 We've included an example app to show how django_datawatch works.
-Start by launching the included vagrant machine.
+Start by launching the included docker container.
 ```bash
-vagrant plugin install vagrant-hostmanager
-vagrant plugin install vagrant-vbguest
-vagrant up
-vagrant ssh
+docker-compose up -d
 ```
 
 Then setup the example app environment.
 ```bash
-./manage.py migrate
-./manage.py loaddata example
+docker-compose exec django ./manage.py migrate
+docker-compose exec django ./manage.py loaddata example
 ```
 The installed superuser is "example" with password "datawatch".
 
-Run the development webserver.
-```bash
-./manage.py runserver 0.0.0.0:8000
-```
-
-Login on the admin interface and open http://ddw.dev:8000/ afterwards.
+Login on the admin interface and open http://127.0.99.1:8000/ afterwards.
 You'll be prompted with an empty dashboard. That's because we didn't run any checks yet.
 Let's enqueue an update.
 ```bash
-./manage.py datawatch_run_checks --force
+docker-compose exec django ./manage.py datawatch_run_checks --force
 ```
 
 The checks for the example app are run synchronously and should be updated immediately.
 If you decide to switch to the celery backend, you should now start a celery worker to process the checks.
 ```bash
-celery worker -A example -l DEBUG -Q django_datawatch
+docker-compose exec django celery worker -A example -l DEBUG -Q django_datawatch
 ```
 
 You will see some failed check now after you refreshed the dashboard view.
