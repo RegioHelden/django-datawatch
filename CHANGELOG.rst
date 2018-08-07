@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.2.8 (2018-08-07)
+------------------
+- Add missing migration from 0.2.7 [Jens Nistler]
+- Switch from vagrant to docker for test environment [Jens Nistler]
+
+
 0.2.7 (2018-08-07)
 ------------------
 - Drop Django 1.9 from CI tests [Steffen Zieger]
