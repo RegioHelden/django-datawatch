@@ -175,3 +175,7 @@ celery worker -A example -l DEBUG -Q django_datawatch
 You will see some failed check now after you refreshed the dashboard view.
 
 ![Django Datawatch dashboard](http://static.jensnistler.de/django_datawatch.png "Django Datawatch dashboard")
+
+# Making a new release
+
+Add your changes to the CHANGELOG and run `bumpversion <major|minor|patch>`, then push (including tags)
