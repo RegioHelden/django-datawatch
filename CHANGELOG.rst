@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.3.0 (2018-08-07)
+------------------
+
+- BREAKING CHANGE! Switch from relativedelta to celerys crontab for run_every defintions [Jens Nistler]
+
+
 0.2.8 (2018-08-07)
 ------------------
 - Add missing migration from 0.2.7 [Jens Nistler]
