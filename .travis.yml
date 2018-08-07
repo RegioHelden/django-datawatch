@@ -1,21 +1,21 @@
 language: python
 python:
-  - "2.7"
-  - "3.5"
-  - "3.6"
+  - 2.7
+  - 3.5
+  - 3.6
 
 env:
-  - DJANGO="Django==1.10.5"
-  - DJANGO="Django==1.11.9"
-  - DJANGO="Django==2.1"
+  - DJANGO_VERSION=1.10.5
+  - DJANGO_VERSION=1.11.9
+  - DJANGO_VERSION=2.1
 
 matrix:
   exclude:
     - python: 2.7
-      env: DJANGO="Django==2.1"
+      env: DJANGO_VERSION=2.1
 
 addons:
-  postgresql: "9.4"
+  postgresql: 9.4
 
 before_install:
   - sudo apt-get update
@@ -23,7 +23,7 @@ before_install:
   - sudo apt-get install postgresql-server-dev-9.4
 
 install:
-  - pip install $DJANGO
+  - pip install -q Django==$DJANGO_VERSION
   - pip install .
   - pip install -r requirements-test.txt
   - pip install coveralls
