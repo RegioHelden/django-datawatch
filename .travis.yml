@@ -6,37 +6,42 @@ python:
   - "3.6"
 
 env:
-    - DJANGO="Django==1.9.12"
-    - DJANGO="Django==1.10.5"
-    - DJANGO="Django==1.11.9"
+  - DJANGO="Django==1.9.12"
+  - DJANGO="Django==1.10.5"
+  - DJANGO="Django==1.11.9"
 
 addons:
   postgresql: "9.4"
 
 before_install:
   - sudo apt-get update
-  # Avoid error from psycopg2 Error: could not determine PostgreSQL version from '10.1'
   - sudo apt-get remove libpq-dev -y
   - sudo apt-get install postgresql-server-dev-9.4
 
-# install dependencies
 install:
   - pip install $DJANGO
   - pip install .
   - pip install -r requirements-test.txt
   - pip install coveralls
 
-# database setup
 services:
   - postgresql
+
 before_script:
   - psql -c "CREATE DATABASE travisdb;" -U postgres
 
-# run tests
 script:
   - coverage run --source=django_datawatch manage.py test
   - flake8 django_datawatch
 
-# Report to coveralls
 after_success:
   - coveralls
+
+deploy:
+  provider: pypi
+  user: RegioHelden
+  password:
+    secure: Pbp4SnBKYRbo5t541gFQWvY+ZikSJZ1s8cp9YG2c5NRhbCapdV+fAag3yWvKUWWlnmv8KeEsCXSmoC8Apw4RPoDVMkg1tcx+KjyWc6hFjhHtBbUmgTgGpZtEsxdJR9ykV3fwhFImatQxSk7m1dCY+jEUT1vbOmjaASrd9SNogE9mQZ4V5goflmWUeDBeGLaYHrlKCgTxeQVNwbO1pzP+iTkPi4oMeBONXhCP7F2xd8QUEi8IuhNLn1MCmLysV5J5bgzlchQ4y7RdAJcDo1pqtf364Rn3MDRgU4iGAi6xLej5WALjYH2vAO0CQkCw95cMf+jo7OcOA4hIBVJoET2K8iRm0Ipq+GEsr7aws/3qBPbsHG3h1NxxeRphUT4REpeVo2ZIYP29kFTW3431TCUduS3vm8AdN+AJIA1sbUpjXxOKDlTxFrKOYGyC8GvV2vzQgEKIK8X/h+XMll1THwUc/024LwB9n2bxpS/FZ2+lw7fLrRMi6bUWU5AJq20V9y8uFkKHn+WsBYl3dwus2Nsj1slgJuBc0sAZB5Zgpitew42doMpL3nKSwJc/E9J1AwkrPIzqwmTaYyqcsOsgqO/FAnVqhM1/5Y7beUREjqUKdYZSCbuexer/ZP7sXhGWU9U/w9cKOr2lLTEMQQ2RcdGOSKTswY0g8MDjnl5xEtZrFl4=
+  on:
+    tags: true
+    all_branches: true
