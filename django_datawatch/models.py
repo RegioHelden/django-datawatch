@@ -38,14 +38,14 @@ class Result(TimeStampedModel):
 
     acknowledged_by = models.ForeignKey(to=settings.AUTH_USER_MODEL, null=True, blank=True,
                                         verbose_name=_('Acknowledged by'),
-                                        related_name='acknowledged_by')
+                                        related_name='acknowledged_by', on_delete=models.CASCADE)
     acknowledged_at = models.DateTimeField(null=True, blank=True, verbose_name=_('Acknowledged at'))
     acknowledged_until = models.DateTimeField(null=True, blank=True, verbose_name=_('Acknowledged until'))
     acknowledged_reason = models.TextField(blank=True, verbose_name=_('Acknowledge reason'))
 
     assigned_to_user = models.ForeignKey(to=settings.AUTH_USER_MODEL, null=True, blank=True,
-                                         related_name='assigned_to_user')
-    assigned_to_group = models.ForeignKey(to='auth.Group', null=True, blank=True)
+                                         related_name='assigned_to_user', on_delete=models.SET_NULL)
+    assigned_to_group = models.ForeignKey(to='auth.Group', null=True, blank=True, on_delete=models.SET_NULL)
 
     objects = ResultQuerySet.as_manager()
 
