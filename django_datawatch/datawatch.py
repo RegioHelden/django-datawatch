@@ -144,7 +144,7 @@ class Scheduler(object):
 
             # shall the check be run again?
             if not force and check.slug in last_executions:
-                if now < last_executions[check.slug] + check.run_every:
+                if now + check.run_every < last_executions[check.slug]:
                     continue
 
             # enqueue the check and save execution state
