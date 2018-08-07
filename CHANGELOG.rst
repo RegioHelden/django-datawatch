@@ -1,6 +1,15 @@
 Changelog
 =========
 
+0.2.7 (2018-08-07)
+------------------
+- Drop Django 1.9 from CI tests [Steffen Zieger]
+- Add Django 2.1 to CI tests [Steffen Zieger]
+- Add deployment to travis config [Steffen Zieger]
+- Use bumpversion for new releases [Steffen Zieger]
+- Fixes for Django 2.1 support [Steffen Zieger]
+
+
 0.2.6 (2018-08-07)
 ------------------
 - Fix scheduler [Steffen Zieger]
