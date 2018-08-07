@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.2.6 (2018-08-07)
+------------------
+- Fix scheduler [Steffen Zieger]
+
+
 0.2.5 (2018-02-16)
 ------------------
 - Handle and log exceptions during post_save of datawatch to not break the
