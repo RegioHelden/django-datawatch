@@ -1,4 +1,4 @@
-version: '3.1'
+version: '3.5'
 
 services:
   django:
@@ -8,42 +8,46 @@ services:
     volumes:
       - .:/app
     ports:
-      - "127.0.99.1:8000:8000"
+      - '8000:8000'
     environment:
       IPYTHONDIR: /app/.ipython
       HISTFILE: /app/.bash_history
-      DATABASE_URL: postgres://app:app@db:5432/app
-      DEBUG: 'on'
-      USE_DOCKER: 'on'
+    restart: unless-stopped
     networks:
-      datawatch:
+      default:
+        aliases:
+          - datawatch
     depends_on:
       - db
-    restart: always
 
   db:
     image: postgres:9.6
-    user: postgres  # just to make life easier when "docker-compose exec"ing
+    user: postgres
     environment:
       POSTGRES_USER: app
       POSTGRES_PASSWORD: app
     volumes:
       - db_data:/var/lib/postgresql/data
+    restart: unless-stopped
     networks:
-      datawatch:
+      - default
 
   rabbitmq:
     image: rabbitmq:3.6-management
     ports:
-      - "127.0.39.1:15672:15672"  # admin UI; credentials: guest/guest
+      - '15672:15672'  # admin UI; credentials: guest/guest
     volumes:
       - /var/lib/rabbitmq
-    restart: always
+    restart: unless-stopped
     networks:
-      datawatch:
+      - default
 
 volumes:
   db_data: {}
 
 networks:
-  datawatch:
+  default:
+    name: rh-dev.eu
+    ipam:
+      config:
+        - subnet: 10.199.0.0/16

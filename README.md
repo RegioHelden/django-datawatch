@@ -11,7 +11,7 @@ Think of [nagios](https://www.nagios.org/)/[icinga](https://www.icinga.org/) for
 
 ## Requirements
 
-Currently celery is required to run the checks. We'll be supporting different backends in the future.
+Currently celery is required to run the checks. Datawatch may support different backends in the future.
 
 ## Install
 
@@ -62,19 +62,33 @@ class CheckTime(BaseCheck):
         return identifier
 ```
 
-
-
-### generate
+### .generate
 
 Must yield payloads to be checked. The check method will then be called for every payload.
 
-### check
+### .check
 
 Must return an instance of CheckResponse.
 
-### get_identifier
+### .get_identifier
 
 Must return a unique identifier for the payload. 
+
+### trigger check updates
+
+Check updates for individual payloads can also be triggered when related datasets are changed.
+The map for update triggers is defined in the Check class' trigger_update attribute.
+
+```
+trigger_update = dict(subproduct=models_customer.SubProduct)
+```
+
+The key is a slug to define your trigger while the value is the model that issues the trigger when saved.
+You must implement a resolver function for each entry with the name of get_<slug>_payload which returns the payload to check (same datatype as .check would expect or .generate would yield).
+```
+def get_subproduct_payload(self, instance):
+    return instance.product
+```
 
 ## Run your checks
 
@@ -138,6 +152,26 @@ Default: True
 
 # CONTRIBUTE
 
+## Dev environment
+- docker (at least 17.12.0+)
+- docker-compose (at least 1.18.0)
+- docker-hostmanager
+
+## docker-hostmanager
+
+In order to access the application on your browser, your host machine must be able to resolve the host name of your container.
+We're using docker-hostmanager to manage the hosts file entries.
+
+Linux:
+
+```
+$ docker run -d --name docker-hostmanager --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v /etc/hosts:/hosts iamluc/docker-hostmanager
+```
+
+For other environments, see https://github.com/iamluc/docker-hostmanager
+
+## Setup
+
 We've included an example app to show how django_datawatch works.
 Start by launching the included docker container.
 ```bash
@@ -151,7 +185,9 @@ docker-compose exec django ./manage.py loaddata example
 ```
 The installed superuser is "example" with password "datawatch".
 
-Login on the admin interface and open http://127.0.99.1:8000/ afterwards.
+## Run checks
+
+Login on the admin interface and open http://datawatch.rh-dev.eu:8000/ afterwards.
 You'll be prompted with an empty dashboard. That's because we didn't run any checks yet.
 Let's enqueue an update.
 ```bash
@@ -168,6 +204,8 @@ You will see some failed check now after you refreshed the dashboard view.
 
 ![Django Datawatch dashboard](http://static.jensnistler.de/django_datawatch.png "Django Datawatch dashboard")
 
-# Making a new release
+## Making a new release
 
-Add your changes to the CHANGELOG and run `bumpversion <major|minor|patch>`, then push (including tags)
+[bumpversion](https://github.com/peritus/bumpversion) is used to manage releases.
+
+Add your changes to the [CHANGELOG](./CHANGELOG.rst) and run `bumpversion <major|minor|patch>`, then push (including tags)
