@@ -25,7 +25,9 @@ SECRET_KEY = '&kxa67(_phgs@5&8=!x(ix(l%w1nmkh&n#1%^5pm&wm^ij)4(6'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '.datawatch.rh-dev.eu',
+]
 
 
 # Application definition
@@ -38,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bootstrap3',
+    'django_celery_beat',
     'django_datawatch.apps.DjangoDatawatchConfig',
     'example.apps.ExampleConfig',
 ]
@@ -94,7 +97,7 @@ else:
             'NAME': 'app',
             'USER': 'app',
             'PASSWORD': 'app',
-            'HOST': 'db',
+            'HOST': 'datawatch-db',
             'PORT': '5432',
         },
     }
@@ -169,7 +172,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-BROKER_URL = 'amqp://rabbitmq'
+BROKER_URL = 'amqp://datawatch-rabbitmq'
 
 LOGIN_URL = '/admin/'
 
@@ -177,4 +180,4 @@ SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
 BOOTSTRAP3 = {'horizontal_label_class': 'col-md-2', 'horizontal_field_class': 'col-md-10', 'success_css_class': ''}
 
-DJANGO_DATAWATCH_BACKEND = 'django_datawatch.backends.synchronous'
+DJANGO_DATAWATCH_BACKEND = 'django_datawatch.backends.celery'

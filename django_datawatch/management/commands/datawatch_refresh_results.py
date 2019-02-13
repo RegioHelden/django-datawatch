@@ -27,4 +27,4 @@ class Command(BaseCommand):
 
     def refresh(self, slug):
         backend = datawatch.get_backend()
-        backend.refresh(slug=slug, async=True)
+        backend.refresh(slug=slug, run_async=True)

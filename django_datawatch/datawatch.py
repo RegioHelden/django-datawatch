@@ -114,7 +114,7 @@ class DatawatchHandler(object):
                 return
 
             backend.run(slug=check.slug, identifier=check.get_identifier(payload),
-                        async=True)
+                        run_async=True)
 
 
 datawatch = DatawatchHandler()

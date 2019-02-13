@@ -7,3 +7,4 @@ dist/
 build/
 *.sw*
 .coverage
+celerybeat-schedule.db

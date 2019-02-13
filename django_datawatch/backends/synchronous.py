@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 class Backend(BaseBackend):
-    def enqueue(self, slug, async=True):
+    def enqueue(self, slug, run_async=True):
         check = self._get_check_instance(slug)
         if not check:
             return
@@ -23,11 +23,11 @@ class Backend(BaseBackend):
         except NotImplementedError as e:
             logger.error(e)
 
-    def refresh(self, slug, async=True):
+    def refresh(self, slug, run_async=True):
         for result in Result.objects.filter(slug=slug):
             datawatch.get_backend().run(result.slug, result.identifier)
 
-    def run(self, slug, identifier, async=True):
+    def run(self, slug, identifier, run_async=True):
         check = self._get_check_instance(slug)
         if not check:
             return

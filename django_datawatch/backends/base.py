@@ -2,11 +2,11 @@
 
 
 class BaseBackend(object):
-    def enqueue(self, slug, async=True):
+    def enqueue(self, slug, run_async=True):
         raise NotImplementedError('enqueue not implemented')
 
-    def refresh(self, slug, async=True):
+    def refresh(self, slug, run_async=True):
         raise NotImplementedError('refresh not implemented')
 
-    def run(self, slug, identifier, async=True):
+    def run(self, slug, identifier, run_async=True):
         raise NotImplementedError('run not implemented')

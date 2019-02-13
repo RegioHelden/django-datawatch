@@ -21,6 +21,9 @@ $ pip install django-datawatch
 
 Add `django_datawatch` to your `INSTALLED_APPS`
 
+Add `django_datawatch.tasks.django_datawatch_scheduler` to the `CELERYBEAT_SCHEDULE` of your app.
+This task should be executed every minute e.g. `crontab(minute='*/1')`, see example app.
+
 ## Write a custom check
 
 Create `checks.py` inside your module.
@@ -128,7 +131,6 @@ $ ./manage.py datawatch_delete_ghost_results
 
 ```python
 DJANGO_DATAWATCH_BACKEND = 'django_datawatch.backends.synchronous'
-DJANGO_DATAWATCH_CELERY_QUEUE_NAME = 'django_datawatch'
 DJANGO_DATAWATCH_RUN_SIGNALS = True
 ```
 
@@ -138,17 +140,17 @@ You can chose the backend to run the tasks. Supported are 'django_datawatch.back
 
 Default: 'django_datawatch.backends.synchronous'
 
-### DJANGO_DATAWATCH_CELERY_QUEUE_NAME
-
-You can customize the celery queue name for async tasks (applies only if celery backend chosen).
-
-Default: 'django_datawatch'
-
 ### DJANGO_DATAWATCH_RUN_SIGNALS
 
 Use this setting to disable running post_save updates during unittests if required.
 
 Default: True
+
+### celery task queue
+
+Datawatch supported setting a specific queue in release < 0.4.0
+
+With the switch to celery 4, you should use task routing to define the queue for your tasks, see http://docs.celeryproject.org/en/latest/userguide/routing.html
 
 # CONTRIBUTE
 
@@ -180,8 +182,8 @@ docker-compose up -d
 
 Then setup the example app environment.
 ```bash
-docker-compose exec django ./manage.py migrate
-docker-compose exec django ./manage.py loaddata example
+docker-compose run --rm django migrate
+docker-compose run --rm django loaddata example
 ```
 The installed superuser is "example" with password "datawatch".
 
@@ -191,13 +193,18 @@ Login on the admin interface and open http://datawatch.rh-dev.eu:8000/ afterward
 You'll be prompted with an empty dashboard. That's because we didn't run any checks yet.
 Let's enqueue an update.
 ```bash
-docker-compose exec django ./manage.py datawatch_run_checks --force
+docker-compose run --rm django datawatch_run_checks --force
 ```
 
 The checks for the example app are run synchronously and should be updated immediately.
 If you decide to switch to the celery backend, you should now start a celery worker to process the checks.
 ```bash
-docker-compose exec django celery worker -A example -l DEBUG -Q django_datawatch
+docker-compose run --rm --entrypoint=celery django worker -A example -l DEBUG
+```
+
+To execute the celery beat scheduler which runs the datawatch scheduler every minute, just run:
+```bash
+docker-compose run --rm --entrypoint=celery django beat --scheduler django_celery_beat.schedulers:DatabaseScheduler -A example
 ```
 
 You will see some failed check now after you refreshed the dashboard view.

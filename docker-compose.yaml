@@ -30,17 +30,21 @@ services:
       - db_data:/var/lib/postgresql/data
     restart: unless-stopped
     networks:
-      - default
+      default:
+        aliases:
+          - datawatch-db
 
   rabbitmq:
-    image: rabbitmq:3.6-management
+    image: rabbitmq:3.7-management
     ports:
       - '15672:15672'  # admin UI; credentials: guest/guest
     volumes:
       - /var/lib/rabbitmq
     restart: unless-stopped
     networks:
-      - default
+      default:
+        aliases:
+          - datawatch-rabbitmq
 
 volumes:
   db_data: {}

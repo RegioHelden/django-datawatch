@@ -24,12 +24,14 @@ USER app
 
 ADD requirements.txt /app/
 
+ADD requirements-docker.txt /app/
+
 ENV PATH /home/app/venv/bin:${PATH}
 
 RUN pyvenv ~/venv && \
     pip install --upgrade pip && \
-    pip install wheel pip-tools && \
-    pip-sync
+    pip install wheel && \
+    pip install -r requirements-docker.txt
 
 ADD . /app/
 

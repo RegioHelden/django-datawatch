@@ -32,10 +32,6 @@ def django_datawatch_run(slug, identifier, *args, **kwargs):
     synchronous.Backend().run(slug, identifier)
 
 
-class DatawatchScheduler(PeriodicTask):
-    run_every = crontab(minute='*/1')
-    queue = getattr(settings, 'DJANGO_DATAWATCH_CELERY_QUEUE_NAME',
-                    defaults['CELERY_QUEUE_NAME'])
-
-    def run(self, *args, **kwargs):
-        Scheduler().run_checks(force=False)
+@shared_task
+def django_datawatch_scheduler(*args, **kwargs):
+    Scheduler().run_checks(force=False)

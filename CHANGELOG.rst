@@ -1,6 +1,15 @@
 Changelog
 =========
 
+1.0.0 (2019-02-13)
+------------------
+
+- BREAKING CHANGE! switch to celery 4, you now have to add the scheduler task to your CELERYBEAT_SCHEDULE, details in README.md [Jens Nistler]
+- BREAKING CHANGE! removed DJANGO_DATAWATCH_CELERY_QUEUE_NAME setting, use task routing instead, see http://docs.celeryproject.org/en/latest/userguide/routing.html [Jens Nistler]
+- Update dependencies [Jens Nistler]
+- It's time for a 1.0.0 release since datawatch is used internally at RegioHelden for over two years now [Jens Nistler]
+
+
 0.3.1 (2018-08-07)
 ------------------
 
