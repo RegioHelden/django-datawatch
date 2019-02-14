@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.0.2 (2019-02-14)
+------------------
+
+- Fix accidently bumped version of bootstrap3, bad bumpversion...
+
+
 1.0.1 (2019-02-14)
 ------------------
 
