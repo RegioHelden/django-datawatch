@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.0.1 (2019-02-14)
+------------------
+
+- Set readme to be interpreted as markdown
+
+
 1.0.0 (2019-02-13)
 ------------------
 
