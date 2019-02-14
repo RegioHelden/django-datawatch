@@ -23,15 +23,14 @@ WORKDIR /app
 USER app
 
 ADD requirements.txt /app/
-
-ADD requirements-docker.txt /app/
+ADD requirements-test.txt /app/
 
 ENV PATH /home/app/venv/bin:${PATH}
 
 RUN pyvenv ~/venv && \
     pip install --upgrade pip && \
     pip install wheel && \
-    pip install -r requirements-docker.txt
+    pip install -r requirements-test.txt
 
 ADD . /app/
 

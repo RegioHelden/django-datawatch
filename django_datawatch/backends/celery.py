@@ -1,12 +1,9 @@
 # -*- coding: UTF-8 -*-
 from __future__ import unicode_literals
 
-from django.conf import settings
-
 from django_datawatch.backends.base import BaseBackend
 from django_datawatch.tasks import django_datawatch_enqueue, \
     django_datawatch_run, django_datawatch_refresh
-from django_datawatch.defaults import defaults
 
 
 class Backend(BaseBackend):

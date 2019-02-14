@@ -1,2 +1,0 @@
--r requirements.txt
-django_celery_beat==1.4.0

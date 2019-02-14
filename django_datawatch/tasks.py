@@ -3,12 +3,8 @@ from __future__ import unicode_literals
 
 from celery import shared_task
 from celery.utils.log import get_task_logger
-from celery.schedules import crontab
-from celery.task.base import PeriodicTask
-from django.conf import settings
 
 from django_datawatch.backends import synchronous
-from django_datawatch.defaults import defaults
 from django_datawatch.datawatch import Scheduler
 
 logger = get_task_logger(__name__)

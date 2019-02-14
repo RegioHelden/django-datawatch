@@ -8,3 +8,4 @@ build/
 *.sw*
 .coverage
 celerybeat-schedule.db
+.bash_history

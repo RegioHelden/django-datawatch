@@ -32,7 +32,6 @@ install:
   - pip install -q Django==$DJANGO_VERSION
   - pip install .
   - pip install -r requirements-test.txt
-  - pip install coveralls
 
 services:
   - postgresql

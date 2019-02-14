@@ -9,9 +9,20 @@
 With Django Datawatch you are able to implement arbitrary checks on data, review their status and even describe what to do to resolve them.
 Think of [nagios](https://www.nagios.org/)/[icinga](https://www.icinga.org/) for data.
 
-## Requirements
+## Check execution backends
 
-Currently celery is required to run the checks. Datawatch may support different backends in the future.
+### Synchronous
+
+Will execute all tasks synchronously which is not recommended but the most simple way to get started.
+
+### Celery
+
+Will execute the tasks asynchronously using celery as a task broker and executor.
+Celery is supported from 3.1.25.
+
+### Other backends
+
+Feel free to implement other task execution backends and send a pull request.
 
 ## Install
 
@@ -20,6 +31,10 @@ $ pip install django-datawatch
 ```
 
 Add `django_datawatch` to your `INSTALLED_APPS`
+
+## Celery beat database scheduler
+
+If the datawatch scheduler should be run using the celery beat database scheduler, you need to install [django_celery_beat](hhttp://docs.celeryproject.org/en/latest/userguide/periodic-tasks.html#beat-custom-schedulers) for celery >= 4 or [django-celery](https://github.com/celery/django-celery) for celery < 4.
 
 Add `django_datawatch.tasks.django_datawatch_scheduler` to the `CELERYBEAT_SCHEDULE` of your app.
 This task should be executed every minute e.g. `crontab(minute='*/1')`, see example app.
@@ -211,8 +226,17 @@ You will see some failed check now after you refreshed the dashboard view.
 
 ![Django Datawatch dashboard](http://static.jensnistler.de/django_datawatch.png "Django Datawatch dashboard")
 
+## Run the tests
+```bash
+docker-compose run --rm django test
+```
+
 ## Making a new release
 
 [bumpversion](https://github.com/peritus/bumpversion) is used to manage releases.
 
-Add your changes to the [CHANGELOG](./CHANGELOG.rst) and run `bumpversion <major|minor|patch>`, then push (including tags)
+Add your changes to the [CHANGELOG](./CHANGELOG.rst), run
+```bash
+docker-compose exec django bumpversion <major|minor|patch>
+```
+then push (including tags).

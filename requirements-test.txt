@@ -1,9 +1,11 @@
+-r requirements.txt
+bumpversion==0.5.3
 celery==4.2.1
-django-bootstrap3==11.0.0
-django-extensions==2.1.5
-django-model-utils==3.1.2
+coveralls==1.5.1
+Django==1.11.20
+django_celery_beat==1.4.0
 flake8==3.7.5
 freezegun==0.3.11
+ipython==7.2.0
 mock==2.0.0
 psycopg2==2.7.7
-python-dateutil==2.8.0
