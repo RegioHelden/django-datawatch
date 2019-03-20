@@ -6,6 +6,7 @@ import logging
 
 from celery.schedules import crontab
 from django.conf import settings
+from django.utils import timezone
 from django.db.models import signals
 from django.utils.module_loading import autodiscover_modules
 
@@ -147,7 +148,10 @@ class Scheduler(object):
 
             # shall the check be run again?
             if not force and check.slug in last_executions:
-                if not check_class.run_every.is_due(last_run_at=last_executions[check.slug]).is_due:
+                last_execution = last_executions[check.slug]
+                if timezone.is_aware(last_execution):
+                    last_execution = last_execution.astimezone(timezone.get_current_timezone())
+                if not check_class.run_every.is_due(last_run_at=last_execution).is_due:
                     continue
 
             # enqueue the check and save execution state
