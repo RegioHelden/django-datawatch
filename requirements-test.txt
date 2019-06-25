@@ -2,7 +2,7 @@
 bumpversion==0.5.3
 celery==4.2.1
 coveralls==1.5.1
-Django==1.11.20
+Django==1.11.21
 django_celery_beat==1.4.0
 flake8==3.7.5
 freezegun==0.3.11
