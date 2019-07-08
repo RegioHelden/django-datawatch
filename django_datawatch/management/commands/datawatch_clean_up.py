@@ -3,7 +3,7 @@ import logging
 
 from django.core.management.base import BaseCommand
 
-from django_datawatch.models import Result
+from django_datawatch.models import Result, CheckExecution
 
 logger = logging.getLogger(__name__)
 
@@ -16,3 +16,8 @@ class Command(BaseCommand):
         check_names = list(results.distinct().values_list('slug', flat=True))
         results.delete()
         logger.info('%d results have been deleted:\n%s', len(check_names), '\n'.join(check_names))
+
+        check_executions = CheckExecution.objects.ghost_executions()
+        check_names = list(check_executions.distinct().values_list('slug', flat=True))
+        check_executions.delete()
+        logger.info('%d check executions have been deleted:\n%s', len(check_names), '\n'.join(check_names))
