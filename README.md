@@ -237,6 +237,6 @@ docker-compose run --rm django test
 
 Add your changes to the [CHANGELOG](./CHANGELOG.rst), run
 ```bash
-docker-compose exec django bumpversion <major|minor|patch>
+docker-compose run django bumpversion <major|minor|patch>
 ```
 then push (including tags).
