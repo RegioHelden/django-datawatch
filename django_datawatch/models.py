@@ -11,6 +11,7 @@ from django_extensions.db.fields.json import JSONField
 from model_utils.choices import Choices
 from model_utils.models import TimeStampedModel
 
+from django_datawatch.querysets import CheckExecutionQuerySet
 from .datawatch import datawatch
 from .querysets import ResultQuerySet
 
@@ -84,6 +85,8 @@ class Result(TimeStampedModel):
 class CheckExecution(models.Model):
     slug = models.TextField(verbose_name=_('Check module slug'), unique=True)
     last_run = models.DateTimeField(verbose_name=_('Last run'))
+
+    objects = CheckExecutionQuerySet.as_manager()
 
     def __str__(self):
         return '%s on %s' % (self.slug, self.last_run)

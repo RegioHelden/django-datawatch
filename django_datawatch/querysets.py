@@ -43,3 +43,11 @@ class ResultQuerySet(models.QuerySet):
         :return: results that do not have checks anymore (check has been deleted)
         """
         return self.exclude(slug__in=datawatch.get_all_registered_check_slugs())
+
+
+class CheckExecutionQuerySet(models.QuerySet):
+    def ghost_executions(self):
+        """
+        :return: check executions that do not have checks anymore (check has been deleted)
+        """
+        return self.exclude(slug__in=datawatch.get_all_registered_check_slugs())
