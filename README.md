@@ -136,10 +136,10 @@ $ ./manage.py datawatch_list_checks
 
 ## Clean up your database
 
-Remove the unnecessary check results if you've removed the code for a check.
+Remove the unnecessary check results and executions if you've removed the code for a check.
 
 ```shell
-$ ./manage.py datawatch_delete_ghost_results
+$ ./manage.py datawatch_clean_up
 ```
 
 ## Settings

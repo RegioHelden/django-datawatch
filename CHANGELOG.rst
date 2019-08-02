@@ -1,16 +1,31 @@
 Changelog
 =========
 
+1.1.2 (2019-08-02)
+------------------
+
+- Update changelog and documentation to match patch 1.1.1
+
+1.1.1 (2019-006-08)
+------------------
+
+- BREAKING CHANGE! Renamed datawatch_delete_ghost_results management comand to datawatch_clean_up since it's now also deleting ghost executions [Kseniya Potter]
+
+1.0.3 (2019-03-20)
+------------------
+
+- Fix celery timezone issue [Leonardo Antunes]
+
 1.0.2 (2019-02-14)
 ------------------
 
-- Fix accidently bumped version of bootstrap3, bad bumpversion...
+- Fix accidently bumped version of bootstrap3, bad bumpversion... [Jens Nistler]
 
 
 1.0.1 (2019-02-14)
 ------------------
 
-- Set readme to be interpreted as markdown
+- Set readme to be interpreted as markdown [Jens Nistler]
 
 
 1.0.0 (2019-02-13)

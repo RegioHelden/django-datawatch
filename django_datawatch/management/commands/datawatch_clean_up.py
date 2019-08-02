@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
-    help = 'Delete all results for which check does not exist anymore.'
+    help = 'Delete all results and executions for removed checks.'
 
     def handle(self, *args, **options):
         results = Result.objects.ghost_results()
