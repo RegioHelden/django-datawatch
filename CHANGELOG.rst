@@ -1,6 +1,12 @@
 Changelog
 =========
 
+2.0.0 (2019-11-04)
+------------------
+
+- Upgrade packages
+- BREAKING CHANGE! Remove Python 2.x support
+
 1.1.2 (2019-08-02)
 ------------------
 
