@@ -4,25 +4,22 @@ language: python
 cache: pip
 
 python:
-  - 2.7
-  - 3.5
   - 3.6
   - 3.7
+  - 3.8
 
 env:
-  - DJANGO_VERSION=1.11.20
+  - DJANGO_VERSION=1.11.26
   - DJANGO_VERSION=2.1
+  - DJANGO_VERSION=2.2
 
 matrix:
   include:
     - python: 3.6
       env: DJANGO_VERSION=2.1 DEPLOY=true
-  exclude:
-    - python: 2.7
-      env: DJANGO_VERSION=2.1
 
 addons:
-  postgresql: 9.4
+  postgresql: "9.6"
 
 before_install:
   - sudo apt-get update

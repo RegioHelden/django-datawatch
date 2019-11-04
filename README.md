@@ -231,6 +231,14 @@ You will see some failed check now after you refreshed the dashboard view.
 docker-compose run --rm django test
 ```
 
+## Requirements upgrades
+
+Check for upgradeable packages by running 
+```bash
+docker-compose up -d
+docker-compose exec django pip-check
+```
+
 ## Making a new release
 
 [bumpversion](https://github.com/peritus/bumpversion) is used to manage releases.
