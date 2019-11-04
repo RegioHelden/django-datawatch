@@ -6,7 +6,7 @@ Django==1.11.26
 django_celery_beat==1.5.0
 flake8==3.7.9
 freezegun==0.3.12
-ipython==5.8.0
-mock==2.0.0
+ipython==7.9.0
+mock==3.0.5
 pip-check==2.5.2
 psycopg2==2.8.4
