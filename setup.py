@@ -23,7 +23,7 @@ setup(
     long_description_content_type='text/markdown',
     install_requires=[
         'celery>=3.1.25',
-        'Django>=1.11.20',
+        'Django>=1.11.26',
         'django-bootstrap3>=11.0.0',
         'django-extensions>=2.1.5',
         'django-model-utils>=3.1.2',
@@ -36,9 +36,11 @@ setup(
     include_package_data=True,
     classifiers=[
         "Programming Language :: Python",
-        "Programming Language :: Python :: 2",
         "Programming Language :: Python :: 3",
-        "Development Status :: 4 - Beta",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Development Status :: 5 - Production/Stable",
         "Environment :: Web Environment",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
