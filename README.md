@@ -108,6 +108,11 @@ def get_subproduct_payload(self, instance):
     return instance.product
 ```
 
+## Exceptions
+
+#### `DatawatchCheckSkipException`
+raise this exception to skip current check. The result will not appear in the checks results. 
+
 ## Run your checks
 
 A management command is provided to queue the execution of all checks based on their schedule.
