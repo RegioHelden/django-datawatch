@@ -1,6 +1,13 @@
 Changelog
 =========
 
+2.1.0 (2020-04-23)
+------------------
+
+- Revert example app check execution to be synchronous #43
+- Remove dependency to docker-hostmanager #44
+- Add optional superuser debug info to detail view #45
+
 2.0.0 (2019-11-04)
 ------------------
 
