@@ -177,20 +177,9 @@ With the switch to celery 4, you should use task routing to define the queue for
 ## Dev environment
 - docker (at least 17.12.0+)
 - docker-compose (at least 1.18.0)
-- docker-hostmanager
 
-## docker-hostmanager
-
-In order to access the application on your browser, your host machine must be able to resolve the host name of your container.
-We're using docker-hostmanager to manage the hosts file entries.
-
-Linux:
-
-```
-$ docker run -d --name docker-hostmanager --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v /etc/hosts:/hosts iamluc/docker-hostmanager
-```
-
-For other environments, see https://github.com/iamluc/docker-hostmanager
+Please make sure that no other container is using port 8000 as this is the one you're install gets exposed to:
+http://localhost:8000/
 
 ## Setup
 
@@ -209,7 +198,7 @@ The installed superuser is "example" with password "datawatch".
 
 ## Run checks
 
-Login on the admin interface and open http://datawatch.rh-dev.eu:8000/ afterwards.
+Open http://localhost:8000/, log in and then go back to http://localhost:8000/.
 You'll be prompted with an empty dashboard. That's because we didn't run any checks yet.
 Let's enqueue an update.
 ```bash
@@ -242,6 +231,15 @@ Check for upgradeable packages by running
 ```bash
 docker-compose up -d
 docker-compose exec django pip-check
+```
+
+## Translations
+
+Collect and compile translations for all registered locales
+
+```bash
+docker-compose run --rm django makemessages --no-location --all
+docker-compose run --rm django compilemessages
 ```
 
 ## Making a new release

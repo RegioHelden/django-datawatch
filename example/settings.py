@@ -26,9 +26,8 @@ SECRET_KEY = '&kxa67(_phgs@5&8=!x(ix(l%w1nmkh&n#1%^5pm&wm^ij)4(6'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '.datawatch.rh-dev.eu',
+    'localhost',
 ]
-
 
 # Application definition
 
@@ -76,6 +75,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'example.wsgi.application'
 
+LOCALE_PATHS = (
+    os.path.join(BASE_DIR, 'example/locale'),
+    os.path.join(BASE_DIR, 'django_datawatch/locale'),
+)
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
