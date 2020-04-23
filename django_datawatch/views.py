@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
 import logging
 
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.urls import reverse_lazy
@@ -13,6 +14,7 @@ from django.views.generic.edit import UpdateView, FormView
 from django_datawatch import forms
 from django_datawatch.common.views import FilteredListView
 from django_datawatch.datawatch import datawatch
+from django_datawatch.defaults import defaults
 from django_datawatch.models import Result
 
 logger = logging.getLogger(__name__)
@@ -57,6 +59,8 @@ class ResultView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         kwargs.update(result=self.object)
         ctx = super(ResultView, self).get_context_data(**kwargs)
+        ctx['datawatch_show_debug_info'] = self.request.user.is_superuser and getattr(
+            settings, 'DJANGO_DATAWATCH_SHOW_ADMIN_DEBUG', defaults['SHOW_ADMIN_DEBUG'])
         ctx.update(self.get_check_instance().get_context_data(self.object))
         return ctx
 

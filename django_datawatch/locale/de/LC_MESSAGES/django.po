@@ -112,8 +112,46 @@ msgstr "Konfiguration ändern"
 msgid "Refresh"
 msgstr "Aktualisieren"
 
-msgid "Reason"
-msgstr "Grund"
+msgid "Superuser debug info"
+msgstr "Superuser debug info"
+
+msgid "Related model"
+msgstr "Zugehöriges Model"
+
+msgid "Not assigned"
+msgstr "Nicht zugewiesen"
+
+msgid "Config form class"
+msgstr "Formular-Klasse für Konfiguration"
+
+msgid "Run every"
+msgstr "Periodisches Ausführen"
+
+msgid "Not set"
+msgstr "Nicht gesetzt"
+
+msgid "Update trigger models"
+msgstr "Aktualisieren mit Änderungen an"
+
+msgid "Acknowledge maximum"
+msgstr "Maximale Ausblendezeit"
+
+#, python-format
+msgid "%(days)s day(s)"
+msgstr "%(days)s Tag(e)"
+
+msgid "Assigned group"
+msgstr "Zugewiesene Gruppe"
+
+msgid "Assigned user"
+msgstr "Zugewiesener Benutzer"
+
+#, python-format
+msgid "Acknowledged until %(date)s by %(user)s"
+msgstr "Ausgeblendet bis %(date)s durch %(user)s"
+
+msgid "Reason:"
+msgstr "Grund:"
 
 msgid "Cancel"
 msgstr "Abbrechen"

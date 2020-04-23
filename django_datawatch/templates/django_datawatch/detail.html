@@ -1,50 +1,146 @@
 {% extends "django_datawatch/base.html" %}
-{% load i18n %}
+{% load i18n class_name %}
 
 {% block django_datawatch %}
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel {% if result.status == result.STATUS.critical %}panel-danger{% elif result.status == result.STATUS.warning %}panel-warning{% elif result.status == result.STATUS.ok %}panel-success{% else %}panel-default{% endif %}">
-                <div class="panel-heading">
-                    <div class="panel-title">
-                        <h3>{{ result.get_status_display }} - {{ result.get_check_instance.get_title }}</h3>
-                    </div>
-                </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-md-8">
-                            <h3>{{ result.payload_description }}</h3>
-                        </div>
-                        <div class="col-md-4 text-right">
-                            {% if perms.django_datawatch.acknowledge %}
-                                <a href="{% url "django_datawatch_result_acknowledge" pk=result.pk %}">{% trans "Acknowledge" %}</a><br>
-                            {% endif %}
-                            {% if perms.django_datawatch.config and result.get_check_instance.get_form_class %}
-                                <a href="{% url "django_datawatch_result_config" pk=result.pk %}">{% trans "Change config" %}</a><br>
-                            {% endif %}
-                            {% if perms.django_datawatch.refresh %}
-                                <a href="{% url "django_datawatch_result_refresh" pk=result.pk %}">{% trans "Refresh" %}</a>
-                            {% endif %}
+    {% with check_instance=result.get_check_instance %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel {% if result.status == result.STATUS.critical %}panel-danger{% elif result.status == result.STATUS.warning %}panel-warning{% elif result.status == result.STATUS.ok %}panel-success{% else %}panel-default{% endif %}">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <h3>{{ result.get_status_display }} - {{ check_instance.get_title }}</h3>
                         </div>
                     </div>
-                    {% if result.is_acknowledged %}
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h3>{{ result.payload_description }}</h3>
+                            </div>
+                            <div class="col-md-4 text-right">
+                                {% if perms.django_datawatch.acknowledge %}
+                                    <a href="{% url "django_datawatch_result_acknowledge" pk=result.pk %}">{% trans "Acknowledge" %}</a><br>
+                                {% endif %}
+                                {% if perms.django_datawatch.config and check_instance.get_form_class %}
+                                    <a href="{% url "django_datawatch_result_config" pk=result.pk %}">{% trans "Change config" %}</a><br>
+                                {% endif %}
+                                {% if perms.django_datawatch.refresh %}
+                                    <a href="{% url "django_datawatch_result_refresh" pk=result.pk %}">{% trans "Refresh" %}</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% if datawatch_show_debug_info %}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h4>{% trans "Superuser debug info" %}</h4>
+                                    <table class="table table-striped">
+                                        <tbody>
+                                            <tr>
+                                                <td>{% trans "Check module slug" %}</td>
+                                                <td>{{ check_instance.slug }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>{% trans "Related model" %}</td>
+                                                <td>
+                                                    {% if check_instance.model_class %}
+                                                        {{ check_instance.model_class|class_name }}
+                                                    {% else %}
+                                                        {% trans "Not assigned" %}
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                            {% with form_class=check_instance.get_form_class %}
+                                                <tr>
+                                                    <td>{% trans "Config form class" %}</td>
+                                                    <td>
+                                                        {% if form_class %}
+                                                            {{ form_class|class_name }}
+                                                        {% else %}
+                                                            {% trans "Not assigned" %}
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                            {% endwith %}
+                                            <tr>
+                                                <td>{% trans "Run every" %}</td>
+                                                <td>
+                                                    {% if check_instance.run_every %}
+                                                        {{ check_instance.run_every }}
+                                                    {% else %}
+                                                        {% trans "Not set" %}
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>{% trans "Update trigger models" %}</td>
+                                                <td>
+                                                    {% for value in check_instance.trigger_update.values %}
+                                                        {{ value|class_name }}
+                                                        {% if not forloop.last %}
+                                                            <br>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </td>
+                                            </tr>
+                                            {% with max_acknowdledge=check_instance.get_max_acknowledge %}
+                                                <tr>
+                                                    <td>{% trans "Acknowledge maximum" %}</td>
+                                                    <td>
+                                                        {% if max_acknowdledge %}
+                                                            {% blocktrans with days=max_acknowdledge %}{{ days }} day(s){% endblocktrans %}
+                                                        {% else %}
+                                                            {% trans "Not set" %}
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                            {% endwith %}
+                                            <tr>
+                                                <td>{% trans "Assigned group" %}</td>
+                                                <td>
+                                                    {% if result.assigned_to_group %}
+                                                        {{ result.assigned_to_group }}
+                                                    {% else %}
+                                                        {% trans "Not set" %}
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>{% trans "Assigned user" %}</td>
+                                                <td>
+                                                    {% if result.assigned_to_user %}
+                                                        {{ result.assigned_to_user }}
+                                                    {% else %}
+                                                        {% trans "Not set" %}
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if result.is_acknowledged %}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="alert alert-info">
+                                        <p>
+                                            {% blocktrans with date=result.acknowledged_until|date user=result.acknowledged_by %}Acknowledged until {{ date }} by {{ user }}{% endblocktrans %}
+                                        </p>
+                                        <p>
+                                            <strong>{% trans "Reason:" %}</strong> {{ result.acknowledged_reason }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
                         <div class="row">
                             <div class="col-md-12">
                                 <hr>
-                                {% blocktrans with date=result.acknowledged_until|date %}Acknowledged until {{ date }}{% endblocktrans %}
-                                <br>
-                                <strong>{% trans "Reason" %}</strong>: {{ result.acknowledged_reason }}
+                                {% block django_datawatch_check %}{% endblock %}
                             </div>
-                        </div>
-                    {% endif %}
-                    <div class="row">
-                        <div class="col-md-12">
-                            <hr>
-                            {% block django_datawatch_check %}{% endblock %}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    {% endwith %}
 {% endblock %}
