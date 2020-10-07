@@ -56,11 +56,16 @@ class Result(TimeStampedModel):
                        ('config', 'Can change the configuration for results'), ('refresh', 'Can refresh results'))
 
     def acknowledge(self, user, days, reason=None, commit=True):
-        if self.status in (self.STATUS.warning, self.STATUS.critical) and self.is_acknowledged():
-            raise AlreadyAcknowledged()
+        # calculate end of requested acknowledgement
+        acknowledged_until = timezone.now() + relativedelta.relativedelta(days=days)
+
+        # check that we're not accidentally overriding the current setup
+        if self.status in (self.STATUS.warning, self.STATUS.critical):
+            if self.is_acknowledged() and self.acknowledged_until > acknowledged_until:
+                raise AlreadyAcknowledged()
         self.acknowledged_at = timezone.now()
         self.acknowledged_by = user
-        self.acknowledged_until = timezone.now() + relativedelta.relativedelta(days=days)
+        self.acknowledged_until = acknowledged_until
         self.acknowledged_reason = reason or ''
         if commit:
             self.save(update_fields=['acknowledged_at', 'acknowledged_by', 'acknowledged_until', 'acknowledged_reason'])
