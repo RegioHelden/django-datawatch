@@ -16,7 +16,7 @@ env:
 matrix:
   include:
     - python: 3.6
-      env: DJANGO_VERSION=2.1 DEPLOY=true
+      env: DJANGO_VERSION=2.2.16 DEPLOY=true
 
 addons:
   postgresql: "9.6"
