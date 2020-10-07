@@ -1,6 +1,12 @@
 Changelog
 =========
 
+2.2.0 (2020-10-07)
+------------------
+
+- Allow extending acknowledgements #47
+- Handle exception during acknowledgment #48
+
 2.1.1 (2020-04-23)
 ------------------
 
