@@ -15,7 +15,7 @@ def long_description():
 setup(
     name='django-datawatch',
     packages=find_packages(exclude=['example*']),
-    version='2.1.1',
+    version='2.2.0',
     description='Django Datawatch runs automated data checks in your Django installation',
     author='Jens Nistler <opensource@jensnistler.de>, Bogdan Radko <bogdan.radko@regiohelden.de>',
     author_email='opensource@regiohelden.de',
