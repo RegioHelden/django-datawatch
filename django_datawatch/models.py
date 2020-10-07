@@ -5,7 +5,6 @@ from dateutil import relativedelta
 from django.utils import timezone
 from django.conf import settings
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 from django_extensions.db.fields.json import JSONField
 from model_utils.choices import Choices
@@ -20,7 +19,6 @@ class AlreadyAcknowledged(Exception):
     pass
 
 
-@python_2_unicode_compatible
 class Result(TimeStampedModel):
     STATUS = Choices((0, 'unknown', _('Unknown')),
                      (1, 'ok', _('OK')),
@@ -86,7 +84,6 @@ class Result(TimeStampedModel):
         return datawatch.get_check_class(self.slug)().format_result_data(self)
 
 
-@python_2_unicode_compatible
 class CheckExecution(models.Model):
     slug = models.TextField(verbose_name=_('Check module slug'), unique=True)
     last_run = models.DateTimeField(verbose_name=_('Last run'))
