@@ -162,6 +162,11 @@ msgstr "Prüfungsergebnis existiert nicht (mehr)"
 msgid "Successfully acknowledged"
 msgstr "Erfolgreich bestätigt"
 
+msgid "This check is already acknowledged for a longer period"
+msgstr ""
+"Dieses Prüfungsergebnis wurde bereits für einen längeren Zeitraum "
+"ausgeblendet"
+
 msgid "Save"
 msgstr "Speichern"
 

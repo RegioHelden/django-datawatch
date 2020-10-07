@@ -15,7 +15,7 @@ from django_datawatch import forms
 from django_datawatch.common.views import FilteredListView
 from django_datawatch.datawatch import datawatch
 from django_datawatch.defaults import defaults
-from django_datawatch.models import Result
+from django_datawatch.models import Result, AlreadyAcknowledged
 
 logger = logging.getLogger(__name__)
 
@@ -101,8 +101,14 @@ class ResultAcknowledgeView(LoginRequiredMixin, PermissionRequiredMixin, UpdateV
         return ctx
 
     def form_valid(self, form):
-        response = super(ResultAcknowledgeView, self).form_valid(form)
-        messages.add_message(self.request, messages.INFO, _('Successfully acknowledged'))
+        try:
+            response = super(ResultAcknowledgeView, self).form_valid(form)
+            messages.add_message(self.request, messages.INFO, _('Successfully acknowledged'))
+        except AlreadyAcknowledged:
+            messages.add_message(
+                self.request, messages.ERROR, _('This check is already acknowledged for a longer period'))
+            response = HttpResponseRedirect(self.get_success_url())
+
         return response
 
 
