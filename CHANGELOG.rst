@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.2.1 (2020-10-08)
+------------------
+
+- fix and update build environment and dependencies
+
 2.2.0 (2020-10-07)
 ------------------
 
