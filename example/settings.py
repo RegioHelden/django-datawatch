@@ -82,10 +82,7 @@ LOCALE_PATHS = (
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
-print("GITHUB_ACTIONS Found", 'GITHUB_ACTIONS' in os.environ)
-print("Environ")
-print(os.environ)
-if 'GITHUB_ACTIONS' in os.environ:
+if 'TOX_ENV_NAME' in os.environ:
     DATABASES = {
         'default': {
             'ENGINE':   'django.db.backends.postgresql_psycopg2',
