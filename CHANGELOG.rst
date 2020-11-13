@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.2.2 (2020-10-08)
+------------------
+
+- this only to validate github actions publish to pypi
+
 2.2.1 (2020-10-08)
 ------------------
 
