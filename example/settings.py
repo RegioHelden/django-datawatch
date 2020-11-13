@@ -82,15 +82,15 @@ LOCALE_PATHS = (
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
-if 'TRAVIS' in os.environ:
+if 'GITHUB_ACTIONS' in os.environ:
     DATABASES = {
         'default': {
             'ENGINE':   'django.db.backends.postgresql_psycopg2',
-            'NAME':     'travisci',
+            'NAME':     'postgres',
             'USER':     'postgres',
-            'PASSWORD': '',
+            'PASSWORD': 'postgres',
             'HOST':     'localhost',
-            'PORT':     '',
+            'PORT':     '5432',
         }
     }
 else:
