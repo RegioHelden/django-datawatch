@@ -1,6 +1,17 @@
 Changelog
 =========
 
+2.2.4 (2020-11-16)
+------------------
+
+- remove Python 3.6 compatibility
+- fix build status report in README
+
+2.2.3 (2020-11-16)
+------------------
+
+- fix Django 2.2 requirement issue
+
 2.2.2 (2020-10-08)
 ------------------
 

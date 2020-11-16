@@ -1,5 +1,5 @@
 [![PyPI version](https://badge.fury.io/py/django-datawatch.svg)](https://badge.fury.io/py/django-datawatch)
-[![Travis CI build status](https://travis-ci.org/RegioHelden/django-datawatch.svg)](https://travis-ci.org/RegioHelden/django-datawatch)
+[![GitHub build status](https://github.com/RegioHelden/django-datawatch/workflows/Test/badge.svg)](https://github.com/RegioHelden/django-datawatch/actions)
 [![Coverage Status](https://coveralls.io/repos/github/RegioHelden/django-datawatch/badge.svg?branch=add_coveralls)](https://coveralls.io/github/RegioHelden/django-datawatch?branch=add_coveralls)
 [![Open Source Love](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
 [![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php)
