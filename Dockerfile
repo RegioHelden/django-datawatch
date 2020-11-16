@@ -1,4 +1,4 @@
-FROM ubuntu:bionic
+FROM ubuntu:focal
 
 ENV PYTHONUNBUFFERED 1
 ENV LC_ALL=C.UTF-8
@@ -23,13 +23,11 @@ WORKDIR /app
 
 USER app
 
-ADD requirements.txt /app/
 ADD requirements-test.txt /app/
 
 ENV PATH /home/app/venv/bin:${PATH}
 
 RUN python3 -m venv ~/venv && \
-    pip install --force-reinstall setuptools && \
     pip install --upgrade pip && \
     pip install wheel && \
     pip install -r requirements-test.txt
