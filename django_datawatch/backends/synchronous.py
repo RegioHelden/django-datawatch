@@ -18,6 +18,8 @@ class Backend(BaseBackend):
 
         try:
             for payload in check.generate():
+                if payload is None:
+                    continue
                 datawatch.get_backend().run(
                     check.slug, check.get_identifier(payload))
         except NotImplementedError as e:

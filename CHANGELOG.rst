@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.2.5 (2021-02-01)
+------------------
+
+- properly handle empty generators (yield None)
+
 2.2.4 (2020-11-16)
 ------------------
 
