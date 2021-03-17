@@ -44,7 +44,7 @@ class Backend(BaseBackend):
 
         # refresh has been forced by a user from the web view
         if user_forced_refresh:
-            check.user_forced_refresh_hook()
+            check.user_forced_refresh_hook(payload=payload)
 
         check.handle(payload)
 
