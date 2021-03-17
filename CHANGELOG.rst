@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.3.0 (2021-03-17)
+------------------
+
+- Add code hook that gets executed when an update is forced by a user from the web view #50
+
 2.2.5 (2021-02-01)
 ------------------
 
