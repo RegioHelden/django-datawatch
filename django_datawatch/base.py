@@ -64,6 +64,13 @@ class BaseCheck(object):
     def __init__(self):
         self.slug = datawatch.get_slug(self.__module__, self.__class__.__name__)
 
+    def user_forced_refresh_hook(self):
+        """
+        gets only executed when the refresh has been forced by a user
+        from the web view
+        """
+        pass
+
     def run(self):
         datawatch.get_backend().enqueue(slug=self.slug)
         CheckExecution.objects.update_or_create(slug=self.slug, defaults=dict(

@@ -172,7 +172,8 @@ class ResultRefreshView(LoginRequiredMixin, PermissionRequiredMixin, SingleObjec
         check = self.object.get_check_instance()
         datawatch.get_backend().run(slug=check.slug,
                                     identifier=self.object.identifier,
-                                    run_async=False)
+                                    run_async=False,
+                                    user_forced_refresh=True)
         messages.add_message(request, messages.INFO, _('Result has been refreshed'))
         return response
 

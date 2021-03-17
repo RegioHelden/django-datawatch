@@ -28,7 +28,7 @@ class Backend(BaseBackend):
         for result in Result.objects.filter(slug=slug):
             datawatch.get_backend().run(result.slug, result.identifier)
 
-    def run(self, slug, identifier, run_async=True):
+    def run(self, slug, identifier, run_async=True, user_forced_refresh=False):
         check = self._get_check_instance(slug)
         if not check:
             return
@@ -41,6 +41,10 @@ class Backend(BaseBackend):
         except ObjectDoesNotExist:
             Result.objects.filter(slug=slug, identifier=identifier).delete()
             return
+
+        # refresh has been forced by a user from the web view
+        if user_forced_refresh:
+            check.user_forced_refresh_hook()
 
         check.handle(payload)
 
