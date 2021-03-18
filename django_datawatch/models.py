@@ -5,7 +5,7 @@ from dateutil import relativedelta
 from django.utils import timezone
 from django.conf import settings
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django_extensions.db.fields.json import JSONField
 from model_utils.choices import Choices
 from model_utils.models import TimeStampedModel

@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.3.3 (2021-03-18)
+------------------
+
+- Don't use ugettext* anymore as Python 3 is always unicode compatible, replace by gettext*
+
 2.3.2 (2021-03-18)
 ------------------
 

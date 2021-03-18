@@ -3,7 +3,7 @@ from __future__ import unicode_literals, print_function, absolute_import
 
 from celery.schedules import crontab
 from django.contrib.auth import get_user_model
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from django_datawatch.models import Result
 from django_datawatch.datawatch import datawatch
 from django_datawatch.base import BaseCheck, BaseCheckForm, CheckResponse
