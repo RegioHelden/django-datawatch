@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.3.2 (2021-03-18)
+------------------
+
+- Fix celery backend not forwarding the user_forced_refresh flag #50
+
 2.3.1 (2021-03-17)
 ------------------
 
