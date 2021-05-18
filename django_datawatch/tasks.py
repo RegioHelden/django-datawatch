@@ -13,19 +13,19 @@ logger = get_task_logger(__name__)
 @shared_task
 def django_datawatch_enqueue(slug, *args, **kwargs):
     logger.debug('enqueuing checks for %s', slug)
-    synchronous.Backend().enqueue(slug)
+    synchronous.Backend().enqueue(slug=slug)
 
 
 @shared_task
 def django_datawatch_refresh(slug, *args, **kwargs):
     logger.debug('refreshing check results for %s', slug)
-    synchronous.Backend().refresh(slug)
+    synchronous.Backend().refresh(slug=slug)
 
 
 @shared_task
-def django_datawatch_run(slug, identifier, *args, **kwargs):
-    logger.debug('running check %s for identifier %s', slug, identifier)
-    synchronous.Backend().run(slug, identifier)
+def django_datawatch_run(slug, identifier, user_forced_refresh=False, *args, **kwargs):
+    logger.debug('running check %s for identifier %s (forced refresh %s)', slug, identifier, user_forced_refresh)
+    synchronous.Backend().run(slug=slug, identifier=identifier, user_forced_refresh=user_forced_refresh)
 
 
 @shared_task

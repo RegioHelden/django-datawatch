@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.3.4 (2021-05-18)
+------------------
+
+- Fix user_forced_refresh in celery backend (wasn't properly handed over to synchronous backend)
+
 2.3.3 (2021-03-18)
 ------------------
 

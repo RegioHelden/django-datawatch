@@ -78,6 +78,9 @@ class CheckTime(BaseCheck):
         # as get_identifier returns the object we don't need to process it
         # we can return identifier directly
         return identifier
+
+    def user_forced_refresh_hook(self, payload):
+        payload.do_something()
 ```
 
 ### .generate
@@ -91,6 +94,12 @@ Must return an instance of CheckResponse.
 ### .get_identifier
 
 Must return a unique identifier for the payload. 
+
+### .user_forced_refresh_hook
+
+A function that gets executed when the refresh is requested by a user through the `ResultRefreshView`.
+
+This is used in checks that are purely based on triggers, e.g. when a field changes the test gets executed.
 
 ### trigger check updates
 
