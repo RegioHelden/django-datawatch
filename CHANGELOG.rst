@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.4.1 (2021-08-24)
+------------------
+- Fix test case
+- Renovate test environment
+
 2.4.0 (2021-08-24)
 ------------------
 - Added 'modified' and 'created' as readonly fields to the admin for Result model [Jens Nistler]
