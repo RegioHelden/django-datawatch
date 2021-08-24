@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.4.0 (2021-08-24)
+------------------
+- Added 'modified' and 'created' as readonly fields to the admin for Result model [Jens Nistler]
+- Update of related datasets wrapped in a transaction commit handler to make sure data is written before the update handler gets executed [Jens Nistler]
+
 2.3.4 (2021-05-18)
 ------------------
 
