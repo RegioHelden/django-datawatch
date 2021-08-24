@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.4.2 (2021-08-24)
+------------------
+- Pin psycopg2 to 2.8.6 in test depedencies for Django 2.2 compatibility
+
 2.4.1 (2021-08-24)
 ------------------
 - Fix test case
