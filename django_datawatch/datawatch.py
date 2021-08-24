@@ -7,6 +7,7 @@ import logging
 from celery.schedules import crontab
 from django.conf import settings
 from django.utils import timezone
+from django.db import transaction
 from django.db.models import signals
 from django.utils.module_loading import autodiscover_modules
 
@@ -114,8 +115,8 @@ class DatawatchHandler(object):
             if not payload:
                 return
 
-            backend.run(slug=check.slug, identifier=check.get_identifier(payload),
-                        run_async=True)
+            transaction.on_commit(lambda: backend.run(
+                slug=check.slug, identifier=check.get_identifier(payload), run_async=True))
 
 
 datawatch = DatawatchHandler()
