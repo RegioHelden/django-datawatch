@@ -112,11 +112,12 @@ class DatawatchHandler(object):
                 return
 
             payload = getattr(check, mapping[model_uid])(instance)
-            if not payload:
-                return
 
             transaction.on_commit(lambda: backend.run(
-                slug=check.slug, identifier=check.get_identifier(payload), run_async=True))
+                slug=check.slug,
+                identifier=check.get_identifier(payload),
+                run_async=True
+            ) if payload else None)
 
 
 datawatch = DatawatchHandler()

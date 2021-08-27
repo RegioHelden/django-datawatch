@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.4.3 (2021-08-27)
+------------------
+- Fix condition that skips the check if there's no payload
+
 2.4.2 (2021-08-24)
 ------------------
 - Pin psycopg2 to 2.8.6 in test depedencies for Django 2.2 compatibility
