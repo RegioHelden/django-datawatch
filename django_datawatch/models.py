@@ -5,6 +5,7 @@ from dateutil import relativedelta
 from django.utils import timezone
 from django.conf import settings
 from django.db import models
+from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from django_extensions.db.fields.json import JSONField
 from model_utils.choices import Choices
@@ -82,6 +83,35 @@ class Result(TimeStampedModel):
 
     def get_formatted_data(self):
         return datawatch.get_check_class(self.slug)().format_result_data(self)
+
+    def latest_status(self, status):
+        return self.status_history.filter(to_status=status).order_by('-created').first()
+
+    @cached_property
+    def latest_unknown(self):
+        return self.latest_status(self.STATUS.unknown)
+
+    @cached_property
+    def latest_ok(self):
+        return self.latest_status(self.STATUS.ok)
+
+    @cached_property
+    def latest_warning(self):
+        return self.latest_status(self.STATUS.warning)
+
+    @cached_property
+    def latest_critical(self):
+        return self.latest_status(self.STATUS.critical)
+
+
+class ResultStatusHistory(TimeStampedModel):
+    result = models.ForeignKey(Result, models.CASCADE, 'status_history', 'status_history', verbose_name=_('Result'))
+    from_status = models.IntegerField(choices=Result.STATUS, verbose_name=_('From status'), null=True)
+    to_status = models.IntegerField(choices=Result.STATUS, verbose_name=_('To status'))
+
+    class Meta:
+        verbose_name = _('Result status history')
+        verbose_name_plural = _('Result status history')
 
 
 class CheckExecution(models.Model):
