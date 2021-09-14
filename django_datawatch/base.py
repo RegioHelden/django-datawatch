@@ -1,14 +1,26 @@
 # -*- coding: UTF-8 -*-
 from __future__ import unicode_literals
 import logging
+from contextlib import contextmanager
 
 from django import forms
 from django.utils import timezone
 
-from django_datawatch.models import Result, CheckExecution
+from django_datawatch.models import Result, CheckExecution, ResultStatusHistory
 from django_datawatch.datawatch import datawatch, make_model_uid
 
 logger = logging.getLogger(__name__)
+
+
+@contextmanager
+def track_status_history(slug, identifier, new_status):
+    result = Result.objects.filter(slug=slug, identifier=identifier).only('id', 'status').first()
+    current_status = getattr(result, 'status', None)
+    yield
+    if current_status != new_status:
+        if result is None:
+            result = Result.objects.only('id').get(slug=slug, identifier=identifier)
+        ResultStatusHistory.objects.create(from_status=current_status, to_status=new_status, result_id=result.id)
 
 
 class DatawatchCheckSkipException(Exception):
@@ -127,10 +139,12 @@ class BaseCheck(object):
         if unacknowledge:
             defaults.update(dict(acknowledged_by=None, acknowledged_at=None, acknowledged_until=None))
 
-        # save the check
-        dataset, created = Result.objects.update_or_create(
-            slug=self.slug, identifier=self.get_identifier(payload),
-            defaults=defaults)
+        with track_status_history(self.slug, self.get_identifier(payload), status):
+            # save the check
+            dataset, created = Result.objects.update_or_create(
+                slug=self.slug, identifier=self.get_identifier(payload),
+                defaults=defaults)
+
         return dataset
 
     def get_trigger_update_uid_map(self):

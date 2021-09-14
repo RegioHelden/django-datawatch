@@ -9,3 +9,4 @@ build/
 .coverage
 celerybeat-schedule.db
 .bash_history
+docker-compose.override.yaml
