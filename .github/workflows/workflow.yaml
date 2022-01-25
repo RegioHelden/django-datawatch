@@ -17,7 +17,7 @@ jobs:
           - 3.10
         django:
           - django32
-          - django40
+          # - django40  # django-celery-beat is not yet ready for Django 4.0, see https://github.com/celery/django-celery-beat/issues/465
     
     # Service containers to run with `runner-job`
     services:
@@ -44,7 +44,7 @@ jobs:
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: "${{ matrix.python-version }}"
 
       - name: Get pip cache dir
         id: pip-cache
