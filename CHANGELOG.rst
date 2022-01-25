@@ -1,6 +1,13 @@
 Changelog
 =========
 
+3.0.0 (2022-01-25)
+------------------
+
+- Upgrade packages
+- BREAKING CHANGE! Remove Python <3.8 support, remove Django <3.2 support
+- BREAKING CHANGE! Dependency minimum versions increased
+
 2.4.3 (2021-08-27)
 ------------------
 - Fix condition that skips the check if there's no payload

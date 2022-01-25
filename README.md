@@ -18,7 +18,7 @@ Will execute all tasks synchronously which is not recommended but the most simpl
 ### Celery
 
 Will execute the tasks asynchronously using celery as a task broker and executor.
-Celery is supported from 3.1.25.
+Requires celery 5.0.0 or later.
 
 ### Other backends
 
@@ -34,7 +34,7 @@ Add `django_datawatch` to your `INSTALLED_APPS`
 
 ## Celery beat database scheduler
 
-If the datawatch scheduler should be run using the celery beat database scheduler, you need to install [django_celery_beat](hhttp://docs.celeryproject.org/en/latest/userguide/periodic-tasks.html#beat-custom-schedulers) for celery >= 4 or [django-celery](https://github.com/celery/django-celery) for celery < 4.
+If the datawatch scheduler should be run using the celery beat database scheduler, you need to install [django_celery_beat](hhttp://docs.celeryproject.org/en/latest/userguide/periodic-tasks.html#beat-custom-schedulers).
 
 Add `django_datawatch.tasks.django_datawatch_scheduler` to the `CELERYBEAT_SCHEDULE` of your app.
 This task should be executed every minute e.g. `crontab(minute='*/1')`, see example app.

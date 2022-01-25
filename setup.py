@@ -35,7 +35,7 @@ setup(
     long_description_content_type='text/markdown',
     install_requires=[
         'celery>=5.0.0',
-        'Django>=3.2',
+        'Django>=3.2,<4.0',
         'django-bootstrap3>=21.1',
         'django-extensions>=3.0.0',
         'django-model-utils>=4.2.0',
