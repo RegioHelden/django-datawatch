@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.0.1 (2022-01-25)
+------------------
+
+- Add support for trigger update resolver methods to return multiple payloads
+
 3.0.0 (2022-01-25)
 ------------------
 

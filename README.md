@@ -111,7 +111,7 @@ trigger_update = dict(subproduct=models_customer.SubProduct)
 ```
 
 The key is a slug to define your trigger while the value is the model that issues the trigger when saved.
-You must implement a resolver function for each entry with the name of get_<slug>_payload which returns the payload to check (same datatype as .check would expect or .generate would yield).
+You must implement a resolver function for each entry with the name of get_<slug>_payload which returns the payload or multiple payloads (as a list) to check (same datatype as .check would expect or .generate would yield).
 ```
 def get_subproduct_payload(self, instance):
     return instance.product

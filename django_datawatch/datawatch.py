@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
 from __future__ import unicode_literals
 
+from collections.abc import Iterable
 import importlib
 import logging
 
@@ -111,13 +112,13 @@ class DatawatchHandler(object):
             if not hasattr(check, mapping[model_uid]):
                 return
 
-            payload = getattr(check, mapping[model_uid])(instance)
-
-            transaction.on_commit(lambda: backend.run(
-                slug=check.slug,
-                identifier=check.get_identifier(payload),
-                run_async=True
-            ) if payload else None)
+            payloads = list(getattr(check, mapping[model_uid])(instance))
+            for payload in payloads:
+                transaction.on_commit(lambda: backend.run(
+                    slug=check.slug,
+                    identifier=check.get_identifier(payload),
+                    run_async=True
+                ) if payload else None)
 
 
 datawatch = DatawatchHandler()
