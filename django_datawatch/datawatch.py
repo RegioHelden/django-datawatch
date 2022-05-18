@@ -112,13 +112,19 @@ class DatawatchHandler(object):
             if not hasattr(check, mapping[model_uid]):
                 return
 
-            payloads = list(getattr(check, mapping[model_uid])(instance))
+            payloads = getattr(check, mapping[model_uid])(instance)
+            if not isinstance(payloads, Iterable):
+                payloads = [payloads]
+
             for payload in payloads:
-                transaction.on_commit(lambda: backend.run(
-                    slug=check.slug,
-                    identifier=check.get_identifier(payload),
-                    run_async=True
-                ) if payload else None)
+                if not payload:
+                    continue
+
+                # work around lambdas binding to the loop scope, see https://rules.sonarsource.com/python/RSPEC-1515
+                def execute_backend_run(slug=check.slug, identifier=check.get_identifier(payload)):
+                    backend.run(slug=slug, identifier=identifier, run_async=True)
+
+                transaction.on_commit(execute_backend_run)
 
 
 datawatch = DatawatchHandler()

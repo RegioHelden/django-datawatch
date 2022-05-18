@@ -5,6 +5,7 @@ Changelog
 ------------------
 
 - Add support for trigger update resolver methods to return multiple payloads
+- Fixed a bug with lambdas that prevented all checks to be refreshed on trigger updates
 
 3.0.0 (2022-01-25)
 ------------------

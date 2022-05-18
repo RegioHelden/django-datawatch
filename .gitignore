@@ -2,6 +2,7 @@
 .idea/
 .vagrant/
 .pycharm_helpers/
+.ipython/
 dist/
 *.egg-info/
 build/

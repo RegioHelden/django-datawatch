@@ -30,40 +30,55 @@ class CheckTriggerUpdate(BaseCheck):
         return payload
 
 
+@datawatch.register
+class CheckTriggerUpdateList(BaseCheck):
+    model_class = Result
+    trigger_update = dict(foobar=Result)
+
+    def get_foobar_payload(self, instance):
+        return [instance, Result(pk=51945, slug="51945")]
+
+    def get_identifier(self, payload):
+        return payload.pk
+
+    def check(self, payload):
+        return payload
+
+
 class TriggerUpdateTestCase(TestCase):
     @override_settings(DJANGO_DATAWATCH_RUN_SIGNALS=True)
     @mock.patch('django_datawatch.datawatch.DatawatchHandler.update_related')
     def test_setting_run_signals_true(self, mock_update):
-        run_checks(sender=None, instance=None, created=None, raw=None,
+        run_checks(sender='sender', instance='instance', created=None, raw=None,
                    using=None)
-        self.assertTrue(mock_update.called)
+        mock_update.assert_called_once_with('sender', 'instance')
 
     @override_settings(DJANGO_DATAWATCH_RUN_SIGNALS=False)
     @mock.patch('django_datawatch.datawatch.DatawatchHandler.update_related')
     def test_setting_run_signals_false(self, mock_update):
         run_checks(sender=None, instance=None, created=None, raw=None,
                    using=None)
-        self.assertFalse(mock_update.called)
-
-    def run_commit_hooks(self):
-        """
-        Fake transaction commit to run delayed on_commit functions
-        
-        source: https://medium.com/@juan.madurga/speed-up-django-transaction-hooks-tests-6de4a558ef96
-        """
-        for db_name in reversed(self._databases_names()):
-            with mock.patch('django.db.backends.base.base.BaseDatabaseWrapper.validate_no_atomic_block', lambda a: False):
-                transaction.get_connection(using=db_name).run_and_clear_commit_hooks()
+        mock_update.assert_not_called()
 
     @override_settings(DJANGO_DATAWATCH_RUN_SIGNALS=True)
     @mock.patch('django_datawatch.datawatch.DatawatchHandler.get_backend')
     def test_update_related_calls_backend(self, mock_get_backend):
         backend = mock.Mock(spec=BaseBackend)
         mock_get_backend.return_value = backend
-        datawatch.update_related(sender=Result, instance=Result())
 
-        # run our on_commit hook
-        self.run_commit_hooks()
+        with self.captureOnCommitCallbacks() as callbacks:
+            datawatch.update_related(sender=Result, instance=Result(pk=143243, slug="143243"))
 
-        # make sure that we called backend.run
-        self.assertTrue(backend.run.called)
+        self.assertEquals(3, len(callbacks))
+
+        parameters = [
+            dict(slug='django_datawatch.tests.test_trigger_update.CheckTriggerUpdate', identifier=143243, run_async=True),
+            dict(slug='django_datawatch.tests.test_trigger_update.CheckTriggerUpdateList', identifier=143243, run_async=True),
+            dict(slug='django_datawatch.tests.test_trigger_update.CheckTriggerUpdateList', identifier=51945, run_async=True),
+        ]
+
+        for callback in callbacks:
+            callback()
+            parameter_list = parameters.pop(0)
+            backend.run.assert_called_once_with(**parameter_list)
+            backend.reset_mock()
