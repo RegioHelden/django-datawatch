@@ -81,9 +81,9 @@ jobs:
       - name: Build a binary wheel and a source tarball
         run: python setup.py sdist bdist_wheel
 
-      - name: Publish Package on Pypi
+      - name: Publish Package on PyPI
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
         uses: pypa/gh-action-pypi-publish@master
         with:
           user: __token__
-          password: ${{ secrets.pypi_password }}
+          password: ${{ secrets.PYPI_API_TOKEN }}

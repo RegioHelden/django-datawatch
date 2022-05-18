@@ -1,7 +1,12 @@
 Changelog
 =========
 
-3.0.1 (2022-01-25)
+3.0.2 (2022-05-18)
+------------------
+
+- fix pypi publish to use an api token instead of a password
+
+3.0.1 (2022-05-18)
 ------------------
 
 - Add support for trigger update resolver methods to return multiple payloads
