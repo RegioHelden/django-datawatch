@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.1.0 (2022-08-23)
+------------------
+
+- Make dispatch_uid of the signal receivers registered by datawatch unique
+
 3.0.2 (2022-05-18)
 ------------------
 

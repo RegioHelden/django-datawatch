@@ -31,11 +31,13 @@ class DatawatchHandler(object):
         self._registered_checks[slug] = check_class
         check = check_class()
 
-        # register delete
+        # register delete signal receiver if check is model based
         if check.model_class is not None:
-            signals.post_delete.connect(delete_results,
-                                        sender=check.model_class,
-                                        dispatch_uid='django_datawatch')
+            signals.post_delete.connect(
+                delete_results,
+                sender=check.model_class,
+                dispatch_uid=f'django_datawatch_{slug}',
+            )
 
         # register update
         if check.trigger_update is not None:
@@ -47,11 +49,15 @@ class DatawatchHandler(object):
                         keyword, method_name)
                     continue
 
+                # listen to updates on all trigger models
                 model_uid = make_model_uid(model)
                 datawatch._related_models.setdefault(model_uid, list())
                 if check_class not in datawatch._related_models[model_uid]:
-                    signals.post_save.connect(run_checks, sender=model,
-                                              dispatch_uid='django_datawatch')
+                    signals.post_save.connect(
+                        run_checks,
+                        sender=model,
+                        dispatch_uid=f'django_datawatch_{slug}_{keyword}',
+                    )
                     datawatch._related_models[model_uid].append(check_class)
 
         return check_class
