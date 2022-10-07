@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.2.0 (2022-10-07)
+------------------
+
+- Add tests and support for Django 4.0 (Django 4.1 is still blocked by [django-celery-beat](https://github.com/celery/django-celery-beat/pull/567))
+
 3.1.0 (2022-08-23)
 ------------------
 
