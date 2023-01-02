@@ -17,8 +17,8 @@ jobs:
           - "3.10"
         django:
           - django32
-          - django40  
-          # - django41  # django-celery-beat is not yet ready for Django 4.1, see https://github.com/celery/django-celery-beat/pull/567
+          - django40
+          - django41
     
     # Service containers to run with `runner-job`
     services:
@@ -40,10 +40,10 @@ jobs:
           - 5432:5432
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -52,7 +52,7 @@ jobs:
         run: |
           echo "::set-output name=dir::$(pip cache dir)"
       - name: Cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ${{ steps.pip-cache.outputs.dir }}
           key:
@@ -70,9 +70,9 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up Python 3.8
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: 3.8
 
