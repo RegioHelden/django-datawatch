@@ -1,6 +1,3 @@
-# -*- coding: UTF-8 -*-
-
-
 class BaseBackend(object):
     def enqueue(self, slug, run_async=True):
         raise NotImplementedError('enqueue not implemented')

@@ -1,6 +1,3 @@
-# -*- coding: UTF-8 -*-
-from __future__ import unicode_literals, print_function
-
 from django.apps import AppConfig
 from django.contrib import admin
 from django_datawatch.datawatch import datawatch

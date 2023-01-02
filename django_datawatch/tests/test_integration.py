@@ -1,6 +1,3 @@
-# -*- coding: UTF-8 -*-
-from __future__ import unicode_literals, print_function
-
 from django.test.testcases import TestCase
 
 from django_datawatch.base import BaseCheck

@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 import logging
 
 from django.core.exceptions import ObjectDoesNotExist

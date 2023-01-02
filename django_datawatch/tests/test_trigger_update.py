@@ -1,10 +1,4 @@
-# -*- coding: UTF-8 -*-
-from __future__ import unicode_literals, print_function
-
-try:
-    from unittest import mock
-except ImportError:
-    import mock
+from unittest import mock
 
 from django.db import transaction
 from django.test.testcases import TestCase, override_settings

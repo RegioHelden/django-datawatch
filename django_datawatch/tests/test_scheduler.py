@@ -1,12 +1,6 @@
-# -*- coding: UTF-8 -*-
-from __future__ import unicode_literals, print_function
-
 import datetime
 import pytz
-try:
-    from unittest import mock
-except ImportError:
-    import mock
+from unittest import mock
 
 from celery.schedules import crontab
 from django.test.testcases import TestCase

@@ -1,6 +1,3 @@
-# -*- coding: UTF-8 -*-
-from __future__ import unicode_literals
-
 from dateutil import relativedelta
 from django.utils import timezone
 from django.conf import settings

@@ -1,7 +1,5 @@
-# -*- coding: UTF-8 -*-
-from __future__ import unicode_literals, print_function
+from unittest import mock
 
-import mock
 from django.test.testcases import TestCase, override_settings
 
 from django_datawatch.base import BaseCheck

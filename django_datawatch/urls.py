@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 from django.urls import path
 
 from django_datawatch import views

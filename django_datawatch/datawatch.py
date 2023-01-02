@@ -1,6 +1,3 @@
-# -*- coding: UTF-8 -*-
-from __future__ import unicode_literals
-
 from collections.abc import Iterable
 import importlib
 import logging
