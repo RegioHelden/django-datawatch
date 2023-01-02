@@ -1,4 +1,4 @@
-FROM ubuntu:focal
+FROM ubuntu:latest
 
 ENV PYTHONUNBUFFERED 1
 ENV LC_ALL=C.UTF-8

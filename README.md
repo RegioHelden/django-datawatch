@@ -200,8 +200,8 @@ docker-compose up -d
 
 Then setup the example app environment.
 ```bash
-docker-compose run --rm django migrate
-docker-compose run --rm django loaddata example
+docker-compose run --rm app migrate
+docker-compose run --rm app loaddata example
 ```
 The installed superuser is "example" with password "datawatch".
 
@@ -211,18 +211,18 @@ Open http://localhost:8000/, log in and then go back to http://localhost:8000/.
 You'll be prompted with an empty dashboard. That's because we didn't run any checks yet.
 Let's enqueue an update.
 ```bash
-docker-compose run --rm django datawatch_run_checks --force
+docker-compose run --rm app datawatch_run_checks --force
 ```
 
 The checks for the example app are run synchronously and should be updated immediately.
 If you decide to switch to the celery backend, you should now start a celery worker to process the checks.
 ```bash
-docker-compose run --rm --entrypoint=celery django worker -A example -l DEBUG
+docker-compose run --rm --entrypoint=celery app worker -A example -l DEBUG
 ```
 
 To execute the celery beat scheduler which runs the datawatch scheduler every minute, just run:
 ```bash
-docker-compose run --rm --entrypoint=celery django beat --scheduler django_celery_beat.schedulers:DatabaseScheduler -A example
+docker-compose run --rm --entrypoint=celery app beat --scheduler django_celery_beat.schedulers:DatabaseScheduler -A example
 ```
 
 You will see some failed check now after you refreshed the dashboard view.
@@ -231,7 +231,7 @@ You will see some failed check now after you refreshed the dashboard view.
 
 ## Run the tests
 ```bash
-docker-compose run --rm django test
+docker-compose run --rm app test
 ```
 
 ## Requirements upgrades
@@ -239,7 +239,7 @@ docker-compose run --rm django test
 Check for upgradeable packages by running 
 ```bash
 docker-compose up -d
-docker-compose exec django pip-check
+docker-compose exec app pip-check
 ```
 
 ## Translations
@@ -247,8 +247,8 @@ docker-compose exec django pip-check
 Collect and compile translations for all registered locales
 
 ```bash
-docker-compose run --rm django makemessages --no-location --all
-docker-compose run --rm django compilemessages
+docker-compose run --rm app makemessages --no-location --all
+docker-compose run --rm app compilemessages
 ```
 
 ## Making a new release
@@ -257,6 +257,6 @@ docker-compose run --rm django compilemessages
 
 Add your changes to the [CHANGELOG](./CHANGELOG.rst), run
 ```bash
-docker-compose exec django bumpversion <major|minor|patch>
+docker-compose exec app bumpversion <major|minor|patch>
 ```
 then push (including tags).

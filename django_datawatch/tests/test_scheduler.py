@@ -9,9 +9,9 @@ except ImportError:
     import mock
 
 from celery.schedules import crontab
-from freezegun import freeze_time
 from django.test.testcases import TestCase
 from django.conf import settings
+from time_machine import travel
 
 from django_datawatch.base import BaseCheck
 from django_datawatch.datawatch import datawatch, Scheduler
@@ -44,7 +44,7 @@ class SchedulerTestCase(TestCase):
         scheduler.run_checks()
         self.assertTrue(mock_run.called)
 
-    @freeze_time('2016-12-01 00:00:00')
+    @travel(datetime.datetime(2016, 12, 1, 0, 0))
     @mock.patch('django_datawatch.tests.test_scheduler.CheckRunEvery.run')
     def test_execution_in_past(self, mock_run):
         datawatch.get_all_registered_checks = mock.MagicMock(return_value=[
@@ -59,7 +59,7 @@ class SchedulerTestCase(TestCase):
         scheduler.run_checks()
         self.assertTrue(mock_run.called)
 
-    @freeze_time('2016-01-01 00:00:00')
+    @travel(datetime.datetime(2016, 1, 1, 0, 0))
     @mock.patch('django_datawatch.tests.test_scheduler.CheckRunEvery.run')
     def test_execution_in_future(self, mock_run):
         datawatch.get_all_registered_checks = mock.MagicMock(return_value=[
@@ -74,7 +74,7 @@ class SchedulerTestCase(TestCase):
         scheduler.run_checks()
         self.assertFalse(mock_run.called)
 
-    @freeze_time('2016-12-01 00:00:00')
+    @travel(datetime.datetime(2016, 12, 1, 0, 0))
     @mock.patch('django_datawatch.tests.test_scheduler.CheckRunEvery.run')
     def test_execution_in_future_and_force(self, mock_run):
         datawatch.get_all_registered_checks = mock.MagicMock(return_value=[
