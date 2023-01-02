@@ -1,6 +1,14 @@
 Changelog
 =========
 
+3.3.0 (2023-01-02)
+------------------
+
+- Remove unnecessary compatibility code for Python 2.x and Python < 3.3
+- Use time-machine instead of freezegun in tests
+- Upgrade libraries in test environment
+- Add tests and support for Django 4.1
+
 3.2.0 (2022-10-07)
 ------------------
 
