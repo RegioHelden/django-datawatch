@@ -217,12 +217,12 @@ docker-compose run --rm app datawatch_run_checks --force
 The checks for the example app are run synchronously and should be updated immediately.
 If you decide to switch to the celery backend, you should now start a celery worker to process the checks.
 ```bash
-docker-compose run --rm --entrypoint=celery app worker -A example -l DEBUG
+docker-compose run --rm --entrypoint celery app -A example worker -l DEBUG
 ```
 
 To execute the celery beat scheduler which runs the datawatch scheduler every minute, just run:
 ```bash
-docker-compose run --rm --entrypoint=celery app beat --scheduler django_celery_beat.schedulers:DatabaseScheduler -A example
+docker-compose run --rm --entrypoint celery app -A example  beat --scheduler django_celery_beat.schedulers:DatabaseScheduler
 ```
 
 You will see some failed check now after you refreshed the dashboard view.
