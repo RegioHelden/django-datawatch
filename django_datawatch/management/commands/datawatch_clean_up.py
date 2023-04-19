@@ -11,4 +11,4 @@ class Command(BaseCommand):
     help = "Delete all results and executions for removed checks."
 
     def handle(self, *args, **options):
-        datawatch_cleanup()
+        datawatch_cleanup.apply()

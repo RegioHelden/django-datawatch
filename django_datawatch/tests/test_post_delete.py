@@ -41,6 +41,7 @@ class PostDeleteTestCase(TestCase):
         # mock the manager
         manager = mock.Mock(spec=ResultQuerySet)
         Result.objects = manager
+        manager.using.return_value = manager
         manager_filtered = mock.Mock(spec=ResultQuerySet)
         manager.filter.return_value = manager_filtered
 

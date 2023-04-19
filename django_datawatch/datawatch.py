@@ -94,12 +94,12 @@ class DatawatchHandler(object):
             self._backend = backend_module.Backend()
         return self._backend
 
-    def delete_results(self, sender, instance):
+    def delete_results(self, sender, instance, db_alias=None):
         from django_datawatch.models import Result
         for check_class in datawatch.get_checks_for_model(model=sender):
             check = check_class()
             identifier = check.get_identifier(instance)
-            Result.objects.filter(slug=check.slug, identifier=identifier).delete()
+            Result.objects.using(db_alias).filter(slug=check.slug, identifier=identifier).delete()
 
     def update_related(self, sender, instance):
         checks = datawatch.get_checks_for_related_model(sender) or []
@@ -189,7 +189,7 @@ def delete_results(sender, instance, using, **kwargs):
     if not getattr(settings, 'DJANGO_DATAWATCH_RUN_SIGNALS',
                    defaults['RUN_SIGNALS']):
         return
-    datawatch.delete_results(sender, instance)
+    datawatch.delete_results(sender, instance, using)
 
 
 def run_checks(sender, instance, created, raw, using, **kwargs):
