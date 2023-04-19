@@ -1,6 +1,13 @@
 Changelog
 =========
 
+3.4.0 (2023-04-19)
+------------------
+
+- Add task datawatch_cleanup for cleaning up ghost Results
+- Update delete_results signal handler to use db_alias if provided
+- Update celery commands in README
+
 3.3.0 (2023-01-02)
 ------------------
 
