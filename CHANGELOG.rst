@@ -1,6 +1,14 @@
 Changelog
 =========
 
+3.5.0 (2023-04-20)
+------------------
+
+- Add support for Python 3.11 and Django 4.2
+- Update example app to bootstrap 5
+- Upgrade libraries in test environment
+- Update README to reflect Docker Compose plugin
+
 3.4.0 (2023-04-19)
 ------------------
 

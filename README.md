@@ -184,8 +184,8 @@ With the switch to celery 4, you should use task routing to define the queue for
 # CONTRIBUTE
 
 ## Dev environment
-- docker (at least 17.12.0+)
-- docker-compose (at least 1.18.0)
+- [Docker](https://docs.docker.com/) (19.03.0 or later)
+- [Compose plugin for Docker](https://docs.docker.com/compose/install/linux/)
 
 Please make sure that no other container is using port 8000 as this is the one you're install gets exposed to:
 http://localhost:8000/
@@ -195,13 +195,13 @@ http://localhost:8000/
 We've included an example app to show how django_datawatch works.
 Start by launching the included docker container.
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 Then setup the example app environment.
 ```bash
-docker-compose run --rm app migrate
-docker-compose run --rm app loaddata example
+docker compose run --rm app migrate
+docker compose run --rm app loaddata example
 ```
 The installed superuser is "example" with password "datawatch".
 
@@ -211,18 +211,18 @@ Open http://localhost:8000/, log in and then go back to http://localhost:8000/.
 You'll be prompted with an empty dashboard. That's because we didn't run any checks yet.
 Let's enqueue an update.
 ```bash
-docker-compose run --rm app datawatch_run_checks --force
+docker compose run --rm app datawatch_run_checks --force
 ```
 
 The checks for the example app are run synchronously and should be updated immediately.
 If you decide to switch to the celery backend, you should now start a celery worker to process the checks.
 ```bash
-docker-compose run --rm --entrypoint celery app -A example worker -l DEBUG
+docker compose run --rm --entrypoint celery app -A example worker -l DEBUG
 ```
 
 To execute the celery beat scheduler which runs the datawatch scheduler every minute, just run:
 ```bash
-docker-compose run --rm --entrypoint celery app -A example  beat --scheduler django_celery_beat.schedulers:DatabaseScheduler
+docker compose run --rm --entrypoint celery app -A example  beat --scheduler django_celery_beat.schedulers:DatabaseScheduler
 ```
 
 You will see some failed check now after you refreshed the dashboard view.
@@ -231,15 +231,15 @@ You will see some failed check now after you refreshed the dashboard view.
 
 ## Run the tests
 ```bash
-docker-compose run --rm app test
+docker compose run --rm app test
 ```
 
 ## Requirements upgrades
 
 Check for upgradeable packages by running 
 ```bash
-docker-compose up -d
-docker-compose exec app pip-check
+docker compose up -d
+docker compose exec app pip-check
 ```
 
 ## Translations
@@ -247,8 +247,8 @@ docker-compose exec app pip-check
 Collect and compile translations for all registered locales
 
 ```bash
-docker-compose run --rm app makemessages --no-location --all
-docker-compose run --rm app compilemessages
+docker compose run --rm app makemessages --no-location --all
+docker compose run --rm app compilemessages
 ```
 
 ## Making a new release
@@ -257,6 +257,6 @@ docker-compose run --rm app compilemessages
 
 Add your changes to the [CHANGELOG](./CHANGELOG.rst), run
 ```bash
-docker-compose exec app bumpversion <major|minor|patch>
+docker compose exec app bumpversion <major|minor|patch>
 ```
 then push (including tags).
