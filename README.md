@@ -229,6 +229,8 @@ You will see some failed check now after you refreshed the dashboard view.
 
 ![Django Datawatch dashboard](http://static.jensnistler.de/django_datawatch.png "Django Datawatch dashboard")
 
+![Django Datawatch detail view](http://static.jensnistler.de/django_datawatch_details.png "Django Datawatch detail view")
+
 ## Run the tests
 ```bash
 docker compose run --rm app test
