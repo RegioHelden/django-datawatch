@@ -15,11 +15,18 @@ jobs:
           - "3.8"
           - "3.9"
           - "3.10"
+          - "3.11"
         django:
           - django32
           - django40
           - django41
-    
+          - django42
+        exclude:
+          - python-version: "3.11"
+            django: django32
+          - python-version: "3.11"
+            django: django40
+
     # Service containers to run with `runner-job`
     services:
       # Label used to access the service container
