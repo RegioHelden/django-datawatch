@@ -1,25 +1,20 @@
 {% extends "django_datawatch/base.html" %}
 {% load i18n %}
-{% load bootstrap3 %}
+{% load django_bootstrap5 %}
 
 {% block django_datawatch %}
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">{% trans "Filter" %}</h3>
-                </div>
-                <div class="panel-body">
+    <div class="container mt-2 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <div>
                     <form method="post" class="form-horizontal">
                         {% csrf_token %}
                         {% bootstrap_form form layout='horizontal' %}
-                        {% buttons %}
-                            <div class="col-sm-offset-2 col-sm-10">
-                                {% bootstrap_button action button_type="submit" button_class="btn-primary" %}
-                                &#160;
-                                <a href="javascript:history.back();">{% trans "Cancel" %}</a>
-                            </div>
-                        {% endbuttons %}
+                        <div class="offset-md-2 col-md-10">
+                            {% bootstrap_button action button_type="submit" button_class="btn-primary" %}
+                            &#160;
+                            <a href="javascript:history.back();">{% trans "Cancel" %}</a>
+                        </div>
                     </form>
                 </div>
             </div>

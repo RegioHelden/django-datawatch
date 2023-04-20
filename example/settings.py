@@ -23,7 +23,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'bootstrap3',
+    'django_bootstrap5',
     'django_celery_beat',
     'django_datawatch.apps.DjangoDatawatchConfig',
     'example.apps.ExampleConfig',
@@ -144,7 +144,7 @@ LOGIN_URL = '/admin/'
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
-BOOTSTRAP3 = {'horizontal_label_class': 'col-md-2', 'horizontal_field_class': 'col-md-10', 'success_css_class': ''}
+BOOTSTRAP5 = {'horizontal_label_class': 'col-md-2', 'horizontal_field_class': 'col-md-10', 'success_css_class': ''}
 
 DJANGO_DATAWATCH_BACKEND = 'django_datawatch.backends.synchronous'
 

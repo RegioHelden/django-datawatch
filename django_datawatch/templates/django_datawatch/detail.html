@@ -5,18 +5,16 @@
     {% with check_instance=result.get_check_instance %}
         <div class="row">
             <div class="col-md-12">
-                <div class="panel {% if result.status == result.STATUS.critical %}panel-danger{% elif result.status == result.STATUS.warning %}panel-warning{% elif result.status == result.STATUS.ok %}panel-success{% else %}panel-default{% endif %}">
-                    <div class="panel-heading">
-                        <div class="panel-title">
-                            <h3>{{ result.get_status_display }} - {{ check_instance.get_title }}</h3>
-                        </div>
+                <div class="card">
+                    <div class="card-header {% if result.status == result.STATUS.critical %}text-bg-danger{% elif result.status == result.STATUS.warning %}text-bg-warning{% elif result.status == result.STATUS.ok %}text-bg-success{% else %}panel-default{% endif %}">
+                        <h5 class="card-title pt-2">{{ result.get_status_display }} - {{ check_instance.get_title }}</h5>
                     </div>
-                    <div class="panel-body">
+                    <div class="card-body">
                         <div class="row">
                             <div class="col-md-8">
                                 <h3>{{ result.payload_description }}</h3>
                             </div>
-                            <div class="col-md-4 text-right">
+                            <div class="col-md-4 text-end">
                                 {% if perms.django_datawatch.acknowledge %}
                                     <a href="{% url "django_datawatch_result_acknowledge" pk=result.pk %}">{% trans "Acknowledge" %}</a><br>
                                 {% endif %}
@@ -132,9 +130,8 @@
                                 </div>
                             </div>
                         {% endif %}
-                        <div class="row">
+                        <div class="row mt-4">
                             <div class="col-md-12">
-                                <hr>
                                 {% block django_datawatch_check %}{% endblock %}
                             </div>
                         </div>

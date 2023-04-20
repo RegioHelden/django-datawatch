@@ -1,31 +1,25 @@
 {% extends "django_datawatch/base.html" %}
 {% load i18n %}
-{% load bootstrap3 %}
+{% load django_bootstrap5 %}
 
 {% block django_datawatch %}
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">{% trans "Filter" %}</h3>
-                </div>
-                <div class="panel-body">
-                    <form method="get" class="form-horizontal">
-                        {% bootstrap_form form layout='horizontal' %}
-                        {% buttons %}
-                            <div class="col-sm-offset-2 col-sm-10">
-                                {% trans "Filter" as trans_filter %}
-                                {% bootstrap_button trans_filter button_type="submit" button_class="btn-primary" %}
-                            </div>
-                        {% endbuttons %}
-                    </form>
-                </div>
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">{% trans "Filter" %}</h5>
+            <div>
+                <form method="get" class="form-horizontal">
+                    {% bootstrap_form form layout='horizontal' %}
+                    <div class="offset-md-2 col-md-10">
+                        {% trans "Filter" as trans_filter %}
+                        {% bootstrap_button trans_filter button_type="submit" button_class="btn-primary" %}
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 
     {% regroup results by get_status_display as status_list %}
-    <div class="row">
+    <div class="row mb-4">
         {% if not status_list %}
             <div class="col-md-12">
                 <div class="alert alert-info text-center">
@@ -52,7 +46,7 @@
     <div class="row">
         <div class="col-md-12">
             {% for status in status_list %}
-                <h1 id="status-{{ status.grouper|slugify }}">{{ status.grouper }}</h1>
+                <h3 id="status-{{ status.grouper|slugify }}">{{ status.grouper }}</h3>
 
                 <table class="table table-bordered">
                     {% for result in status.list %}
