@@ -1,6 +1,12 @@
 Changelog
 =========
 
+Unreleased
+------------------
+
+- Show current config settings in superuser debug table
+- Add screenshot of details page to README
+
 3.5.0 (2023-04-20)
 ------------------
 

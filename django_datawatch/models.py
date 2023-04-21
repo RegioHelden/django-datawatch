@@ -1,3 +1,5 @@
+import json
+
 from dateutil import relativedelta
 from django.utils import timezone
 from django.conf import settings
@@ -99,6 +101,9 @@ class Result(TimeStampedModel):
     @cached_property
     def latest_critical(self):
         return self.latest_status(self.STATUS.critical)
+
+    def config_formatted(self):
+        return json.dumps(self.get_check_instance().get_config(payload=self.get_payload()), indent=4)
 
 
 class ResultStatusHistory(TimeStampedModel):

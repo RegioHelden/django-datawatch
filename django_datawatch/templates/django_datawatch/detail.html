@@ -59,6 +59,12 @@
                                                 </tr>
                                             {% endwith %}
                                             <tr>
+                                                <td>{% trans "Config" %}</td>
+                                                <td>
+                                                    <pre>{{ result.config_formatted }}</pre>
+                                                </td>
+                                            </tr>
+                                            <tr>
                                                 <td>{% trans "Run every" %}</td>
                                                 <td>
                                                     {% if check_instance.run_every %}
