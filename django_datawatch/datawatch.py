@@ -101,7 +101,7 @@ class DatawatchHandler(object):
             identifier = check.get_identifier(instance)
             Result.objects.using(db_alias).filter(slug=check.slug, identifier=identifier).delete()
 
-    def update_related(self, sender, instance):
+    def update_related(self, sender, instance, db_alias=None):
         checks = datawatch.get_checks_for_related_model(sender) or []
         for check_class in checks:
             check = check_class()
@@ -127,7 +127,7 @@ class DatawatchHandler(object):
                 def execute_backend_run(slug=check.slug, identifier=check.get_identifier(payload)):
                     backend.run(slug=slug, identifier=identifier, run_async=True)
 
-                transaction.on_commit(execute_backend_run)
+                transaction.on_commit(execute_backend_run, using=db_alias)
 
 
 datawatch = DatawatchHandler()
@@ -204,6 +204,6 @@ def run_checks(sender, instance, created, raw, using, **kwargs):
                    defaults['RUN_SIGNALS']):
         return
     try:
-        datawatch.update_related(sender, instance)
+        datawatch.update_related(sender, instance, using)
     except Exception as e:
         logger.exception(e)

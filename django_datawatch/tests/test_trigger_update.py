@@ -45,7 +45,7 @@ class TriggerUpdateTestCase(TestCase):
     def test_setting_run_signals_true(self, mock_update):
         run_checks(sender='sender', instance='instance', created=None, raw=None,
                    using=None)
-        mock_update.assert_called_once_with('sender', 'instance')
+        mock_update.assert_called_once_with('sender', 'instance', None)
 
     @override_settings(DJANGO_DATAWATCH_RUN_SIGNALS=False)
     @mock.patch('django_datawatch.datawatch.DatawatchHandler.update_related')
