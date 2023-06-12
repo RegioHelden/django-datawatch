@@ -4,8 +4,12 @@ Changelog
 Unreleased
 ------------------
 
+3.6.0 (2023-06-12)
+------------------
+
 - Show current config settings in superuser debug table
 - Add screenshot of details page to README
+- use db_alias if provided on post_save signals, Thanks @stefan-cardnell-rh
 
 3.5.0 (2023-04-20)
 ------------------
