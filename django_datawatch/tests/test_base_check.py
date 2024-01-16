@@ -79,17 +79,21 @@ class BaseCheckTestCase(TestCase):
     def test_unique_groups(self):
         group = Group.objects.create(name='group')
         self.check.get_assigned_groups = mock.Mock(return_value=[group, group])
-        with self.assertRaises(AssertionError):
-            self.check.save(self.fake_payload, Result.STATUS.ok)
 
-        # No results should be created
-        self.assertEqual(Result.objects.count(), 0)
+        result = self.check.save(self.fake_payload, Result.STATUS.ok)
+
+        # Result should be created with only one group
+        self.assertEqual(Result.objects.count(), 1)
+        self.assertEqual(result.assigned_groups.count(), 1)
+        self.assertEqual(result.assigned_groups.first(), group)
 
     def test_unique_users(self):
         user = User.objects.create_user(**{User.USERNAME_FIELD: 'test_user'})
         self.check.get_assigned_users = mock.Mock(return_value=[user, user])
-        with self.assertRaises(AssertionError):
-            self.check.save(self.fake_payload, Result.STATUS.ok)
 
-        # No results should be created
-        self.assertEqual(Result.objects.count(), 0)
+        result = self.check.save(self.fake_payload, Result.STATUS.ok)
+
+        # Result should be created with only one user
+        self.assertEqual(Result.objects.count(), 1)
+        self.assertEqual(result.assigned_users.count(), 1)
+        self.assertEqual(result.assigned_users.first(), user)

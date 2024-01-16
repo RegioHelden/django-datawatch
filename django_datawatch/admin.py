@@ -16,7 +16,7 @@ class CheckAdmin(admin.ModelAdmin):
     list_display = ('slug', 'identifier', 'status')
     readonly_fields = ('created', 'modified')
     search_fields = ('slug', 'identifier', 'payload_description')
-    list_filter = ('status', 'slug', 'assigned_groups', 'assigned_users')
+    list_filter = ('status', 'slug', 'assigned_groups')
     inlines = [ResultAssignedGroupInline, ResultAssignedUserInline]
 
 @admin.register(CheckExecution)

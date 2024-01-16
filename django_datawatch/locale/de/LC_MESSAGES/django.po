@@ -73,7 +73,7 @@ msgid "Acknowledge reason"
 msgstr "Ausblendungsgrund"
 
 msgid "Assigned users"
-msgstr "Zugewiesener Benutzer"
+msgstr "Zugewiesene Benutzer"
 
 msgid "Assigned groups"
 msgstr "Zugewiesene Gruppen"
@@ -91,7 +91,7 @@ msgid "Result status history"
 msgstr "Ergebnis-Status-Historie"
 
 msgid "Group"
-msgstr "Gruppen"
+msgstr "Gruppe"
 
 msgid "Result assigned group"
 msgstr "Zugewiesene Gruppe"
@@ -100,16 +100,16 @@ msgid "Result assigned groups"
 msgstr "Zugewiesene Gruppen"
 
 msgid "Group must be unique across the result"
-msgstr "Die Gruppe muss im gesamten Ergebnis eindeutig sein"
+msgstr "Gruppen müssen je Ergebnis eindeutig sein"
 
 msgid "Result assigned user"
 msgstr "Zugewiesener Benutzer"
 
 msgid "Result assigned users"
-msgstr "Zugewiesener Benutzern"
+msgstr "Zugewiesene Benutzer"
 
 msgid "User must be unique across the result"
-msgstr "Der Benutzer muss im gesamten Ergebnis eindeutig sein"
+msgstr "Benutzer müssen je Ergebnis eindeutig sein"
 
 msgid "Check module slug"
 msgstr "Modul-Bezeichner"

@@ -145,11 +145,9 @@ class BaseCheck(object):
 
                 # set assigned users and groups
                 if groups := self.get_assigned_groups(payload, status):
-                    assert len(groups) == len(set(g.pk for g in groups)), 'groups must be unique'
                     dataset.assigned_groups.set(groups)
 
                 if users := self.get_assigned_users(payload, status):
-                    assert len(users) == len(set(u.pk for u in users)), 'users must be unique'
                     dataset.assigned_users.set(users)
 
         return dataset
