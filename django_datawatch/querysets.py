@@ -9,8 +9,10 @@ from django_datawatch.datawatch import datawatch
 
 class ResultQuerySet(models.QuerySet):
     def for_user(self, user):
-        return self.filter(Q(assigned_to_group__isnull=True) | Q(assigned_to_group__in=user.groups.all()),
-                           Q(assigned_to_user__isnull=True) | Q(assigned_to_user=user))
+        user_groups = user.groups.all()
+        return self.filter(
+            Q(assigned_groups__in=user_groups) | Q(assigned_users=user),
+        )
 
     def failed(self):
         return self.exclude(status__in=(self.model.STATUS.unknown, self.model.STATUS.ok))

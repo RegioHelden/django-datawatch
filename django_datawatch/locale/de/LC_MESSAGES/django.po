@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-14 10:02+0000\n"
+"POT-Creation-Date: 2024-01-16 01:07+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -72,6 +72,12 @@ msgstr "Ausgeblendet bis"
 msgid "Acknowledge reason"
 msgstr "Ausblendungsgrund"
 
+msgid "Assigned users"
+msgstr "Zugewiesener Benutzer"
+
+msgid "Assigned groups"
+msgstr "Zugewiesene Gruppen"
+
 msgid "Result"
 msgstr "Ergebnis"
 
@@ -83,6 +89,27 @@ msgstr "Zu Status"
 
 msgid "Result status history"
 msgstr "Ergebnis-Status-Historie"
+
+msgid "Group"
+msgstr "Gruppen"
+
+msgid "Result assigned group"
+msgstr "Zugewiesene Gruppe"
+
+msgid "Result assigned groups"
+msgstr "Zugewiesene Gruppen"
+
+msgid "Group must be unique across the result"
+msgstr "Die Gruppe muss im gesamten Ergebnis eindeutig sein"
+
+msgid "Result assigned user"
+msgstr "Zugewiesener Benutzer"
+
+msgid "Result assigned users"
+msgstr "Zugewiesener Benutzern"
+
+msgid "User must be unique across the result"
+msgstr "Der Benutzer muss im gesamten Ergebnis eindeutig sein"
 
 msgid "Check module slug"
 msgstr "Modul-Bezeichner"
@@ -136,6 +163,9 @@ msgstr "Nicht zugewiesen"
 msgid "Config form class"
 msgstr "Formular-Klasse für Konfiguration"
 
+msgid "Config"
+msgstr "Konfiguration"
+
 msgid "Run every"
 msgstr "Periodisches Ausführen"
 
@@ -151,12 +181,6 @@ msgstr "Maximale Ausblendezeit"
 #, python-format
 msgid "%(days)s day(s)"
 msgstr "%(days)s Tag(e)"
-
-msgid "Assigned group"
-msgstr "Zugewiesene Gruppe"
-
-msgid "Assigned user"
-msgstr "Zugewiesener Benutzer"
 
 #, python-format
 msgid "Acknowledged until %(date)s by %(user)s"

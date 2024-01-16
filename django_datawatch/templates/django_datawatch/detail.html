@@ -98,20 +98,20 @@
                                                 </tr>
                                             {% endwith %}
                                             <tr>
-                                                <td>{% trans "Assigned group" %}</td>
+                                                <td>{% trans "Assigned groups" %}</td>
                                                 <td>
-                                                    {% if result.assigned_to_group %}
-                                                        {{ result.assigned_to_group }}
+                                                    {% if result.assigned_groups.all %}
+                                                        {{ result.assigned_groups.all|join:', ' }}
                                                     {% else %}
                                                         {% trans "Not set" %}
                                                     {% endif %}
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td>{% trans "Assigned user" %}</td>
+                                                <td>{% trans "Assigned users" %}</td>
                                                 <td>
-                                                    {% if result.assigned_to_user %}
-                                                        {{ result.assigned_to_user }}
+                                                    {% if result.assigned_users.all %}
+                                                        {{ result.assigned_users.all|join:', ' }}
                                                     {% else %}
                                                         {% trans "Not set" %}
                                                     {% endif %}
