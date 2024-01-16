@@ -11,9 +11,10 @@ class ResultQuerySet(models.QuerySet):
     def for_user(self, user):
         user_groups = user.groups.all()
         return self.filter(
-            (Q(assigned_groups__in=user_groups) | Q(assigned_users=user))
-            | (Q(assigned_groups__isnull=True) & Q(assigned_users__isnull=True)),
-        )
+            Q(assigned_users=user)
+            | Q(assigned_groups__in=user_groups)
+            | Q(assigned_users__isnull=True, assigned_groups__isnull=True)
+        ).distinct()
 
     def failed(self):
         return self.exclude(status__in=(self.model.STATUS.unknown, self.model.STATUS.ok))
