@@ -181,6 +181,38 @@ Datawatch supported setting a specific queue in release < 0.4.0
 
 With the switch to celery 4, you should use task routing to define the queue for your tasks, see http://docs.celeryproject.org/en/latest/userguide/routing.html
 
+## Migrating from 3.x to 4.x
+
+In `4.x`, the base check class supports two new methods (`get_assigned_users` and `get_assigned_groups`). This is a breaking change as the old `get_assigned_user` and `get_assigned_group` methods have been removed.
+
+This change allows checks to assign multiple users and groups to a check. If you have implemented custom checks, you need to update your code to return a list of users and groups instead of a single user and group. e.g.
+
+From
+
+```python
+from django_datawatch.base import BaseCheck
+
+class CustomCheck(BaseCheck):
+    ...
+    def get_assigned_user(self, payload, result) -> Optional[AbstractUser]:
+        return None # or a user
+    def get_assigned_group(self, payload, result) -> Optional[Group]:
+        return None # or a group
+```
+
+To
+
+```python
+from django_datawatch.base import BaseCheck
+
+class CustomCheck(BaseCheck):
+    ...
+    def get_assigned_users(self, payload, result) -> Optional[List[AbstractUser]]:
+        return None  # or a list of users
+    def get_assigned_groups(self, payload, result) -> Optional[List[Group]]:
+        return None  # or a list of groups
+```
+
 # CONTRIBUTE
 
 ## Dev environment
