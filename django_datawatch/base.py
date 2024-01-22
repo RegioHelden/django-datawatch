@@ -1,6 +1,6 @@
 import logging
 from contextlib import contextmanager
-from typing import Optional
+from typing import Optional, List
 
 from django import forms
 from django.contrib.auth.models import AbstractUser, Group
@@ -192,10 +192,10 @@ class BaseCheck(object):
     def format_result_data(self, result):
         return ''
 
-    def get_assigned_users(self, payload, result) -> Optional[list[AbstractUser]]:
+    def get_assigned_users(self, payload, result) -> Optional[List[AbstractUser]]:
         return None
 
-    def get_assigned_groups(self, payload, result) -> Optional[list[Group]]:
+    def get_assigned_groups(self, payload, result) -> Optional[List[Group]]:
         return None
 
     def get_context_data(self, result):
