@@ -1,7 +1,9 @@
 import logging
 from contextlib import contextmanager
+from typing import Optional
 
 from django import forms
+from django.contrib.auth.models import AbstractUser, Group
 from django.db import transaction
 from django.utils import timezone
 
@@ -146,9 +148,13 @@ class BaseCheck(object):
                 # set assigned users and groups
                 if groups := self.get_assigned_groups(payload, status):
                     dataset.assigned_groups.set(groups)
+                else:
+                    dataset.assigned_groups.clear()
 
                 if users := self.get_assigned_users(payload, status):
                     dataset.assigned_users.set(users)
+                else:
+                    dataset.assigned_users.clear()
 
         return dataset
 
@@ -186,10 +192,10 @@ class BaseCheck(object):
     def format_result_data(self, result):
         return ''
 
-    def get_assigned_users(self, payload, result):
+    def get_assigned_users(self, payload, result) -> Optional[list[AbstractUser]]:
         return None
 
-    def get_assigned_groups(self, payload, result):
+    def get_assigned_groups(self, payload, result) -> Optional[list[Group]]:
         return None
 
     def get_context_data(self, result):

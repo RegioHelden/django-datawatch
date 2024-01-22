@@ -76,6 +76,14 @@ class BaseCheckTestCase(TestCase):
         for user in users:
             self.assertTrue(user in result.assigned_users.all())
 
+        # Update with no assigned users/groups
+        self.check.get_assigned_groups = mock.Mock(return_value=None)
+        self.check.get_assigned_users = mock.Mock(return_value=None)
+        result = self.check.save(self.fake_payload, Result.STATUS.ok)
+
+        self.assertEqual(result.assigned_groups.count(), 0)
+        self.assertEqual(result.assigned_users.count(), 0)
+
     def test_unique_groups(self):
         group = Group.objects.create(name='group')
         self.check.get_assigned_groups = mock.Mock(return_value=[group, group])
