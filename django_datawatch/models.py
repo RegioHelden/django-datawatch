@@ -4,6 +4,7 @@ from dateutil import relativedelta
 from django.utils import timezone
 from django.conf import settings
 from django.db import models
+from django.core.exceptions import ValidationError
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from django_extensions.db.fields.json import JSONField
@@ -42,9 +43,9 @@ class Result(TimeStampedModel):
     acknowledged_until = models.DateTimeField(null=True, blank=True, verbose_name=_('Acknowledged until'))
     acknowledged_reason = models.TextField(blank=True, verbose_name=_('Acknowledge reason'))
 
-    assigned_to_user = models.ForeignKey(to=settings.AUTH_USER_MODEL, null=True, blank=True,
-                                         related_name='assigned_to_user', on_delete=models.SET_NULL)
-    assigned_to_group = models.ForeignKey(to='auth.Group', null=True, blank=True, on_delete=models.SET_NULL)
+    assigned_users = models.ManyToManyField(to=settings.AUTH_USER_MODEL, through='ResultAssignedUser', related_name='assigned_results', blank=True, verbose_name=_('Assigned users'))
+    assigned_groups = models.ManyToManyField(to='auth.Group', through='ResultAssignedGroup', related_name='assigned_groups', blank=True,
+                                             verbose_name=_('Assigned groups'))
 
     objects = ResultQuerySet.as_manager()
 
@@ -115,6 +116,42 @@ class ResultStatusHistory(TimeStampedModel):
         verbose_name = _('Result status history')
         verbose_name_plural = _('Result status history')
 
+
+class ResultAssignedGroup(models.Model):
+    result = models.ForeignKey(Result, on_delete=models.CASCADE, verbose_name=_('Result'))
+    group = models.ForeignKey(to='auth.Group', verbose_name=_('Group'), on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = _('Result assigned group')
+        verbose_name_plural = _('Result assigned groups')
+        constraints = [models.UniqueConstraint(fields=['result', 'group'], name='unique_result_assigned_group')]
+
+    def validate_unique(self, exclude=None):
+        if (
+            ResultAssignedGroup.objects.filter(result_id=self.result_id, group_id=self.group_id)
+            .exclude(pk=self.pk)
+            .exists()
+        ):
+            raise ValidationError({"group": _("Group must be unique across the result")})
+        super().validate_unique(exclude)
+
+class ResultAssignedUser(models.Model):
+    result = models.ForeignKey(Result, on_delete=models.CASCADE, verbose_name=_('Result'))
+    user = models.ForeignKey(to=settings.AUTH_USER_MODEL, verbose_name=_('User'), on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = _('Result assigned user')
+        verbose_name_plural = _('Result assigned users')
+        constraints = [models.UniqueConstraint(fields=['result', 'user'], name='unique_result_assigned_user')]
+
+    def validate_unique(self, exclude=None):
+        if (
+            ResultAssignedUser.objects.filter(result_id=self.result_id, user_id=self.user_id)
+            .exclude(pk=self.pk)
+            .exists()
+        ):
+            raise ValidationError({"user": _("User must be unique across the result")})
+        super().validate_unique(exclude)
 
 class CheckExecution(models.Model):
     slug = models.TextField(verbose_name=_('Check module slug'), unique=True)

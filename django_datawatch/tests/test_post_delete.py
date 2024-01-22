@@ -39,13 +39,12 @@ class PostDeleteTestCase(TestCase):
         mock_get_checks_for_model.return_value = [CheckPostDelete]
 
         # mock the manager
-        manager = mock.Mock(spec=ResultQuerySet)
-        Result.objects = manager
-        manager.using.return_value = manager
-        manager_filtered = mock.Mock(spec=ResultQuerySet)
-        manager.filter.return_value = manager_filtered
+        with mock.patch.object(Result, "objects", spec=Result.objects) as mock_manager:
+            mock_manager.using.return_value = mock_manager
+            manager_filtered = mock.Mock(spec=ResultQuerySet)
+            mock_manager.filter.return_value = manager_filtered
 
-        # test if delete has been called
-        datawatch.delete_results(sender=Result, instance=Result(pk=1))
-        manager.filter.assert_called_with(slug=CheckPostDelete().slug, identifier=1)
-        manager_filtered.delete.assert_called_with()
+            # test if delete has been called
+            datawatch.delete_results(sender=Result, instance=Result(pk=1))
+            mock_manager.filter.assert_called_with(slug=CheckPostDelete().slug, identifier=1)
+            manager_filtered.delete.assert_called_with()

@@ -1,8 +1,13 @@
+from unittest import mock
+
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
 from django.test.testcases import TestCase
 
 from django_datawatch.base import BaseCheck
 from django_datawatch.models import Result, ResultStatusHistory
 
+User = get_user_model()
 
 class BaseCheckTestCase(TestCase):
     def setUp(self) -> None:
@@ -54,3 +59,49 @@ class BaseCheckTestCase(TestCase):
         latest_history = history_qs.latest('created')
         self.assertEqual(latest_history.to_status, result2.status)
         self.assertEqual(latest_history.to_status, result2.status)
+
+    def test_save_sets_groups_and_users(self):
+        groups = [Group.objects.create(name=f'group_{i}') for i in range(3)]
+        users = [User.objects.create_user(**{User.USERNAME_FIELD: f'user_{i}'}) for i in range(3)]
+
+        self.check.get_assigned_groups = mock.Mock(return_value=groups)
+        self.check.get_assigned_users = mock.Mock(return_value=users)
+
+        result = self.check.save(self.fake_payload, Result.STATUS.ok)
+
+        self.assertEqual(result.assigned_groups.count(), 3)
+        for group in groups:
+            self.assertTrue(group in result.assigned_groups.all())
+        self.assertEqual(result.assigned_users.count(), 3)
+        for user in users:
+            self.assertTrue(user in result.assigned_users.all())
+
+        # Update with no assigned users/groups
+        self.check.get_assigned_groups = mock.Mock(return_value=None)
+        self.check.get_assigned_users = mock.Mock(return_value=None)
+        result = self.check.save(self.fake_payload, Result.STATUS.ok)
+
+        self.assertEqual(result.assigned_groups.count(), 0)
+        self.assertEqual(result.assigned_users.count(), 0)
+
+    def test_unique_groups(self):
+        group = Group.objects.create(name='group')
+        self.check.get_assigned_groups = mock.Mock(return_value=[group, group])
+
+        result = self.check.save(self.fake_payload, Result.STATUS.ok)
+
+        # Result should be created with only one group
+        self.assertEqual(Result.objects.count(), 1)
+        self.assertEqual(result.assigned_groups.count(), 1)
+        self.assertEqual(result.assigned_groups.first(), group)
+
+    def test_unique_users(self):
+        user = User.objects.create_user(**{User.USERNAME_FIELD: 'test_user'})
+        self.check.get_assigned_users = mock.Mock(return_value=[user, user])
+
+        result = self.check.save(self.fake_payload, Result.STATUS.ok)
+
+        # Result should be created with only one user
+        self.assertEqual(Result.objects.count(), 1)
+        self.assertEqual(result.assigned_users.count(), 1)
+        self.assertEqual(result.assigned_users.first(), user)

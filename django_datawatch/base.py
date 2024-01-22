@@ -1,7 +1,10 @@
 import logging
 from contextlib import contextmanager
+from typing import Optional, List
 
 from django import forms
+from django.contrib.auth.models import AbstractUser, Group
+from django.db import transaction
 from django.utils import timezone
 
 from django_datawatch.models import Result, CheckExecution, ResultStatusHistory
@@ -23,7 +26,6 @@ def track_status_history(slug, identifier, new_status):
 
 class DatawatchCheckSkipException(Exception):
     pass
-
 
 class BaseCheckForm(forms.Form):
     def save(self, instance):
@@ -60,8 +62,8 @@ class BaseCheck(object):
     Any check should inherits from `BaseCheck` and should implements `.generate(self)`
     and `.check(self, payload)` methods.
 
-    Optionally, you can implements `.get_assigned_user(self, payload)` (resp. `.get_assigned_group(self, payload)`)
-    to define to which user (resp. group) the system had to assign the check result.
+    Optionally, you can implements `.get_assigned_users(self, payload)` (resp. `.get_assigned_groups(self, payload)`)
+    to define to which user(s) (resp. group(s)) the system had to assign the check result.
     """
 
     config_form = None
@@ -131,17 +133,28 @@ class BaseCheck(object):
 
     def save(self, payload, status, data=None, unacknowledge=False):
         # build default data
-        defaults = dict(status=status, data=data, assigned_to_user=self.get_assigned_user(payload, status),
-                        assigned_to_group=self.get_assigned_group(payload, status),
-                        payload_description=self.get_payload_description(payload))
+        defaults = dict(status=status, data=data, payload_description=self.get_payload_description(payload))
+
         if unacknowledge:
             defaults.update(dict(acknowledged_by=None, acknowledged_at=None, acknowledged_until=None))
 
-        with track_status_history(self.slug, self.get_identifier(payload), status):
-            # save the check
-            dataset, created = Result.objects.update_or_create(
-                slug=self.slug, identifier=self.get_identifier(payload),
-                defaults=defaults)
+        with transaction.atomic():
+            with track_status_history(self.slug, self.get_identifier(payload), status):
+                # save the check
+                dataset, created = Result.objects.update_or_create(
+                    slug=self.slug, identifier=self.get_identifier(payload),
+                    defaults=defaults)
+
+                # set assigned users and groups
+                if groups := self.get_assigned_groups(payload, status):
+                    dataset.assigned_groups.set(groups)
+                else:
+                    dataset.assigned_groups.clear()
+
+                if users := self.get_assigned_users(payload, status):
+                    dataset.assigned_users.set(users)
+                else:
+                    dataset.assigned_users.clear()
 
         return dataset
 
@@ -179,10 +192,10 @@ class BaseCheck(object):
     def format_result_data(self, result):
         return ''
 
-    def get_assigned_user(self, payload, result):
+    def get_assigned_users(self, payload, result) -> Optional[List[AbstractUser]]:
         return None
 
-    def get_assigned_group(self, payload, result):
+    def get_assigned_groups(self, payload, result) -> Optional[List[Group]]:
         return None
 
     def get_context_data(self, result):
