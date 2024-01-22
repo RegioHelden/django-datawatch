@@ -4,6 +4,12 @@ Changelog
 Unreleased
 ------------------
 
+
+4.0.0 (2024-01-22)
+------------------
+
+- BREAKING CHANGE! added the ability to assign multiple users and groups instead of just one. Check migrating section in the README for more information
+
 3.6.0 (2023-06-12)
 ------------------
 
