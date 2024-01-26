@@ -4,6 +4,10 @@ Changelog
 Unreleased
 ------------------
 
+4.0.1 (2024-01-26)
+------------------
+
+- Fixed result queryset for_user filter to only utilize assigned groups if result has no assigned users
 
 4.0.0 (2024-01-22)
 ------------------
