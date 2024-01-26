@@ -65,11 +65,11 @@ class ResultQuerySetTestCase(TestCase):
         res_with_users_no_group = self._make_result(
             "test5", users=[user_with_group, user_with_groups]
         )
-        # One group and one user (u2, u3)
+        # One group and one user (u2)
         res_with_group_and_user = self._make_result(
             "test6", users=[user_without_group], groups=[group_with_user]
         )
-        # Multiple groups and one user (u2, u3)
+        # Multiple groups and one user (u2)
         res_with_groups_and_user = self._make_result(
             "test7",
             users=[user_without_group],
@@ -99,8 +99,6 @@ class ResultQuerySetTestCase(TestCase):
                 res_with_group_no_user,
                 res_with_groups_no_user,
                 res_with_users_no_group,
-                res_with_group_and_user,
-                res_with_groups_and_user,
                 res_with_group_and_users,
             ],
         )

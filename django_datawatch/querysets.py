@@ -9,10 +9,10 @@ from django_datawatch.datawatch import datawatch
 
 class ResultQuerySet(models.QuerySet):
     def for_user(self, user):
-        user_groups = user.groups.all()
+        # Should only check assigned groups if result has no assigned users
         return self.filter(
             Q(assigned_users=user)
-            | Q(assigned_groups__in=user_groups)
+            | Q(assigned_users__isnull=True, assigned_groups__in=user.groups.all())
             | Q(assigned_users__isnull=True, assigned_groups__isnull=True)
         ).distinct()
 
