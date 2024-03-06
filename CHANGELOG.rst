@@ -4,6 +4,14 @@ Changelog
 Unreleased
 ------------------
 
+5.0.0 (2024-03-06)
+------------------
+
+- Get rid of tox.ini and use GitHub Actions for testing
+- Add support for Python 3.12
+- Add support for Django 5.0
+- Upgrade libraries in test environment
+
 4.0.1 (2024-01-26)
 ------------------
 
