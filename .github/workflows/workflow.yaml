@@ -24,6 +24,10 @@ jobs:
           - django42
           - djangp50
         exclude:
+          - python-version: "3.8"
+            django: django50
+          - python-version: "3.9"
+            django: django50
           - python-version: "3.11"
             django: django32
           - python-version: "3.11"
