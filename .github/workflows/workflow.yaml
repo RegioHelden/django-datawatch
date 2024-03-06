@@ -91,26 +91,8 @@ jobs:
       - name: Install package
         run: pip install -e .
 
-      - name: Run tests and coverage
-        run: coverage run --source=django_scrubber runtests.py
-
-      - name: Publish coverage
-        if: |
-          github.repository == 'RegioHelden/django-datawatch'
-          &&
-          (
-            github.event_name == 'push'
-            ||
-            (
-              github.event_name == 'pull_request'
-              &&
-              github.head_ref == 'master'
-            )
-          )
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-        run: coveralls
+      - name: Run tests
+        run: python manage.py test
 
   publish:
     name: Build and publish Python 🐍 distributions 📦 to PyPI
