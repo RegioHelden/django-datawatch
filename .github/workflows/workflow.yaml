@@ -71,19 +71,19 @@ jobs:
 
       - name: Install Django 3.2
         if: matrix.django == 3.2
-        run: pip install "Django>=3.2,<4.0 psycopg2==2.9.9"
+        run: pip install "Django>=3.2,<4.0" psycopg2==2.9.9
       - name: Install Django 4.0
         if: matrix.django == 4.0
-        run: pip install "Django>=4.0,<4.1 psycopg2==2.9.9"
+        run: pip install "Django>=4.0,<4.1" psycopg2==2.9.9
       - name: Install Django 4.1
         if: matrix.django == 4.1
-        run: pip install "Django>=4.1,<4.2 psycopg2==2.9.9"
+        run: pip install "Django>=4.1,<4.2" psycopg2==2.9.9
       - name: Install Django 4.2
         if: matrix.django == 4.2
-        run: pip install "Django>=4.2,<5.0 psycopg==3.1.18"
+        run: pip install "Django>=4.2,<5.0" psycopg==3.1.18
       - name: Install Django 5.0
         if: matrix.django == 5.0
-        run: pip install "Django>=5.0,<5.1 psycopg==3.1.18"
+        run: pip install "Django>=5.0,<5.1" psycopg==3.1.18
 
       - name: Install requirements
         run: pip install -r requirements-ci.txt
