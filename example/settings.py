@@ -65,7 +65,7 @@ LOCALE_PATHS = (
 )
 
 # Database
-if 'TOX_ENV_NAME' in os.environ:
+if os.environ.get('GITHUB_WORKFLOW', False):
     DATABASES = {
         'default': {
             'ENGINE':   'django.db.backends.postgresql',
