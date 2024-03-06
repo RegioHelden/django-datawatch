@@ -24,6 +24,7 @@ WORKDIR /app
 USER app
 
 ADD requirements-test.txt /app/
+ADD requirements-ci.txt /app/
 
 ENV PATH /home/app/venv/bin:${PATH}
 

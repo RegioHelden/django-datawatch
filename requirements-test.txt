@@ -1,12 +1,4 @@
+-r requirements-ci.txt
 bumpversion==0.6.0
-celery==5.3.6
-coveralls==3.3.1
-django-bootstrap5==23.4
-django-extensions==3.2.3
-django-model-utils==4.4.0
-django-celery-beat==2.6.0
 pip-check==2.8.1
 psycopg==3.1.18
-python-dateutil==2.9.0.post0
-tblib==3.0.0
-time-machine==2.14.0

@@ -63,7 +63,7 @@ class TriggerUpdateTestCase(TestCase):
         with self.captureOnCommitCallbacks() as callbacks:
             datawatch.update_related(sender=Result, instance=Result(pk=143243, slug="143243"))
 
-        self.assertEquals(3, len(callbacks))
+        self.assertEqual(3, len(callbacks))
 
         parameters = [
             dict(slug='django_datawatch.tests.test_trigger_update.CheckTriggerUpdate', identifier=143243, run_async=True),
