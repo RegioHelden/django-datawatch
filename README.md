@@ -216,8 +216,7 @@ class CustomCheck(BaseCheck):
 # CONTRIBUTE
 
 ## Dev environment
-- [Docker](https://docs.docker.com/) (19.03.0 or later)
-- [Compose plugin for Docker](https://docs.docker.com/compose/install/linux/)
+- Latest [Docker](https://docs.docker.com/) with the integrated compose plugin
 
 Please make sure that no other container is using port 8000 as this is the one you're install gets exposed to:
 http://localhost:8000/
