@@ -5,5 +5,5 @@ class BaseBackend(object):
     def refresh(self, slug, run_async=True):
         raise NotImplementedError('refresh not implemented')
 
-    def run(self, slug, identifier, run_async=True, user_forced_refresh=False):
+    def run(self, slug, identifier, run_async=True, user_forced_refresh=False, queue=None):
         raise NotImplementedError('run not implemented')

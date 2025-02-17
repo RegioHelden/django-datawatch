@@ -125,7 +125,7 @@ class DatawatchHandler(object):
 
                 # work around lambdas binding to the loop scope, see https://rules.sonarsource.com/python/RSPEC-1515
                 def execute_backend_run(slug=check.slug, identifier=check.get_identifier(payload)):
-                    backend.run(slug=slug, identifier=identifier, run_async=True)
+                    backend.run(slug=slug, identifier=identifier, run_async=True, queue=check.queue)
 
                 transaction.on_commit(execute_backend_run, using=db_alias)
 

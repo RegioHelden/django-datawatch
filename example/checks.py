@@ -23,6 +23,7 @@ class UserHasEnoughBalance(BaseCheck):
     max_acknowledge = 7
     trigger_update = dict(wallet=models.Wallet, user=get_user_model())
     model_class = models.Wallet
+    queue = "datawatch"
 
     def generate(self):
         for payload in models.Wallet.objects.all():

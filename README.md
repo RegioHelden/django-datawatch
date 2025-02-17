@@ -116,6 +116,11 @@ def get_subproduct_payload(self, instance):
     return instance.product
 ```
 
+### define an individual queue
+
+You can force specific checks to run in different queues (e.g. in the `celery` backend). \
+Set the `queue` parameter of your Check class to the name of the queue.
+
 ## Exceptions
 
 #### `DatawatchCheckSkipException`
@@ -179,6 +184,8 @@ Default: True
 Datawatch supported setting a specific queue in release < 0.4.0
 
 With the switch to celery 4, you should use task routing to define the queue for your tasks, see http://docs.celeryproject.org/en/latest/userguide/routing.html
+
+To be able to run specific tasks in a different queue, one can use the `queue` attribute on the `Check` subclass. This is meant to be a string representing the name of the queue. This is currently only supported by the celery backend.
 
 ## Migrating from 3.x to 4.x
 

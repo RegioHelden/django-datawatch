@@ -149,9 +149,12 @@ class ResultConfigView(LoginRequiredMixin, PermissionRequiredMixin, SingleObject
         form.save(instance=self.object)
         check = self.object.get_check_instance()
 
-        datawatch.get_backend().run(slug=check.slug,
-                                    identifier=check.get_identifier(self.object),
-                                    run_async=False)
+        datawatch.get_backend().run(
+            slug=check.slug,
+            identifier=check.get_identifier(self.object),
+            run_async=False,
+            queue=check.queue,
+        )
         return super(ResultConfigView, self).form_valid(form)
 
 
@@ -169,10 +172,13 @@ class ResultRefreshView(LoginRequiredMixin, PermissionRequiredMixin, SingleObjec
         self.object = self.get_object()
         response = super(ResultRefreshView, self).get(request, *args, **kwargs)
         check = self.object.get_check_instance()
-        datawatch.get_backend().run(slug=check.slug,
-                                    identifier=self.object.identifier,
-                                    run_async=False,
-                                    user_forced_refresh=True)
+        datawatch.get_backend().run(
+            slug=check.slug,
+            identifier=self.object.identifier,
+            run_async=False,
+            user_forced_refresh=True,
+            queue=check.queue,
+        )
         messages.add_message(request, messages.INFO, _('Result has been refreshed'))
         return response
 

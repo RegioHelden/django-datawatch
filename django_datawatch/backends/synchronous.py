@@ -19,15 +19,33 @@ class Backend(BaseBackend):
             for payload in check.generate():
                 if payload is None:
                     continue
-                datawatch.get_backend().run(check.slug, check.get_identifier(payload))
+                datawatch.get_backend().run(
+                    slug=check.slug,
+                    identifier=check.get_identifier(payload),
+                    queue=check.queue,
+                )
         except NotImplementedError as e:
             logger.error(e)
 
     def refresh(self, slug, run_async=True):
         for result in Result.objects.filter(slug=slug):
-            datawatch.get_backend().run(result.slug, result.identifier)
+            check = self._get_check_instance(result.slug)
+            if not check:
+                continue
+            datawatch.get_backend().run(
+                slug=result.slug,
+                identifier=result.identifier,
+                queue=check.queue,
+            )
 
-    def run(self, slug, identifier, run_async=True, user_forced_refresh=False):
+    def run(
+        self,
+        slug,
+        identifier,
+        run_async=True,
+        user_forced_refresh=False,
+        queue=None,
+    ):
         check = self._get_check_instance(slug)
         if not check:
             return
