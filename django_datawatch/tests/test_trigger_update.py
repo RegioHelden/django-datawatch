@@ -28,6 +28,7 @@ class CheckTriggerUpdate(BaseCheck):
 class CheckTriggerUpdateList(BaseCheck):
     model_class = Result
     trigger_update = dict(foobar=Result)
+    queue = "individual_queue"
 
     def get_foobar_payload(self, instance):
         return [instance, Result(pk=51945, slug="51945")]
@@ -66,9 +67,9 @@ class TriggerUpdateTestCase(TestCase):
         self.assertEqual(3, len(callbacks))
 
         parameters = [
-            dict(slug='django_datawatch.tests.test_trigger_update.CheckTriggerUpdate', identifier=143243, run_async=True),
-            dict(slug='django_datawatch.tests.test_trigger_update.CheckTriggerUpdateList', identifier=143243, run_async=True),
-            dict(slug='django_datawatch.tests.test_trigger_update.CheckTriggerUpdateList', identifier=51945, run_async=True),
+            dict(slug='django_datawatch.tests.test_trigger_update.CheckTriggerUpdate', identifier=143243, run_async=True, queue=None),
+            dict(slug='django_datawatch.tests.test_trigger_update.CheckTriggerUpdateList', identifier=143243, run_async=True, queue="individual_queue"),
+            dict(slug='django_datawatch.tests.test_trigger_update.CheckTriggerUpdateList', identifier=51945, run_async=True, queue="individual_queue"),
         ]
 
         for callback in callbacks:
