@@ -4,6 +4,10 @@ Changelog
 Unreleased
 ------------------
 
+5.1.0 (2025-02-18)
+------------------
+- Add support for individual backend queues (e.g. celery) per Check class
+
 5.0.0 (2024-03-06)
 ------------------
 
