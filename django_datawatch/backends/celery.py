@@ -21,9 +21,10 @@ class Backend(BaseBackend):
         else:
             django_datawatch_refresh.apply(**kwargs)
 
-    def run(self, slug, identifier, run_async=True, user_forced_refresh=False):
+    def run(self, slug, identifier, run_async=True, user_forced_refresh=False, queue=None):
         kwargs = dict(kwargs=dict(slug=slug, identifier=identifier, user_forced_refresh=user_forced_refresh))
+
         if run_async:
-            django_datawatch_run.apply_async(**kwargs)
+            django_datawatch_run.apply_async(**kwargs, queue=queue)
         else:
-            django_datawatch_run.apply(**kwargs)
+            django_datawatch_run.apply(**kwargs, queue=queue)

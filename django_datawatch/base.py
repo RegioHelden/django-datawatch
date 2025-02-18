@@ -72,6 +72,7 @@ class BaseCheck(object):
     run_every = None
     trigger_update = dict()
     model_class = None
+    queue = None
 
     def __init__(self):
         self.slug = datawatch.get_slug(self.__module__, self.__class__.__name__)
