@@ -1,0 +1,9 @@
+[tool.bumpversion]
+current_version = "5.0.0"
+tag = true
+commit = true
+
+[[tool.bumpversion.files]]
+filename = "django_datawatch/__init__.py"
+search = "__version__ = {current_version}"
+replace = "__version__ = {new_version}"

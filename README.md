@@ -292,10 +292,10 @@ docker compose run --rm app compilemessages
 
 ## Making a new release
 
-[bumpversion](https://github.com/peritus/bumpversion) is used to manage releases.
+[Bump My Version](https://github.com/callowayproject/bump-my-version) is used to manage releases.
 
 Add your changes to the [CHANGELOG](./CHANGELOG.rst), run
 ```bash
-docker compose exec app bumpversion <major|minor|patch>
+docker compose exec app bump-my-version <major|minor|patch>
 ```
 then push (including tags).
