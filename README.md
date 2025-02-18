@@ -296,6 +296,6 @@ docker compose run --rm app compilemessages
 
 Add your changes to the [CHANGELOG](./CHANGELOG.rst), run
 ```bash
-docker compose exec app bump-my-version <major|minor|patch>
+docker compose exec app bump-my-version bump <major|minor|patch>
 ```
 then push (including tags).
