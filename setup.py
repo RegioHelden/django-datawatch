@@ -1,7 +1,8 @@
 import os
 import re
-from os.path import join, dirname
-from setuptools import setup, find_packages
+from os.path import dirname, join
+
+from setuptools import find_namespace_packages, setup
 
 
 def get_version(*file_paths):
@@ -18,39 +19,40 @@ def long_description():
     """Return long description from README.rst if it's present
     because it doesn't get installed."""
     try:
-        return open(join(dirname(__file__), 'README.md')).read()
+        return open(join(dirname(__file__), "README.md")).read()
     except IOError:
-        return ''
+        return ""
 
 
 setup(
-    name='django-datawatch',
-    packages=find_packages(exclude=['example*']),
+    name="django-datawatch",
+    packages=find_namespace_packages(exclude=["example*"]),
     version=get_version("django_datawatch", "__init__.py"),
-    description='Django Datawatch runs automated data checks in your Django installation',
-    author='Jens Nistler <opensource@jensnistler.de>, Bogdan Radko <bogdan.radko@regiohelden.de>',
-    author_email='opensource@regiohelden.de',
+    description="Django Datawatch runs automated data checks in your Django installation",
+    author="Jens Nistler <opensource@jensnistler.de>, Bogdan Radko <bogdan.radko@regiohelden.de>",
+    author_email="opensource@regiohelden.de",
     long_description=long_description(),
-    long_description_content_type='text/markdown',
+    long_description_content_type="text/markdown",
     install_requires=[
-        'celery>=5.0.0',
-        'Django>=3.2,<6.0',
-        'django-extensions>=3.0.0',
-        'django-model-utils>=4.2.0',
-        'python-dateutil>=2.8.0',
+        "celery>=5.0.0",
+        "Django>=4.2,<6.0",
+        "django-extensions>=3.0.0",
+        "django-model-utils>=4.2.0",
+        "python-dateutil>=2.8.0",
     ],
-    license='MIT',
-    url='https://github.com/RegioHelden/django-datawatch',
-    download_url='',
-    keywords=['django', 'monitoring', 'datawatch', 'check', 'checks'],
+    license="MIT",
+    url="https://github.com/RegioHelden/django-datawatch",
+    download_url="",
+    keywords=["django", "monitoring", "datawatch", "check", "checks"],
     include_package_data=True,
     classifiers=[
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
         "Development Status :: 5 - Production/Stable",
         "Environment :: Web Environment",
         "Intended Audience :: Developers",
@@ -59,5 +61,5 @@ setup(
         "Topic :: Software Development",
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: System :: Monitoring",
-    ]
+    ],
 )
