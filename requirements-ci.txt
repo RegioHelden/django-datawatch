@@ -1,8 +1,8 @@
-celery==5.3.6
-django-bootstrap5==23.4
+celery==5.4.0
+django-bootstrap5==24.3
 django-extensions==3.2.3
-django-model-utils==4.4.0
-django-celery-beat==2.6.0
+django-model-utils==5.0.0
+django-celery-beat==2.7.0
 python-dateutil==2.9.0.post0
 tblib==3.0.0
-time-machine==2.14.0
+time-machine==2.16.0

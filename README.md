@@ -272,15 +272,6 @@ You will see some failed check now after you refreshed the dashboard view.
 ```bash
 docker compose run --rm app test
 ```
-
-## Requirements upgrades
-
-Check for upgradeable packages by running 
-```bash
-docker compose up -d
-docker compose exec app pip-check
-```
-
 ## Translations
 
 Collect and compile translations for all registered locales
