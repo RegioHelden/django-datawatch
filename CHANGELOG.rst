@@ -4,6 +4,14 @@ Changelog
 Unreleased
 ------------------
 
+6.0.0 (2025-02-19)
+------------------
+- Removed support for EOL Python 3.8
+- Removed support for EOL Django below 4.2
+- Added support for Python 3.13
+- Update dependencies
+- Switch to trusted publishing and package signing
+
 5.1.0 (2025-02-18)
 ------------------
 - Add support for individual backend queues (e.g. celery) per Check class
