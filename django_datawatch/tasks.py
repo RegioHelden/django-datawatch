@@ -1,9 +1,9 @@
-from django_datawatch.models import Result, CheckExecution
 from celery import shared_task
 from celery.utils.log import get_task_logger
 
 from django_datawatch.backends import synchronous
 from django_datawatch.datawatch import Scheduler
+from django_datawatch.models import CheckExecution, Result
 
 logger = get_task_logger(__name__)
 
@@ -29,7 +29,9 @@ def django_datawatch_run(slug, identifier, user_forced_refresh=False, *args, **k
         user_forced_refresh,
     )
     synchronous.Backend().run(
-        slug=slug, identifier=identifier, user_forced_refresh=user_forced_refresh
+        slug=slug,
+        identifier=identifier,
+        user_forced_refresh=user_forced_refresh,
     )
 
 
@@ -44,10 +46,10 @@ def datawatch_cleanup(*args, **kwargs):
     check_names = list(results.distinct().values_list("slug", flat=True))
     results.delete()
     check_names_str = "\n".join(check_names)
-    logger.info(f"{len(check_names)} results have been deleted:\n{check_names_str}")
+    logger.info("%s results have been deleted:\n%s", len(check_names), check_names_str)
 
     check_executions = CheckExecution.objects.ghost_executions()
     check_names = list(check_executions.distinct().values_list("slug", flat=True))
     check_executions.delete()
     check_names_str = "\n".join(check_names)
-    logger.info(f"{len(check_names)} check executions have been deleted:\n{check_names_str}")
+    logger.info("%s check executions have been deleted:\n%s", len(check_names), check_names_str)

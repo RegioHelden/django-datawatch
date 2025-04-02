@@ -5,8 +5,21 @@ on:
   - pull_request
 
 jobs:
+  # lint code for errors
+  # see https://github.com/RegioHelden/github-reusable-workflows/blob/main/.github/workflows/python-ruff.yaml
+  lint:
+    name: Lint
+    permissions:
+      contents: read
+    uses: RegioHelden/github-reusable-workflows/.github/workflows/python-ruff.yaml@main
+    with:
+      ruff-version: "0.11.2"
+
   test:
+    name: Unit tests
     runs-on: ubuntu-latest
+    needs:
+      - lint
 
     strategy:
       fail-fast: false

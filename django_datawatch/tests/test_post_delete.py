@@ -21,19 +21,19 @@ class CheckPostDelete(BaseCheck):
 
 class PostDeleteTestCase(TestCase):
     @override_settings(DJANGO_DATAWATCH_RUN_SIGNALS=True)
-    @mock.patch('django_datawatch.datawatch.datawatch.delete_results')
+    @mock.patch("django_datawatch.datawatch.datawatch.delete_results")
     def test_setting_run_signals_true(self, mock_delete_results):
         delete_results(sender=None, instance=None, using=None)
         self.assertTrue(mock_delete_results.called)
 
     @override_settings(DJANGO_DATAWATCH_RUN_SIGNALS=False)
-    @mock.patch('django_datawatch.datawatch.datawatch.delete_results')
+    @mock.patch("django_datawatch.datawatch.datawatch.delete_results")
     def test_setting_run_signals_false(self, mock_delete_results):
         delete_results(sender=None, instance=None, using=None)
         self.assertFalse(mock_delete_results.called)
 
     @override_settings(DJANGO_DATAWATCH_RUN_SIGNALS=True)
-    @mock.patch('django_datawatch.datawatch.DatawatchHandler.get_checks_for_model')
+    @mock.patch("django_datawatch.datawatch.DatawatchHandler.get_checks_for_model")
     def test_update_related_calls_backend(self, mock_get_checks_for_model):
         # mock the list of checks
         mock_get_checks_for_model.return_value = [CheckPostDelete]

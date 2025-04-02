@@ -1,6 +1,6 @@
 from django.db import models
 from django.db.models.aggregates import Count
-from django.db.models.expressions import Case, When, Value
+from django.db.models.expressions import Case, Value, When
 from django.db.models.query_utils import Q
 from django.utils import timezone
 
@@ -13,7 +13,7 @@ class ResultQuerySet(models.QuerySet):
         return self.filter(
             Q(assigned_users=user)
             | Q(assigned_users__isnull=True, assigned_groups__in=user.groups.all())
-            | Q(assigned_users__isnull=True, assigned_groups__isnull=True)
+            | Q(assigned_users__isnull=True, assigned_groups__isnull=True),
         ).distinct()
 
     def failed(self):
@@ -37,7 +37,7 @@ class ResultQuerySet(models.QuerySet):
         return self.annotate(status_name=case)
 
     def get_stats(self):
-        return self.values('status').annotate(amount=Count('id')).with_status_name()
+        return self.values("status").annotate(amount=Count("id")).with_status_name()
 
     def ghost_results(self):
         """

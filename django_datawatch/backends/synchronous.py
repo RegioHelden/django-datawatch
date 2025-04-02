@@ -3,8 +3,8 @@ import logging
 from django.core.exceptions import ObjectDoesNotExist
 
 from django_datawatch.backends.base import BaseBackend
-from django_datawatch.models import Result
 from django_datawatch.datawatch import datawatch
+from django_datawatch.models import Result
 
 logger = logging.getLogger(__name__)
 

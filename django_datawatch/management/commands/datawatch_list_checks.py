@@ -6,4 +6,4 @@ from django_datawatch.datawatch import datawatch
 class Command(BaseCommand):
     def handle(self, *args, **options):
         for slug in datawatch.get_all_registered_check_slugs():
-            print(slug)
+            self.stdout.write(slug)

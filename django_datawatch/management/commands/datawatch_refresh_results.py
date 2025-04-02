@@ -6,10 +6,10 @@ from django_datawatch.datawatch import datawatch
 class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument(
-            '--slug',
-            dest='slug',
+            "--slug",
+            dest="slug",
             default=None,
-            help='Slug of check to refresh, all checks will be refreshed if slug is not provided',
+            help="Slug of check to refresh, all checks will be refreshed if slug is not provided",
         )
 
     def handle(self, slug, *args, **options):

@@ -1,18 +1,19 @@
+from typing import ClassVar
 from unittest import mock
 
-from django.db import transaction
+from django.db.models import Model
 from django.test.testcases import TestCase, override_settings
 
 from django_datawatch.backends.base import BaseBackend
-from django_datawatch.datawatch import datawatch, run_checks
 from django_datawatch.base import BaseCheck
+from django_datawatch.datawatch import datawatch, run_checks
 from django_datawatch.models import Result
 
 
 @datawatch.register
 class CheckTriggerUpdate(BaseCheck):
     model_class = Result
-    trigger_update = dict(foobar=Result)
+    trigger_update: ClassVar[dict[str, Model]] = {"foobar": Result}
 
     def get_foobar_payload(self, instance):
         return instance
@@ -27,7 +28,7 @@ class CheckTriggerUpdate(BaseCheck):
 @datawatch.register
 class CheckTriggerUpdateList(BaseCheck):
     model_class = Result
-    trigger_update = dict(foobar=Result)
+    trigger_update: ClassVar[dict[str, Model]] = {"foobar": Result}
     queue = "individual_queue"
 
     def get_foobar_payload(self, instance):
@@ -42,21 +43,19 @@ class CheckTriggerUpdateList(BaseCheck):
 
 class TriggerUpdateTestCase(TestCase):
     @override_settings(DJANGO_DATAWATCH_RUN_SIGNALS=True)
-    @mock.patch('django_datawatch.datawatch.DatawatchHandler.update_related')
+    @mock.patch("django_datawatch.datawatch.DatawatchHandler.update_related")
     def test_setting_run_signals_true(self, mock_update):
-        run_checks(sender='sender', instance='instance', created=None, raw=None,
-                   using=None)
-        mock_update.assert_called_once_with('sender', 'instance', None)
+        run_checks(sender="sender", instance="instance", created=None, raw=None, using=None)
+        mock_update.assert_called_once_with("sender", "instance", None)
 
     @override_settings(DJANGO_DATAWATCH_RUN_SIGNALS=False)
-    @mock.patch('django_datawatch.datawatch.DatawatchHandler.update_related')
+    @mock.patch("django_datawatch.datawatch.DatawatchHandler.update_related")
     def test_setting_run_signals_false(self, mock_update):
-        run_checks(sender=None, instance=None, created=None, raw=None,
-                   using=None)
+        run_checks(sender=None, instance=None, created=None, raw=None, using=None)
         mock_update.assert_not_called()
 
     @override_settings(DJANGO_DATAWATCH_RUN_SIGNALS=True)
-    @mock.patch('django_datawatch.datawatch.DatawatchHandler.get_backend')
+    @mock.patch("django_datawatch.datawatch.DatawatchHandler.get_backend")
     def test_update_related_calls_backend(self, mock_get_backend):
         backend = mock.Mock(spec=BaseBackend)
         mock_get_backend.return_value = backend
@@ -67,9 +66,24 @@ class TriggerUpdateTestCase(TestCase):
         self.assertEqual(3, len(callbacks))
 
         parameters = [
-            dict(slug='django_datawatch.tests.test_trigger_update.CheckTriggerUpdate', identifier=143243, run_async=True, queue=None),
-            dict(slug='django_datawatch.tests.test_trigger_update.CheckTriggerUpdateList', identifier=143243, run_async=True, queue="individual_queue"),
-            dict(slug='django_datawatch.tests.test_trigger_update.CheckTriggerUpdateList', identifier=51945, run_async=True, queue="individual_queue"),
+            {
+                "slug": "django_datawatch.tests.test_trigger_update.CheckTriggerUpdate",
+                "identifier": 143243,
+                "run_async": True,
+                "queue": None,
+            },
+            {
+                "slug": "django_datawatch.tests.test_trigger_update.CheckTriggerUpdateList",
+                "identifier": 143243,
+                "run_async": True,
+                "queue": "individual_queue",
+            },
+            {
+                "slug": "django_datawatch.tests.test_trigger_update.CheckTriggerUpdateList",
+                "identifier": 51945,
+                "run_async": True,
+                "queue": "individual_queue",
+            },
         ]
 
         for callback in callbacks:

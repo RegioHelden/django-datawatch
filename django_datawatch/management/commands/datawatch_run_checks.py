@@ -6,17 +6,17 @@ from django_datawatch.datawatch import Scheduler
 class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument(
-            '--force',
-            action='store_true',
-            dest='force',
+            "--force",
+            action="store_true",
+            dest="force",
             default=False,
-            help='Execute all checks.',
+            help="Execute all checks.",
         )
         parser.add_argument(
-            '--slug',
-            dest='slug',
+            "--slug",
+            dest="slug",
             default=None,
-            help='Slug of check to refresh, all checks will be refreshed if slug is not provided',
+            help="Slug of check to refresh, all checks will be refreshed if slug is not provided",
         )
 
     def handle(self, force, slug, *args, **options):

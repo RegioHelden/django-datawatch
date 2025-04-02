@@ -1,12 +1,12 @@
-from collections.abc import Iterable
 import importlib
 import logging
+from collections.abc import Iterable
 
 from celery.schedules import crontab
 from django.conf import settings
-from django.utils import timezone
 from django.db import transaction
 from django.db.models import signals
+from django.utils import timezone
 from django.utils.module_loading import autodiscover_modules
 
 from django_datawatch.defaults import defaults
@@ -14,13 +14,13 @@ from django_datawatch.defaults import defaults
 logger = logging.getLogger(__name__)
 
 
-class DatawatchHandler(object):
+class DatawatchHandler:
     def __init__(self):
         self._registered_checks = {}
-        self._related_models = dict()
+        self._related_models = {}
         self._backend = None
 
-    def autodiscover_checks(self, module_name='checks'):
+    def autodiscover_checks(self, module_name="checks"):
         autodiscover_modules(module_name)
 
     def register(self, check_class):
@@ -33,27 +33,25 @@ class DatawatchHandler(object):
             signals.post_delete.connect(
                 delete_results,
                 sender=check.model_class,
-                dispatch_uid=f'django_datawatch_{slug}',
+                dispatch_uid=f"django_datawatch_{slug}",
             )
 
         # register update
         if check.trigger_update is not None:
             for keyword, model in check.trigger_update.items():
-                method_name = 'get_%s_payload' % keyword
+                method_name = f"get_{keyword}_payload"
                 if not hasattr(check, method_name):
-                    logger.warning(
-                        'Update trigger "%s" defined without .%s()',
-                        keyword, method_name)
+                    logger.warning('Update trigger "%s" defined without .%s()', keyword, method_name)
                     continue
 
                 # listen to updates on all trigger models
                 model_uid = make_model_uid(model)
-                datawatch._related_models.setdefault(model_uid, list())
+                datawatch._related_models.setdefault(model_uid, [])
                 if check_class not in datawatch._related_models[model_uid]:
                     signals.post_save.connect(
                         run_checks,
                         sender=model,
-                        dispatch_uid=f'django_datawatch_{slug}_{keyword}',
+                        dispatch_uid=f"django_datawatch_{slug}_{keyword}",
                     )
                     datawatch._related_models[model_uid].append(check_class)
 
@@ -77,25 +75,24 @@ class DatawatchHandler(object):
         return None
 
     def get_checks_for_model(self, model):
-        check_classes = list()
+        check_classes = []
         for check_class in datawatch.get_all_registered_checks():
             if check_class.model_class == model:
                 check_classes.append(check_class)
         return check_classes
 
     def get_slug(self, module, class_name):
-        return u'{}.{}'.format(module, class_name)
+        return f"{module}.{class_name}"
 
     def get_backend(self):
         if self._backend is None:
-            backend_module = importlib.import_module(
-                getattr(settings, 'DJANGO_DATAWATCH_BACKEND',
-                        defaults['BACKEND']))
+            backend_module = importlib.import_module(getattr(settings, "DJANGO_DATAWATCH_BACKEND", defaults["BACKEND"]))
             self._backend = backend_module.Backend()
         return self._backend
 
     def delete_results(self, sender, instance, db_alias=None):
         from django_datawatch.models import Result
+
         for check_class in datawatch.get_checks_for_model(model=sender):
             check = check_class()
             identifier = check.get_identifier(instance)
@@ -124,7 +121,9 @@ class DatawatchHandler(object):
                     continue
 
                 # work around lambdas binding to the loop scope, see https://rules.sonarsource.com/python/RSPEC-1515
-                def execute_backend_run(slug=check.slug, identifier=check.get_identifier(payload), queue=check.queue):
+                identifier = check.get_identifier(payload)
+
+                def execute_backend_run(backend=backend, slug=check.slug, identifier=identifier, queue=check.queue):
                     backend.run(slug=slug, identifier=identifier, run_async=True, queue=queue)
 
                 transaction.on_commit(execute_backend_run, using=db_alias)
@@ -133,7 +132,7 @@ class DatawatchHandler(object):
 datawatch = DatawatchHandler()
 
 
-class Scheduler(object):
+class Scheduler:
     def run_checks(self, force=False, slug=None):
         """
         :param force: <bool> force all registered checks to be executed
@@ -155,7 +154,7 @@ class Scheduler(object):
 
             # schedule defined in an invalid format
             if not isinstance(check_class.run_every, crontab):
-                logger.warning('run_every must be an instance of crontab')
+                logger.warning("run_every must be an instance of crontab")
                 continue
 
             # shall the check be run again?
@@ -171,8 +170,8 @@ class Scheduler(object):
 
     def get_last_executions(self):
         from django_datawatch.models import CheckExecution
-        return dict([(obj.slug, obj.last_run)
-                     for obj in CheckExecution.objects.all()])
+
+        return {obj.slug: obj.last_run for obj in CheckExecution.objects.all()}
 
 
 def make_model_uid(model):
@@ -182,12 +181,11 @@ def make_model_uid(model):
     :param model: model class
     :return: uid (string)
     """
-    return "%s.%s" % (model._meta.app_label, model.__name__)
+    return f"{model._meta.app_label}.{model.__name__}"
 
 
 def delete_results(sender, instance, using, **kwargs):
-    if not getattr(settings, 'DJANGO_DATAWATCH_RUN_SIGNALS',
-                   defaults['RUN_SIGNALS']):
+    if not getattr(settings, "DJANGO_DATAWATCH_RUN_SIGNALS", defaults["RUN_SIGNALS"]):
         return
     datawatch.delete_results(sender, instance, using)
 
@@ -200,8 +198,7 @@ def run_checks(sender, instance, created, raw, using, **kwargs):
     :param sender: model
     :param kwargs:
     """
-    if not getattr(settings, 'DJANGO_DATAWATCH_RUN_SIGNALS',
-                   defaults['RUN_SIGNALS']):
+    if not getattr(settings, "DJANGO_DATAWATCH_RUN_SIGNALS", defaults["RUN_SIGNALS"]):
         return
     try:
         datawatch.update_related(sender, instance, using)

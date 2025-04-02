@@ -1,4 +1,5 @@
 from typing import Optional
+
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.test.testcases import TestCase
@@ -22,7 +23,10 @@ class ResultQuerySetTestCase(TestCase):
         return Group.objects.bulk_create(groups)
 
     def _make_result(
-        self, slug, users: Optional[list] = None, groups: Optional[list] = None
+        self,
+        slug,
+        users: Optional[list] = None,
+        groups: Optional[list] = None,
     ):
         result = Result.objects.create(slug=slug, identifier="test_identifier")
         if users:
@@ -59,15 +63,19 @@ class ResultQuerySetTestCase(TestCase):
         res_with_user_no_group = self._make_result("test3", users=[user_with_group])
         # Multiple groups but no user (u3)
         res_with_groups_no_user = self._make_result(
-            "test4", groups=[group_with_user, group_without_users]
+            "test4",
+            groups=[group_with_user, group_without_users],
         )
         # Multiple users but no groups (u1, u3)
         res_with_users_no_group = self._make_result(
-            "test5", users=[user_with_group, user_with_groups]
+            "test5",
+            users=[user_with_group, user_with_groups],
         )
         # One group and one user (u2)
         res_with_group_and_user = self._make_result(
-            "test6", users=[user_without_group], groups=[group_with_user]
+            "test6",
+            users=[user_without_group],
+            groups=[group_with_user],
         )
         # Multiple groups and one user (u2)
         res_with_groups_and_user = self._make_result(
@@ -77,7 +85,9 @@ class ResultQuerySetTestCase(TestCase):
         )
         # One group and multiple users (u1, u3)
         res_with_group_and_users = self._make_result(
-            "test8", users=[user_with_group, user_with_groups], groups=[group_with_user]
+            "test8",
+            users=[user_with_group, user_with_groups],
+            groups=[group_with_user],
         )
         self._assert_for_user_results(
             user_with_group,
