@@ -1,6 +1,6 @@
 import logging
 from contextlib import contextmanager
-from typing import ClassVar, Optional
+from typing import ClassVar, Optional, Union
 
 from django import forms
 from django.contrib.auth.models import AbstractUser, Group
@@ -67,13 +67,13 @@ class BaseCheck:
     to define to which user(s) (resp. group(s)) the system had to assign the check result.
     """
 
-    config_form: BaseCheckForm | None = None
+    config_form: Union[BaseCheckForm, None] = None
     title = ""
-    max_acknowledge: int | None = None
+    max_acknowledge: Union[int, None] = None
     run_every = None
     trigger_update: ClassVar[dict[str, models.Model]] = {}
-    model_class: models.Model | None = None
-    queue: str | None = None
+    model_class: Union[models.Model, None] = None
+    queue: Union[str, None] = None
 
     def __init__(self):
         self.slug = datawatch.get_slug(self.__module__, self.__class__.__name__)

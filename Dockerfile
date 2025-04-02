@@ -1,20 +1,21 @@
 FROM debian:bookworm-slim
 
+ARG DEBIAN_FRONTEND=noninteractive
 ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE x
 ENV LC_ALL=C.UTF-8
-ARG DEBIAN_FRONTEND=noninteractive
+ENV UV_COMPILE_BYTECODE 0
 
 RUN apt-get -y update && apt-get -y install \
       build-essential \
       gcc \
       git \
-      python3-venv \
       python3-dev \
       libffi-dev \
       libpq-dev  \
       libssl-dev \
       gettext \
+      pipx \
     && \
     apt-get clean
 
@@ -28,12 +29,11 @@ USER app
 
 COPY --chown=app requirements* /app/
 
-ENV PATH /home/app/venv/bin:${PATH}
+ENV PATH /home/app/.local/bin:/home/app/venv/bin:${PATH}
 
-RUN python3 -m venv ~/venv && \
-    pip install --no-cache-dir --no-compile --upgrade pip && \
-    pip install wheel && \
-    pip install --no-cache-dir --no-compile --upgrade --requirement  /app/requirements-test.txt
+RUN pipx install --force uv==0.6.11 && uv venv ~/venv && \
+    uv pip install --no-cache --upgrade --requirements /app/requirements-test.txt && \
+    uv cache clean
 
 ENV DJANGO_SETTINGS_MODULE example.settings
 

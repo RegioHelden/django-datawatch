@@ -1,12 +1,61 @@
-[tool.bumpversion]
-current_version = "6.0.0"
-tag = true
-commit = true
+[project]
+name = "django-datawatch"
+version = "6.0.0"
+license = "MIT"
+requires-python = ">=3.9"
+description = "Automated data checks for Django"
+readme = "README.md"
+keywords = ["django", "monitoring", "datawatch", "check", "checks"]
+authors = [
+    { name = "Jens Nistler", email = "jens.nistler@regiohelden.de" },
+    { name = "Bogdan Radko", email = "bogdan.radko@regiohelden.de" },
+]
+maintainers = [
+    { name = "RegioHelden GmbH", email = "opensource@regiohelden.de" },
+]
+classifiers = [
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Web Environment",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Monitoring",
+]
+dependencies = [
+    "celery>=5.0.0",
+    "Django>=4.2,<6.0",
+    "django-extensions>=3.0.0",
+    "django-model-utils>=4.2.0",
+    "python-dateutil>=2.8.0",
+]
 
-[[tool.bumpversion.files]]
-filename = "django_datawatch/__init__.py"
-search = '__version__ = "{current_version}"'
-replace = '__version__ = "{new_version}"'
+[project.urls]
+Homepage = "https://github.com/RegioHelden/django-datawatch"
+Documentation = "https://github.com/RegioHelden/django-datawatch/blob/main/README.md"
+Repository = "https://github.com/RegioHelden/django-datawatch.git"
+Issues = "https://github.com/RegioHelden/django-datawatch/issues"
+Changelog = "https://github.com/RegioHelden/django-datawatch/blob/main/CHANGELOG.md"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["django_datawatch"]
+include = ["LICENSE", "README.md", "CHANGELOG.md"]
+
+[tool.hatch.build.targets.sdist]
+packages = ["django_datawatch"]
+include = ["LICENSE", "README.md", "CHANGELOG.md"]
 
 [tool.ruff]
 exclude = [".cache", ".git", "__pycache", "docs", "migrations"]

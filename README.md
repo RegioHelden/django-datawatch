@@ -123,7 +123,7 @@ Set the `queue` parameter of your Check class to the name of the queue.
 
 ## Exceptions
 
-#### `DatawatchCheckSkipException`
+#### `DatawatchCheckSkipError`
 raise this exception to skip current check. The result will not appear in the checks results. 
 
 ## Run your checks
@@ -283,10 +283,5 @@ docker compose run --rm app compilemessages
 
 ## Making a new release
 
-[Bump My Version](https://github.com/callowayproject/bump-my-version) is used to manage releases.
-
-Add your changes to the [CHANGELOG](./CHANGELOG.rst), run
-```bash
-docker compose exec app bump-my-version bump <major|minor|patch>
-```
-then push (including tags).
+This project makes use of [RegioHelden's reusable GitHub workflows](https://github.com/RegioHelden/github-reusable-workflows). \
+Make a new release by manually triggering the `Open release PR` workflow.
