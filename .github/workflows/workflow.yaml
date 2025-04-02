@@ -84,23 +84,23 @@ jobs:
         uses: astral-sh/setup-uv@v5
 
       - name: Install database drivers
-        run: uv pip install psycopg==3.2.6
+        run: uv pip install --system psycopg==3.2.6
 
       - name: Install Django 4.2
         if: matrix.django == 4.2
-        run: uv pip install "Django>=4.2,<5.0"
+        run: uv pip install --system "Django>=4.2,<5.0"
       - name: Install Django 5.0
         if: matrix.django == 5.0
-        run: uv pip install "Django>=5.0,<5.1"
+        run: uv pip install --system "Django>=5.0,<5.1"
       - name: Install Django 5.1
         if: matrix.django == 5.1
-        run: uv pip install "Django>=5.1,<5.2"
+        run: uv pip install --system "Django>=5.1,<5.2"
 
       - name: Install requirements
-        run: uv pip install -r requirements-ci.txt
+        run: uv pip install --system -r requirements-ci.txt
 
       - name: Install package
-        run: uv pip install -e .
+        run: uv pip install --system -e .
 
       - name: Run tests
         run: python manage.py test
