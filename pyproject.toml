@@ -1,6 +1,6 @@
 [project]
 name = "django-datawatch"
-version = "7.0.0"
+version = "7.1.0"
 license = "MIT"
 requires-python = ">=3.9"
 description = "Automated data checks for Django"

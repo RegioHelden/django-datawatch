@@ -1,5 +1,13 @@
 # Changelog
 
+## [v7.1.0](https://github.com/RegioHelden/django-datawatch/tree/v7.1.0) (2025-04-11)
+
+[Full Changelog](https://github.com/RegioHelden/django-datawatch/compare/v7.0.0...v7.1.0)
+
+**Implemented enhancements:**
+
+- Add django 5.2 support [\#69](https://github.com/RegioHelden/django-datawatch/pull/69) (@lociii)
+
 ## [v7.0.0](https://github.com/RegioHelden/django-datawatch/tree/v7.0.0) (2025-04-02)
 
 [Full Changelog](https://github.com/RegioHelden/django-datawatch/compare/6.0.0...v7.0.0)
