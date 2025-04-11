@@ -18,7 +18,7 @@ jobs:
       contents: read
     uses: RegioHelden/github-reusable-workflows/.github/workflows/python-ruff.yaml@main
     with:
-      ruff-version: "0.11.2"
+      ruff-version: "0.11.5"
 
   test:
     name: Unit tests
@@ -39,6 +39,7 @@ jobs:
           - "4.2"
           - "5.0"
           - "5.1"
+          - "5.2"
         exclude:
           - django: "4.2"
             python-version: "3.13"
@@ -47,6 +48,8 @@ jobs:
           - django: "5.0"
             python-version: "3.13"
           - django: "5.1"
+            python-version: "3.9"
+          - django: "5.2"
             python-version: "3.9"
 
     # Service containers to run with `runner-job`
@@ -95,6 +98,9 @@ jobs:
       - name: Install Django 5.1
         if: matrix.django == 5.1
         run: uv pip install --system "Django>=5.1,<5.2"
+      - name: Install Django 5.2
+        if: matrix.django == 5.2
+        run: uv pip install --system "Django>=5.2,<6.0"
 
       - name: Install requirements
         run: uv pip install --system -r requirements-ci.txt
