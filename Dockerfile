@@ -1,10 +1,7 @@
 FROM debian:bookworm-slim
 
 ARG DEBIAN_FRONTEND=noninteractive
-ENV PYTHONUNBUFFERED 1
-ENV PYTHONDONTWRITEBYTECODE x
-ENV LC_ALL=C.UTF-8
-ENV UV_COMPILE_BYTECODE 0
+ENV PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=x LC_ALL=C.UTF-8 UV_COMPILE_BYTECODE=0
 
 RUN apt-get -y update && apt-get -y install \
       build-essential \
@@ -29,12 +26,10 @@ USER app
 
 COPY --chown=app requirements* /app/
 
-ENV PATH /home/app/.local/bin:/home/app/venv/bin:${PATH}
+ENV PATH=/home/app/.local/bin:/home/app/venv/bin:${PATH} DJANGO_SETTINGS_MODULE=example.settings
 
-RUN pipx install --force uv==0.6.11 && uv venv ~/venv && \
+RUN pipx install --force uv==0.6.14 && uv venv ~/venv && \
     uv pip install --no-cache --upgrade --requirements /app/requirements-test.txt && \
     uv cache clean
-
-ENV DJANGO_SETTINGS_MODULE example.settings
 
 EXPOSE 8000
