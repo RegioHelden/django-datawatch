@@ -1,15 +1,16 @@
 services:
   app:
-    build:
-      context: .
+    build: .
     user: app
     entrypoint: /app/manage.py
     command: runserver 0:8000
     volumes:
       - .:/app:cached
     environment:
+      SHELL: /bin/bash
       IPYTHONDIR: /app/.ipython
       HISTFILE: /app/.bash_history
+      PYTHONPATH: /app
     restart: unless-stopped
     networks:
       default:
@@ -17,6 +18,7 @@ services:
           - datawatch
     depends_on:
       - db
+      - rabbitmq
 
   db:
     image: postgres:17-alpine
