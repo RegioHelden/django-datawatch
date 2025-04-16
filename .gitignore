@@ -1,13 +1,66 @@
-*.pyc
-.idea/
-.vagrant/
-.pycharm_helpers/
-.ipython/
-dist/
-*.egg-info/
-build/
-*.sw*
+# -------------------------------------------------
+# Managed by modulesync - DO NOT EDIT
+# -------------------------------------------------
+
+# C extensions
+*.so
+
+# Packages
+*.egg
+*.egg-info
+dist
+build
+eggs
+parts
+bin
+var
+sdist
+develop-eggs
+.installed.cfg
+lib
+lib64
+
+# Installer logs
+pip-log.txt
+
+# Unit test / coverage reports
 .coverage
-celerybeat-schedule.db
+.tox
+nosetests.xml
+htmlcov
+
+# Translations
+*.mo
+
+# dev env
+.mr.developer.cfg
+.project
+.pydevproject
+.mypy_cache
+.ruff_cache
+.ipython
 .bash_history
-docker-compose.override.yaml
+compose.override.yaml
+
+# Language specific
+__pycache__
+*.pyc
+*.py[cod]
+*.sw*
+
+# Pycharm/Intellij
+.idea
+.pycharm_helpers
+
+# Complexity
+output/*.html
+output/*/index.html
+
+# Sphinx
+docs/_build
+
+# OS
+.bash_history
+
+# database
+db.sqlite3
