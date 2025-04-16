@@ -1,17 +1,17 @@
+// -------------------------------------------------
+// Managed by modulesync - DO NOT EDIT
+// -------------------------------------------------
+
 {
     // name of the devcontainer
-    "name": "django_datawatch",
+    "name": "django-datawatch",
     // define the docker compose file to use for the devcontainer
     "dockerComposeFile": [
         "../compose.yaml",
         "./compose.yaml"
     ],
     // define which services from the compose file to start and stop
-    "runServices": [
-        "app",
-        "db",
-        "rabbitmq"
-    ],
+    "runServices": ["app", "db", "rabbitmq"],
     // define the docker-compose service to use for the dev container
     "service": "app",
     // define the workspace folder our app is located in
@@ -158,7 +158,7 @@
                 "aaron-bond.better-comments",
                 // Linting with ruff
                 // https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff
-                "charliermarsh.ruff@2025.22.0",
+                "charliermarsh.ruff@2025.8.0",
                 // Linting with mypy
                 // https://marketplace.visualstudio.com/items?itemName=ms-python.mypy-type-checker
                 "ms-python.mypy-type-checker",

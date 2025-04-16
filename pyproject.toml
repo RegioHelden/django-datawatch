@@ -1,3 +1,7 @@
+# -------------------------------------------
+# Managed by modulesync - DO NOT EDIT
+# -------------------------------------------
+
 [project]
 name = "django-datawatch"
 dynamic = ["version"]
@@ -7,36 +11,27 @@ description = "Automated data checks for Django"
 readme = "README.md"
 keywords = ["django", "monitoring", "datawatch", "check", "checks"]
 authors = [
-    { name = "Jens Nistler", email = "jens.nistler@regiohelden.de" },
-    { name = "Bogdan Radko", email = "bogdan.radko@regiohelden.de" },
+    { name = "RegioHelden GmbH", email = "opensource@regiohelden.de" },
 ]
 maintainers = [
     { name = "RegioHelden GmbH", email = "opensource@regiohelden.de" },
 ]
 classifiers = [
-    "Programming Language :: Python",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
     "Development Status :: 5 - Production/Stable",
     "Environment :: Web Environment",
+    "Framework :: Django",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Software Development",
     "Topic :: Software Development :: Libraries :: Python Modules",
-    "Topic :: System :: Monitoring",
 ]
-dependencies = [
-    "celery>=5.0.0",
-    "Django>=4.2,<6.0",
-    "django-extensions>=3.0.0",
-    "django-model-utils>=4.2.0",
-    "python-dateutil>=2.8.0",
-]
+dependencies = ["celery>=5.0.0", "Django>=4.2,<6.0", "django-extensions>=3.0.0", "django-model-utils>=4.2.0", "python-dateutil>=2.8.0"]
 
 [project.urls]
 Homepage = "https://github.com/RegioHelden/django-datawatch"
@@ -62,7 +57,14 @@ packages = ["django_datawatch"]
 include = ["LICENSE", "README.md", "CHANGELOG.md"]
 
 [tool.ruff]
-exclude = [".cache", ".git", "__pycache", "docs", "migrations"]
+exclude = [
+    ".cache",
+    ".git",
+    "__pycache",
+    "docs",
+    "migrations",
+    "src",
+]
 line-length = 120
 
 [tool.ruff.lint]
@@ -106,3 +108,11 @@ max-line-length = 120
 
 [tool.ruff.lint.mccabe]
 max-complexity = 16
+
+[tool.coverage.run]
+branch = true
+
+[tool.coverage.report]
+omit = ["*site-packages*", "*tests*", "*.tox*"]
+show_missing = true
+exclude_lines = ["raise NotImplementedError"]
