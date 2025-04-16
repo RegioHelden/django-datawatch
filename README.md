@@ -29,7 +29,7 @@ Feel free to implement other task execution backends and send a pull request.
 $ pip install django-datawatch
 ```
 
-Add `django_datawatch` to your `INSTALLED_APPS`
+Add `django_datawatch.apps.DjangoDatawatchConfig` to your `INSTALLED_APPS`
 
 ## Celery beat database scheduler
 

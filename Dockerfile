@@ -1,20 +1,16 @@
-FROM debian:bookworm-slim
+FROM python:3.12-slim-bookworm
 
 ARG DEBIAN_FRONTEND=noninteractive
 ENV PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=x LC_ALL=C.UTF-8 UV_COMPILE_BYTECODE=0
 
-RUN apt-get -y update && apt-get -y install \
-      build-essential \
-      gcc \
-      git \
-      python3-dev \
-      libffi-dev \
-      libpq-dev  \
-      libssl-dev \
-      gettext \
-      pipx \
-    && \
-    apt-get clean
+COPY system_dependencies.txt /app/
+
+RUN sys_deps=$(grep -v '^#' system_dependencies.txt | tr '\n' ' '); \
+    apt -y update && \
+    apt -y --no-install-recommends install pipx $sys_deps && \
+    apt clean && \
+    find /usr/share/man /usr/share/locale /usr/share/doc -type f -delete && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
