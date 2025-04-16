@@ -1,5 +1,6 @@
 ---
 :global:
+  python_min_version: "3.9"
   module_rootname: "django_datawatch"
   module_description: "Automated data checks for Django"
   module_keywords: ["django", "monitoring", "datawatch", "check", "checks"]
@@ -12,6 +13,9 @@
       "python-dateutil>=2.8.0",
     ]
   max_line_length: 120
+
+.devcontainer/devcontainer.json:
+  run_services: ["app", "db", "rabbitmq"]
 
 compose.yaml:
   unmanaged: true
