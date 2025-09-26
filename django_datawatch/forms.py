@@ -7,7 +7,9 @@ from django.utils.translation import gettext_lazy as _
 from model_utils.choices import Choices
 
 from django_datawatch.datawatch import datawatch
-from django_datawatch.models import Result
+from django_datawatch.models import Result, ResultAssignedGroup, ResultAssignedUser
+
+User = get_user_model()
 
 
 class ResultFilterForm(forms.Form):
@@ -17,7 +19,7 @@ class ResultFilterForm(forms.Form):
     ]
 
     user = forms.ModelChoiceField(
-        queryset=get_user_model().objects.all().order_by("first_name", "last_name"),
+        queryset=User.objects.all().order_by("first_name", "last_name"),
         label=_("User"),
         required=False,
     )
@@ -37,6 +39,10 @@ class ResultFilterForm(forms.Form):
 
         self.fields["user"].initial = user
         self.fields["user"].queryset = self.fields["user"].queryset.filter(**group_filter)
+        # Limit user choices to users assigned to results
+        self.fields["user"].queryset = self.fields["user"].queryset.filter(
+            id__in=self._get_user_ids_with_results(),
+        )
 
     def filter_queryset(self, request, queryset):
         # default values if form has not been submitted
@@ -54,6 +60,23 @@ class ResultFilterForm(forms.Form):
             queryset = queryset.filter(slug=self.cleaned_data["check"])
 
         return queryset.distinct()
+
+    @staticmethod
+    def _get_user_ids_with_results() -> list[int]:
+        """
+        Returns a list of user IDs that are assigned to results either directly or through their groups.
+        """
+        group_ids = ResultAssignedGroup.objects.all().values_list('group_id', flat=True).distinct()
+        user_ids = list(User.objects.all().filter(groups__id__in=group_ids).values_list(
+            'id',
+            flat=True,
+        ).distinct())
+        user_ids += list(ResultAssignedUser.objects.exclude(user_id__in=user_ids).values_list(
+            'user_id',
+            flat=True,
+        ).distinct())
+
+        return user_ids
 
 
 class AcknowledgeForm(forms.ModelForm):
