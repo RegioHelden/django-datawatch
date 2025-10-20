@@ -8,7 +8,7 @@ from django.utils.translation import gettext_lazy as _
 from model_utils.choices import Choices
 
 from django_datawatch.datawatch import datawatch
-from django_datawatch.models import Result, ResultAssignedGroup
+from django_datawatch.models import Result, ResultAssignedGroup, ResultTag
 
 User = get_user_model()
 
@@ -99,3 +99,38 @@ class AcknowledgeForm(forms.ModelForm):
             commit=commit,
         )
         return self.instance
+
+
+class ResultTagForm(forms.ModelForm):
+    class Meta:
+        model = ResultTag
+        fields = ["tag", "type"]
+
+    def __init__(self, *args, user, result, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.user = user
+        self.result = result
+        if "type" in self.fields:
+            self.fields["type"].initial = ResultTag.StatusChoices.DEFAULT
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        if not instance.pk:
+            instance.result = self.result
+            instance.user = self.user
+        if commit:
+            instance.save()
+        return instance
+
+    def clean_tag(self):
+        tag = self.cleaned_data.get("tag", "").strip()
+        if not tag:
+            raise forms.ValidationError(_("This field is required."))
+
+        qs = ResultTag.objects.filter(result=self.result, tag=tag)
+        if self.instance and self.instance.pk:
+            qs = qs.exclude(pk=self.instance.pk)
+        if qs.exists():
+            raise forms.ValidationError(_("This tag already exists on this result."))
+
+        return tag

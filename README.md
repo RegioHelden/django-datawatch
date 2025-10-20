@@ -219,6 +219,22 @@ class CustomCheck(BaseCheck):
         return None  # or a list of groups
 ```
 
+## Tagging Results
+
+Django Datawatch supports tagging individual check results. You can add, edit, and remove tags for each result directly through the web interface.
+### Usage
+
+- **Manage tags**: Open the result detail and click on the Tags link to manage tags.
+Each tag includes a label, a type (color/status), and the user who created it.
+
+![Django Datawatch detail view](doc/images/detail_view.png)
+![Django Datawatch manage Tags](doc/images/manage_tags.png)
+![Django Datawatch add/edit tag](doc/images/add_or_edit_tag.png)
+
+- **Tag display**: Tags are displayed as colored badges in the results overview, based on their type.
+
+![Django Datawatch dashboard](doc/images/datawatch_dashboard.png)
+
 # CONTRIBUTE
 
 ## Dev environment
