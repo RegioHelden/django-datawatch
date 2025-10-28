@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-16 01:07+0000\n"
+"POT-Creation-Date: 2025-10-17 14:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,6 +35,12 @@ msgstr "Prüfung"
 
 msgid "Days to acknowledge"
 msgstr "Ausblenden für Anzahl Tage"
+
+msgid "This field is required."
+msgstr "Dieses Feld ist zwingend erforderlich."
+
+msgid "This tag already exists on this result."
+msgstr "Dieses Tag ist für dieses Ergebnis bereits vorhanden."
 
 msgid "Unknown"
 msgstr "Unbekannt"
@@ -111,6 +117,33 @@ msgstr "Zugewiesene Benutzer"
 msgid "User must be unique across the result"
 msgstr "Benutzer müssen je Ergebnis eindeutig sein"
 
+msgid "Grey"
+msgstr "Grau"
+
+msgid "Green"
+msgstr "Grün"
+
+msgid "Blue"
+msgstr "Blau"
+
+msgid "Yellow"
+msgstr "Gelb"
+
+msgid "Red"
+msgstr "Rot"
+
+msgid "Tag"
+msgstr "Tag"
+
+msgid "Type"
+msgstr "Typ"
+
+msgid "Result tag"
+msgstr "Result tag"
+
+msgid "Result tags"
+msgstr "Result tags"
+
 msgid "Check module slug"
 msgstr "Modul-Bezeichner"
 
@@ -144,6 +177,9 @@ msgstr "Ausgeblendet bis %(date)s"
 
 msgid "Acknowledge"
 msgstr "Ausblenden"
+
+msgid "Tags"
+msgstr "Tags"
 
 msgid "Change config"
 msgstr "Konfiguration ändern"
@@ -192,6 +228,33 @@ msgstr "Grund:"
 msgid "Cancel"
 msgstr "Abbrechen"
 
+msgid "Manage tags for"
+msgstr "Tags verwalten für"
+
+msgid "Existing tags"
+msgstr "Vorhandene Tags"
+
+msgid "Created by"
+msgstr "Erstellt von"
+
+msgid "Created at"
+msgstr "Erstellt am"
+
+msgid "Actions"
+msgstr "Aktionen"
+
+msgid "Edit"
+msgstr "Bearbeiten"
+
+msgid "Delete"
+msgstr "Delete"
+
+msgid "No tags yet."
+msgstr "Noch keine Tags."
+
+msgid "Add tag"
+msgstr "Tag hinzufügen"
+
 msgid "Check result does not exist (anymore)"
 msgstr "Prüfungsergebnis existiert nicht (mehr)"
 
@@ -208,3 +271,9 @@ msgstr "Speichern"
 
 msgid "Result has been refreshed"
 msgstr "Ergebnis wurde aktualisiert"
+
+msgid "Tag saved"
+msgstr "Tag gespeichert"
+
+msgid "Tag deleted"
+msgstr "Tag gelöscht"

@@ -57,6 +57,13 @@
                                     <br>
                                     <span class="label label-default">{% blocktrans with date=result.acknowledged_until|date %}Acknowledged until {{ date }}{% endblocktrans %}</span>
                                 {% endif %}
+                                <div class="mt-2">
+                                    {% for tag in result.resulttag_set.all %}
+                                        <span class="badge {{ tag.badge_class }}">{{ tag.tag }}</span>
+                                    {% empty %}
+                                        {# no tags for this result #}
+                                    {% endfor %}
+                                </div>
                             </td>
                             <td style="width: 35%;">
                                 <a href="{% url "django_datawatch_result" pk=result.pk %}">

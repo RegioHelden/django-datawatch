@@ -9,12 +9,14 @@ from django.utils.translation import gettext_lazy as _
 from django.views.generic.base import RedirectView
 from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import FormView, UpdateView
+from django.shortcuts import get_object_or_404
+from typing import Any, cast
 
 from django_datawatch import forms
 from django_datawatch.common.views import FilteredListView
 from django_datawatch.datawatch import datawatch
 from django_datawatch.defaults import defaults
-from django_datawatch.models import AlreadyAcknowledgedError, Result
+from django_datawatch.models import AlreadyAcknowledgedError, Result, ResultTag
 
 logger = logging.getLogger(__name__)
 
@@ -32,7 +34,7 @@ class DashboardView(LoginRequiredMixin, PermissionRequiredMixin, FilteredListVie
 
     def get_queryset(self):
         if self.queryset is None:
-            self.queryset = Result.objects.all().order_by("-status")
+            self.queryset = Result.objects.all().prefetch_related("resulttag_set").order_by("-status")
         return self.queryset
 
     def get_context_data(self, **kwargs):
@@ -150,7 +152,7 @@ class ResultConfigView(LoginRequiredMixin, PermissionRequiredMixin, SingleObject
         return ctx
 
     def form_valid(self, form):
-        form.save(instance=self.object)
+        cast(Any, form).save(instance=self.object)
         check = self.object.get_check_instance()
 
         datawatch.get_backend().run(
@@ -188,3 +190,84 @@ class ResultRefreshView(LoginRequiredMixin, PermissionRequiredMixin, SingleObjec
 
     def get_redirect_url(self, *args, **kwargs):
         return reverse_lazy("django_datawatch_result", kwargs={"pk": self.object.pk})
+
+
+class ResultTagManageView(LoginRequiredMixin, SingleObjectMixin, FormView):
+
+    model = Result
+    form_class = forms.ResultTagForm
+    template_name = "django_datawatch/tags_manage.html"
+    permission_required = "django_datawatch.tag"
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.object = None
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super().get(request, *args, **kwargs)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({"user": self.request.user, "result": self.object})
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(
+            {
+                "result": self.object,
+                "tags": self.object.resulttag_set.select_related("user").all(),
+            }
+        )
+        return context
+
+
+
+class ResultTagView(LoginRequiredMixin, SingleObjectMixin, FormView):
+
+    model = ResultTag
+    form_class = forms.ResultTagForm
+    pk_url_kwarg = "tag_pk"
+    action = None
+    permission_required = "django_datawatch.tag"
+    template_name = "django_datawatch/form.html"
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.object = None
+
+
+    def get_result(self):
+        result_pk = self.kwargs.get("result_pk")
+        return get_object_or_404(Result, pk=result_pk)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({"user": self.request.user, "result": self.get_result()})
+        if self.action == "edit":
+            kwargs["instance"] = self.get_object()
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["action"] = _("Save")
+        return context
+
+    def form_valid(self, form):
+        form.save()
+        messages.info(self.request, _("Tag saved"))
+        return HttpResponseRedirect(self.get_success_url())
+
+    def post(self, request, *args, **kwargs):
+        # handle delete as a POST without a form
+        if self.action == "delete":
+            tag = self.get_object()
+            result_pk = tag.result.pk
+            tag.delete()
+            messages.info(request, _("Tag deleted"))
+            return HttpResponseRedirect(reverse_lazy("django_datawatch_result_tags", kwargs={"pk": result_pk}))
+        return super().post(request, *args, **kwargs)
+
+    def get_success_url(self):
+        return reverse_lazy("django_datawatch_result_tags", kwargs={"pk": self.get_result().pk})

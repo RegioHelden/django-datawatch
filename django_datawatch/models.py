@@ -75,6 +75,7 @@ class Result(TimeStampedModel):
             ("acknowledge", "Can acknowledge results"),
             ("config", "Can change the configuration for results"),
             ("refresh", "Can refresh results"),
+            ("tag", "Can add and remove tags on results"),
         )
 
     def __str__(self):
@@ -189,6 +190,44 @@ class ResultAssignedUser(models.Model):
         ):
             raise ValidationError({"user": _("User must be unique across the result")})
         super().validate_unique(exclude)
+
+
+class ResultTag(TimeStampedModel):
+    class StatusChoices(models.IntegerChoices):
+        DEFAULT = 1, _("Grey")
+        SUCCESS = 2, _("Green")
+        INFO = 3, _("Blue")
+        WARNING = 4, _("Yellow")
+        IMPORTANT = 5, _("Red")
+
+
+
+    result = models.ForeignKey(Result, on_delete=models.CASCADE, verbose_name=_("Result"))
+    user = models.ForeignKey(to=settings.AUTH_USER_MODEL, verbose_name=_("User"), on_delete=models.CASCADE)
+    tag = models.CharField(max_length=50, verbose_name=_("Tag"))
+    type = models.IntegerField(choices=StatusChoices.choices, default=StatusChoices.DEFAULT, verbose_name=_("Type"))
+
+    class Meta:
+        verbose_name = _("Result tag")
+        verbose_name_plural = _("Result tags")
+        unique_together = ("result", "tag")
+
+    def __str__(self):
+        return f"Tag '{self.tag}' on {self.result}"
+
+    @property
+    def badge_class(self) -> str:
+        """Return a Bootstrap badge class string based on the tag `type`.
+        Templates should use it like: <span class="badge {{ tag.badge_class }}">{{ tag.tag }}</span>
+        """
+        mapping = {
+            self.StatusChoices.SUCCESS: "bg-success",
+            self.StatusChoices.INFO: "bg-info",
+            self.StatusChoices.WARNING: "bg-warning text-dark",
+            self.StatusChoices.IMPORTANT: "bg-danger",
+            self.StatusChoices.DEFAULT: "bg-secondary",
+        }
+        return mapping.get(self.type, "bg-secondary")
 
 
 class CheckExecution(models.Model):
