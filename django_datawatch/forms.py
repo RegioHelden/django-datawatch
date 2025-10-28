@@ -104,7 +104,7 @@ class AcknowledgeForm(forms.ModelForm):
 class ResultTagForm(forms.ModelForm):
     class Meta:
         model = ResultTag
-        fields = ["tag", "type"]
+        fields: ClassVar[list[str]] = ["tag", "type"]
 
     def __init__(self, *args, user, result, **kwargs):
         super().__init__(*args, **kwargs)

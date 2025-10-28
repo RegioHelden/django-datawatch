@@ -200,8 +200,6 @@ class ResultTag(TimeStampedModel):
         WARNING = 4, _("Yellow")
         IMPORTANT = 5, _("Red")
 
-
-
     result = models.ForeignKey(Result, on_delete=models.CASCADE, verbose_name=_("Result"))
     user = models.ForeignKey(to=settings.AUTH_USER_MODEL, verbose_name=_("User"), on_delete=models.CASCADE)
     tag = models.CharField(max_length=50, verbose_name=_("Tag"))

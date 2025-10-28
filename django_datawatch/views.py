@@ -1,16 +1,16 @@
 import logging
+from typing import Any, cast
 
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.http.response import Http404, HttpResponseRedirect
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.generic.base import RedirectView
 from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import FormView, UpdateView
-from django.shortcuts import get_object_or_404
-from typing import Any, cast
 
 from django_datawatch import forms
 from django_datawatch.common.views import FilteredListView
@@ -193,7 +193,6 @@ class ResultRefreshView(LoginRequiredMixin, PermissionRequiredMixin, SingleObjec
 
 
 class ResultTagManageView(LoginRequiredMixin, SingleObjectMixin, FormView):
-
     model = Result
     form_class = forms.ResultTagForm
     template_name = "django_datawatch/tags_manage.html"
@@ -218,14 +217,12 @@ class ResultTagManageView(LoginRequiredMixin, SingleObjectMixin, FormView):
             {
                 "result": self.object,
                 "tags": self.object.resulttag_set.select_related("user").all(),
-            }
+            },
         )
         return context
 
 
-
 class ResultTagView(LoginRequiredMixin, SingleObjectMixin, FormView):
-
     model = ResultTag
     form_class = forms.ResultTagForm
     pk_url_kwarg = "tag_pk"
@@ -236,7 +233,6 @@ class ResultTagView(LoginRequiredMixin, SingleObjectMixin, FormView):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.object = None
-
 
     def get_result(self):
         result_pk = self.kwargs.get("result_pk")
