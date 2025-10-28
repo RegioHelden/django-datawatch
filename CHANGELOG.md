@@ -1,5 +1,21 @@
 # Changelog
 
+## [v7.3.0](https://github.com/RegioHelden/django-datawatch/tree/v7.3.0) (2025-10-28)
+
+[Full Changelog](https://github.com/RegioHelden/django-datawatch/compare/v7.2.0...v7.3.0)
+
+**Implemented enhancements:**
+
+- Update RegioHelden/github-reusable-workflows to 2.6.0 [\#140](https://github.com/RegioHelden/django-datawatch/pull/140) (@regiohelden-dev)
+- Update RegioHelden/github-reusable-workflows to 2.6.0 [\#139](https://github.com/RegioHelden/django-datawatch/pull/139) (@renovate[bot])
+- feat: add tagging support for Datawatch results, refs feature-request… [\#138](https://github.com/RegioHelden/django-datawatch/pull/138) (@azaregiohelden)
+- Update actions/download-artifact to v5 and uv to 0.9.5 [\#137](https://github.com/RegioHelden/django-datawatch/pull/137) (@regiohelden-dev)
+- Update github-reusable-workflows to 2.5.0 [\#136](https://github.com/RegioHelden/django-datawatch/pull/136) (@regiohelden-dev)
+- chore\(deps\): update regiohelden/github-reusable-workflows action to v2.5.0 [\#135](https://github.com/RegioHelden/django-datawatch/pull/135) (@renovate[bot])
+- Update ruff-vscode to 2025.28.0 and uv to 0.9.2 [\#134](https://github.com/RegioHelden/django-datawatch/pull/134) (@regiohelden-dev)
+- Update setup-uv action to v7 [\#133](https://github.com/RegioHelden/django-datawatch/pull/133) (@regiohelden-dev)
+- chore\(deps\): update astral-sh/setup-uv action to v7 [\#132](https://github.com/RegioHelden/django-datawatch/pull/132) (@renovate[bot])
+
 ## [v7.2.0](https://github.com/RegioHelden/django-datawatch/tree/v7.2.0) (2025-10-01)
 
 [Full Changelog](https://github.com/RegioHelden/django-datawatch/compare/v7.1.0...v7.2.0)
