@@ -140,7 +140,7 @@ class BaseCheck:
 
         with transaction.atomic(), track_status_history(self.slug, self.get_identifier(payload), status):
             # save the check
-            dataset, created = Result.objects.update_or_create(
+            dataset, _created = Result.objects.update_or_create(
                 slug=self.slug,
                 identifier=self.get_identifier(payload),
                 defaults=defaults,

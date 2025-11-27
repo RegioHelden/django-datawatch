@@ -91,7 +91,7 @@ class DatawatchHandler:
         return self._backend
 
     def delete_results(self, sender, instance, db_alias=None):
-        from django_datawatch.models import Result
+        from django_datawatch.models import Result  # noqa: PLC0415
 
         for check_class in datawatch.get_checks_for_model(model=sender):
             check = check_class()
@@ -169,7 +169,7 @@ class Scheduler:
             check.run()
 
     def get_last_executions(self):
-        from django_datawatch.models import CheckExecution
+        from django_datawatch.models import CheckExecution  # noqa: PLC0415
 
         return {obj.slug: obj.last_run for obj in CheckExecution.objects.all()}
 
