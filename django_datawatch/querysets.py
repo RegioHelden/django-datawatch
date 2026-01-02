@@ -37,7 +37,7 @@ class ResultQuerySet(models.QuerySet):
         return self.annotate(status_name=case)
 
     def get_stats(self):
-        return self.values("status").annotate(amount=Count("id")).with_status_name()
+        return self.values("status").annotate(amount=Count("id", distinct=True)).with_status_name()
 
     def ghost_results(self):
         """
