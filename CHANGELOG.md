@@ -1,5 +1,30 @@
 # Changelog
 
+## [v8.0.0](https://github.com/RegioHelden/django-datawatch/tree/v8.0.0) (2026-01-07)
+
+[Full Changelog](https://github.com/RegioHelden/django-datawatch/compare/v7.3.0...v8.0.0)
+
+**Breaking changes:**
+
+- Add support for Django 6.0 release, remove support for EOL Django 5.0 and 5.1, remove support for EOL Python 3.9 [\#154](https://github.com/RegioHelden/django-datawatch/pull/154) (@lociii)
+
+**Implemented enhancements:**
+
+- Update ruff to 0.14.10, update uv to 0.9.22, allow installation on Django 6.0 [\#155](https://github.com/RegioHelden/django-datawatch/pull/155) (@regiohelden-dev)
+- Update ruff to 0.14.9, ruff VSCode to 2025.32.0, github-reusable-workflows to 2.8.0, download-artifact to 7, uv to 0.9.17 [\#152](https://github.com/RegioHelden/django-datawatch/pull/152) (@regiohelden-dev)
+- Force ruff version in VSCode, add modulesync managed linting workflow, update VSCode ruff integration to 2025.30.0 and uv to 0.9.13 [\#151](https://github.com/RegioHelden/django-datawatch/pull/151) (@regiohelden-dev)
+- Update github-reusable-workflows to 2.7.0 [\#150](https://github.com/RegioHelden/django-datawatch/pull/150) (@renovate[bot])
+- Update github-reusable-workflows to 2.7.0 and uv to 0.9.11 [\#149](https://github.com/RegioHelden/django-datawatch/pull/149) (@regiohelden-dev)
+- Update actions/checkout action to v6 [\#148](https://github.com/RegioHelden/django-datawatch/pull/148) (@renovate[bot])
+- Update uv to 0.9.10 [\#147](https://github.com/RegioHelden/django-datawatch/pull/147) (@regiohelden-dev)
+- Update uv to 0.9.9 [\#146](https://github.com/RegioHelden/django-datawatch/pull/146) (@regiohelden-dev)
+- Update uv to 0.9.7 [\#145](https://github.com/RegioHelden/django-datawatch/pull/145) (@regiohelden-dev)
+- Update uv to 0.9.6 [\#144](https://github.com/RegioHelden/django-datawatch/pull/144) (@regiohelden-dev)
+
+**Fixed bugs:**
+
+- Display correct total results [\#153](https://github.com/RegioHelden/django-datawatch/pull/153) (@azaregiohelden)
+
 ## [v7.3.0](https://github.com/RegioHelden/django-datawatch/tree/v7.3.0) (2025-10-28)
 
 [Full Changelog](https://github.com/RegioHelden/django-datawatch/compare/v7.2.0...v7.3.0)
