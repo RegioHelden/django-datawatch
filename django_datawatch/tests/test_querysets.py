@@ -125,4 +125,4 @@ class ResultQuerySetTestCase(TestCase):
         stats = Result.objects.for_user(user).get_stats()
 
         self.assertEqual(stats.count(), 1)
-        self.assertEqual(stats[0]['amount'], 1)
+        self.assertEqual(stats[0]["amount"], 1)
