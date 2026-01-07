@@ -1,5 +1,3 @@
-from typing import Optional
-
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.test.testcases import TestCase
@@ -25,8 +23,8 @@ class ResultQuerySetTestCase(TestCase):
     def _make_result(
         self,
         slug,
-        users: Optional[list] = None,
-        groups: Optional[list] = None,
+        users: list | None = None,
+        groups: list | None = None,
     ):
         result = Result.objects.create(slug=slug, identifier="test_identifier")
         if users:
