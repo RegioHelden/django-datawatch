@@ -110,3 +110,19 @@ class ResultQuerySetTestCase(TestCase):
                 res_with_group_and_users,
             ],
         )
+
+    def test_get_stats_overcounts_due_to_join_multiplication(self) -> None:
+        users = self._make_users(["u1", "u2"])
+        groups = self._make_groups(["g1", "g2"])
+        user = users[0]
+        user.groups.set(groups)
+        self._make_result(
+            "test",
+            users=users,
+            groups=groups,
+        )
+
+        stats = Result.objects.for_user(user).get_stats()
+
+        self.assertEqual(stats.count(), 1)
+        self.assertEqual(stats[0]['amount'], 1)
