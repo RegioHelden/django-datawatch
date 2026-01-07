@@ -1,14 +1,14 @@
 ---
 :global:
-  python_min_version: "3.9"
-  python_supported_versions: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+  python_min_version: "3.10"
+  python_supported_versions: ["3.10", "3.11", "3.12", "3.13", "3.14"]
   module_rootname: "django_datawatch"
   module_description: "Automated data checks for Django"
   module_keywords: ["django", "monitoring", "datawatch", "check", "checks"]
   dependencies:
     [
       "celery>=5.0.0",
-      "Django>=4.2,<6.0",
+      "Django>=4.2,<6.1",
       "django-extensions>=3.0.0",
       "django-model-utils>=4.2.0",
       "python-dateutil>=2.8.0",

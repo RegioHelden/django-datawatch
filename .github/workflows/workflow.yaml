@@ -18,27 +18,24 @@ jobs:
       fail-fast: false
       matrix:
         python-version:
-          - "3.9"
           - "3.10"
           - "3.11"
           - "3.12"
           - "3.13"
+          - "3.14"
         django:
           - "4.2"
-          - "5.0"
-          - "5.1"
           - "5.2"
+          - "6.0"
         exclude:
           - django: "4.2"
             python-version: "3.13"
-          - django: "5.0"
-            python-version: "3.9"
-          - django: "5.0"
-            python-version: "3.13"
-          - django: "5.1"
-            python-version: "3.9"
-          - django: "5.2"
-            python-version: "3.9"
+          - django: "4.2"
+            python-version: "3.14"
+          - django: "6.0"
+            python-version: "3.10"
+          - django: "6.0"
+            python-version: "3.11"
 
     # Service containers to run with `runner-job`
     services:
@@ -75,20 +72,10 @@ jobs:
         uses: astral-sh/setup-uv@v7
 
       - name: Install database drivers
-        run: uv pip install --system psycopg==3.2.6
+        run: uv pip install --system psycopg==3.3.2
 
-      - name: Install Django 4.2
-        if: matrix.django == 4.2
-        run: uv pip install --system "Django>=4.2,<5.0"
-      - name: Install Django 5.0
-        if: matrix.django == 5.0
-        run: uv pip install --system "Django>=5.0,<5.1"
-      - name: Install Django 5.1
-        if: matrix.django == 5.1
-        run: uv pip install --system "Django>=5.1,<5.2"
-      - name: Install Django 5.2
-        if: matrix.django == 5.2
-        run: uv pip install --system "Django>=5.2,<6.0"
+      - name: Install Django
+        run: uv pip install --system "Django~=${{ matrix.django }}"
 
       - name: Install requirements
         run: uv pip install --system -r requirements-ci.txt
