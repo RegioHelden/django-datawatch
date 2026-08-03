@@ -54,7 +54,7 @@ from django_datawatch.models import Result
 
 @datawatch.register
 class CheckTime(BaseCheck):
-    run_every = crontab(minute='*/5')  # scheduler will execute this check every 5 minutes
+    run_every = crontab(minute="*/5")  # scheduler will execute this check every 5 minutes
 
     def generate(self):
         yield datetime.now()
@@ -163,7 +163,7 @@ $ ./manage.py datawatch_clean_up
 ## Settings
 
 ```python
-DJANGO_DATAWATCH_BACKEND = 'django_datawatch.backends.synchronous'
+DJANGO_DATAWATCH_BACKEND = "django_datawatch.backends.synchronous"
 DJANGO_DATAWATCH_RUN_SIGNALS = True
 ```
 
@@ -198,12 +198,15 @@ From
 ```python
 from django_datawatch.base import BaseCheck
 
+
 class CustomCheck(BaseCheck):
     ...
+
     def get_assigned_user(self, payload, result) -> Optional[AbstractUser]:
-        return None # or a user
+        return None  # or a user
+
     def get_assigned_group(self, payload, result) -> Optional[Group]:
-        return None # or a group
+        return None  # or a group
 ```
 
 To
@@ -211,10 +214,13 @@ To
 ```python
 from django_datawatch.base import BaseCheck
 
+
 class CustomCheck(BaseCheck):
     ...
+
     def get_assigned_users(self, payload, result) -> Optional[List[AbstractUser]]:
         return None  # or a list of users
+
     def get_assigned_groups(self, payload, result) -> Optional[List[Group]]:
         return None  # or a list of groups
 ```
