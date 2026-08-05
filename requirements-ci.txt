@@ -5,4 +5,4 @@ django-model-utils==5.0.0
 django-celery-beat==2.9.0
 python-dateutil==2.9.0.post0
 tblib==3.2.2
-time-machine==3.3.0
+time-machine==3.3.1
