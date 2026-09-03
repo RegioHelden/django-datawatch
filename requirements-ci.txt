@@ -1,5 +1,5 @@
 celery==5.6.3
-django-bootstrap5==26.2
+django-bootstrap5==26.3
 django-extensions==4.1
 django-model-utils==5.0.0
 django-celery-beat==2.9.0
