@@ -1,17 +1,17 @@
 ---
 :global:
-  python_min_version: "3.10"
-  python_supported_versions: ["3.10", "3.11", "3.12", "3.13", "3.14"]
+  python_min_version: "3.11"
+  python_supported_versions: ["3.11", "3.12", "3.13", "3.14"]
   module_rootname: "django_datawatch"
   module_description: "Automated data checks for Django"
   module_keywords: ["django", "monitoring", "datawatch", "check", "checks"]
   dependencies:
     [
-      "celery>=5.0.0",
-      "Django>=4.2,<6.1",
-      "django-extensions>=3.0.0",
-      "django-model-utils>=4.2.0",
-      "python-dateutil>=2.8.0",
+      "celery>=5.6.0",
+      "Django>=5.2,<6.2",
+      "django-extensions>=4.1",
+      "django-model-utils>=5.0.0",
+      "python-dateutil>=2.9.0",
     ]
   max_line_length: 120
   changelog_since_tag: "6.0.0"
