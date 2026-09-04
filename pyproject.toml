@@ -6,7 +6,7 @@
 name = "django-datawatch"
 dynamic = ["version"]
 license = "MIT"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 description = "Automated data checks for Django"
 readme = "README.md"
 keywords = ["django", "monitoring", "datawatch", "check", "checks"]
@@ -25,7 +25,6 @@ classifiers = [
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
@@ -33,7 +32,7 @@ classifiers = [
     "Topic :: Software Development",
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
-dependencies = ["celery>=5.0.0", "Django>=4.2,<6.1", "django-extensions>=3.0.0", "django-model-utils>=4.2.0", "python-dateutil>=2.8.0"]
+dependencies = ["celery>=5.6.0", "Django>=5.2,<6.2", "django-extensions>=4.1", "django-model-utils>=5.0.0", "python-dateutil>=2.9.0"]
 
 [project.urls]
 Homepage = "https://github.com/RegioHelden/django-datawatch"
