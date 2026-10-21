@@ -1,4 +1,4 @@
-import datetime
+import datetime as dt
 from unittest import mock
 
 from celery.schedules import crontab
@@ -35,7 +35,7 @@ class SchedulerTestCase(TestCase):
         scheduler.run_checks()
         self.assertTrue(mock_run.called)
 
-    @travel(datetime.datetime(2016, 12, 1, 0, 0, tzinfo=timezone.get_current_timezone()))
+    @travel(dt.datetime(2016, 12, 1, 0, 0, tzinfo=timezone.get_current_timezone()))
     @mock.patch("django_datawatch.tests.test_scheduler.CheckRunEvery.run")
     def test_execution_in_past(self, mock_run):
         datawatch.get_all_registered_checks = mock.MagicMock(return_value=[CheckRunEvery])
@@ -43,7 +43,7 @@ class SchedulerTestCase(TestCase):
 
         scheduler.get_last_executions = mock.MagicMock(
             return_value={
-                "django_datawatch.tests.test_scheduler.CheckRunEvery": datetime.datetime(
+                "django_datawatch.tests.test_scheduler.CheckRunEvery": dt.datetime(
                     2016,
                     1,
                     1,
@@ -58,7 +58,7 @@ class SchedulerTestCase(TestCase):
         scheduler.run_checks()
         self.assertTrue(mock_run.called)
 
-    @travel(datetime.datetime(2016, 1, 1, 0, 0, tzinfo=timezone.get_current_timezone()))
+    @travel(dt.datetime(2016, 1, 1, 0, 0, tzinfo=timezone.get_current_timezone()))
     @mock.patch("django_datawatch.tests.test_scheduler.CheckRunEvery.run")
     def test_execution_in_future(self, mock_run):
         datawatch.get_all_registered_checks = mock.MagicMock(return_value=[CheckRunEvery])
@@ -66,7 +66,7 @@ class SchedulerTestCase(TestCase):
 
         scheduler.get_last_executions = mock.MagicMock(
             return_value={
-                "django_datawatch.tests.test_scheduler.CheckRunEvery": datetime.datetime(
+                "django_datawatch.tests.test_scheduler.CheckRunEvery": dt.datetime(
                     2016,
                     12,
                     1,
@@ -81,7 +81,7 @@ class SchedulerTestCase(TestCase):
         scheduler.run_checks()
         self.assertFalse(mock_run.called)
 
-    @travel(datetime.datetime(2016, 12, 1, 0, 0, tzinfo=timezone.get_current_timezone()))
+    @travel(dt.datetime(2016, 12, 1, 0, 0, tzinfo=timezone.get_current_timezone()))
     @mock.patch("django_datawatch.tests.test_scheduler.CheckRunEvery.run")
     def test_execution_in_future_and_force(self, mock_run):
         datawatch.get_all_registered_checks = mock.MagicMock(return_value=[CheckRunEvery])
@@ -89,7 +89,7 @@ class SchedulerTestCase(TestCase):
 
         scheduler.get_last_executions = mock.MagicMock(
             return_value={
-                "django_datawatch.tests.test_scheduler.CheckRunEvery": datetime.datetime(
+                "django_datawatch.tests.test_scheduler.CheckRunEvery": dt.datetime(
                     2016,
                     12,
                     1,
