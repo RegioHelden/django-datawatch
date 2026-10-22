@@ -3,6 +3,6 @@ django-bootstrap5==26.4
 django-extensions==4.1
 django-model-utils==5.0.0
 django-celery-beat==2.9.0
-python-dateutil==2.9.0.post0
+python-dateutil==3.0.0
 tblib==3.2.2
 time-machine==3.5.1
