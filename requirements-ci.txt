@@ -1,4 +1,4 @@
-celery==5.6.3
+celery==5.7.0
 django-bootstrap5==26.4
 django-extensions==4.1
 django-model-utils==5.0.0
