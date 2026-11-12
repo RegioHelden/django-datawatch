@@ -32,7 +32,7 @@ classifiers = [
     "Topic :: Software Development",
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
-dependencies = ["celery>=5.6.0", "Django>=5.2,<6.2", "django-extensions>=4.1", "django-model-utils>=5.0.0", "python-dateutil>=2.9.0"]
+dependencies = ["celery>=5.6.0", "Django>=5.2,<6.2", "django-extensions>=4.1", "django-model-utils>=5.0.0"]
 
 [project.urls]
 Homepage = "https://github.com/RegioHelden/django-datawatch"
