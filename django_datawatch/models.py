@@ -1,7 +1,7 @@
 import json
+from datetime import timedelta
 from typing import ClassVar
 
-from dateutil import relativedelta
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -83,7 +83,7 @@ class Result(TimeStampedModel):
 
     def acknowledge(self, user, days, reason=None, commit=True):
         # calculate end of requested acknowledgement
-        acknowledged_until = timezone.now() + relativedelta.relativedelta(days=days)
+        acknowledged_until = timezone.now() + timedelta(days=days)
 
         # check that we're not accidentally overriding the current setup
         if (
